@@ -19,8 +19,6 @@ import {
 const BG_IMAGE = heroBgBokeh;
 const AVATAR =
   "https://polo-pecan-73837341.figma.site/_assets/v11/ca8093996e970200cbcf8bde8744175e52da5a79.png";
-const CAPSULE_INLINE =
-  "https://polo-pecan-73837341.figma.site/_assets/v11/6a7de4fbe9c9e2315040607320a9ff5e93117bf4.png";
 const PANEL1_DECOR = threeXSachets;
 const PANEL3_PRODUCT =
   "https://polo-pecan-73837341.figma.site/_assets/v11/30e8f38d1f993c357a3be2721557fc899d5640fc.png";
@@ -73,6 +71,63 @@ function Word({ delay, dim = false, children }) {
   );
 }
 
+function HorseMark({ className }) {
+  return (
+    <svg
+      viewBox="0 0 293 280"
+      className={className}
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <g transform="translate(0.000000,280.000000) scale(0.100000,-0.100000)">
+        <path d="M1450 2670 l-25 -31 -103 12 c-80 10 -127 10 -207 1 -103 -11 -263
+-46 -278 -61 -4 -4 27 -19 69 -33 75 -26 76 -26 107 -8 45 26 130 47 212 54
+l70 5 -73 -19 c-82 -22 -179 -70 -212 -105 l-22 -23 -34 20 c-18 11 -57 26
+-85 33 -62 17 -118 54 -152 102 -22 31 -27 34 -33 19 -4 -10 -2 -53 3 -98 l9
+-80 -50 -25 c-50 -25 -123 -94 -251 -238 -55 -61 -64 -76 -45 -70 56 16 110
+49 198 120 92 74 142 105 192 120 15 4 3 -9 -30 -31 -30 -20 -107 -90 -170
+-154 -84 -86 -125 -121 -154 -130 -54 -17 -156 -6 -222 24 -30 14 -54 21 -54
+16 0 -21 108 -113 169 -143 56 -27 76 -32 141 -32 41 0 93 4 115 8 l40 9 -42
+-40 c-24 -21 -43 -43 -43 -48 0 -5 7 -33 14 -62 l15 -54 -115 -256 c-133 -297
+-148 -324 -206 -378 l-43 -40 0 -94 0 -95 49 -60 c27 -33 62 -84 79 -113 40
+-72 64 -86 128 -78 41 6 55 3 78 -14 34 -23 78 -26 124 -6 48 20 67 47 96 138
+l27 83 187 150 187 150 68 2 c37 0 87 8 111 17 58 21 57 22 74 -21 53 -136 61
+-348 17 -488 -30 -96 -90 -207 -150 -283 -28 -34 -47 -62 -43 -62 25 0 117 67
+170 123 145 156 182 289 159 582 l-8 100 42 104 c54 134 63 226 32 348 -11 44
+-31 105 -44 134 l-23 54 -6 -130 c-7 -157 -26 -211 -100 -280 -109 -102 -251
+-122 -339 -49 -44 38 -42 89 9 190 22 43 39 80 37 81 -1 1 -33 -25 -71 -58
+-101 -87 -150 -117 -233 -141 -69 -20 -81 -37 -26 -38 52 0 153 -41 195 -79
+l43 -38 -27 -36 c-15 -19 -62 -66 -104 -104 -167 -147 -182 -164 -231 -262
+-28 -56 -57 -101 -72 -110 l-25 -16 20 30 c10 17 39 64 62 105 36 63 43 83 43
+129 0 30 -3 51 -7 47 -5 -4 -42 -55 -83 -114 -111 -158 -177 -196 -204 -118
+-9 23 -5 31 26 64 59 61 71 102 47 155 -26 58 -98 52 -152 -12 -32 -38 -33
+-61 -7 -120 38 -83 18 -76 -56 20 -41 53 -44 62 -44 117 0 57 3 63 45 113 25
+29 66 96 91 148 177 362 236 491 250 545 9 34 26 84 40 111 19 41 32 54 71 72
+67 30 157 101 291 227 94 89 117 106 141 104 38 -3 58 15 73 65 12 40 32 63
+150 172 l54 50 -29 -115 c-33 -132 -48 -157 -118 -199 -27 -17 -47 -36 -44
+-41 3 -6 24 -13 46 -16 54 -9 37 -24 -35 -31 -31 -3 -53 -9 -49 -13 4 -5 58
+-28 119 -52 241 -97 440 -272 546 -483 57 -113 80 -210 85 -360 8 -237 -30
+-391 -169 -674 -111 -228 -132 -310 -108 -424 13 -62 24 -67 34 -13 11 60 76
+175 132 236 30 32 106 97 168 144 124 94 168 138 223 223 79 124 114 259 115
+447 0 149 15 111 25 -64 6 -130 -10 -239 -52 -342 -47 -116 -158 -243 -284
+-327 -85 -56 -40 -48 93 17 259 127 402 276 462 478 19 63 24 199 11 269 l-8
+40 22 -35 c32 -52 69 -155 85 -239 8 -41 16 -76 18 -78 10 -10 28 71 33 147
+17 249 -146 525 -396 672 -55 33 -52 34 20 9 170 -58 355 -203 431 -338 40
+-71 49 -51 19 45 -57 186 -215 348 -458 471 -96 48 -211 88 -303 106 l-65 12
+65 7 c187 22 412 -80 618 -278 39 -38 72 -66 72 -61 0 18 -120 174 -190 245
+-184 188 -415 313 -639 345 -84 13 -85 13 -31 15 119 4 228 -12 314 -46 40
+-16 4 16 -57 50 -92 51 -209 87 -312 96 l-90 7 120 1 c111 2 168 -6 330 -43
+l30 -7 -25 22 c-40 34 -168 95 -260 125 -69 22 -112 29 -225 34 -113 5 -132 8
+-97 15 23 4 40 11 38 15 -3 4 -41 16 -85 26 l-80 18 -3 39 -3 38 -25 -30z
+m358 -744 c151 -116 258 -274 297 -439 8 -34 15 -110 15 -168 0 -125 -22 -226
+-74 -333 -52 -107 -68 -122 -41 -41 38 118 48 200 43 351 -4 123 -9 150 -38
+236 -67 201 -184 350 -390 501 -14 10 10 0 53 -22 43 -23 104 -61 135 -85z
+m519 -598 c-3 -8 -6 -5 -6 6 -1 11 2 17 5 13 3 -3 4 -12 1 -19z" />
+      </g>
+    </svg>
+  );
+}
+
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -80,8 +135,9 @@ function Navbar() {
     <nav className="animate-fade-in relative z-20 flex items-center justify-between px-5 py-4 sm:px-8 lg:px-10 lg:py-5">
       <a
         href="#"
-        className="animate-slide-left delay-200 font-serif text-[30px] font-semibold tracking-[-0.05em] text-cream"
+        className="animate-slide-left delay-200 flex items-center gap-2.5 font-serif text-[30px] font-semibold tracking-[-0.05em] text-cream"
       >
+        <HorseMark className="h-[30px] w-auto shrink-0 text-cream" />
         Steppe Gut
       </a>
 
@@ -159,7 +215,7 @@ function Navbar() {
 function Hero() {
   return (
     <section className="relative z-10 flex flex-1 flex-col justify-center px-5 py-10 sm:px-8 lg:px-10">
-      <h1 className="font-serif text-[48px] font-normal leading-[50px] tracking-[-0.05em] sm:text-[80px] sm:leading-[72px] md:text-[110px] md:leading-[95px] lg:text-[130px] lg:leading-[110px] xl:text-[155px] xl:leading-[125px]">
+      <h1 className="font-serif text-[43.2px] font-normal leading-[45px] tracking-[-0.05em] sm:text-[72px] sm:leading-[64.8px] md:text-[99px] md:leading-[85.5px] lg:text-[117px] lg:leading-[99px] xl:text-[139.5px] xl:leading-[112.5px]">
         <span className="block">
           <Word delay="delay-300">The</Word> <Word delay="delay-400">Radiance</Word>{" "}
           <Word delay="delay-500" dim>
@@ -173,16 +229,10 @@ function Hero() {
           <Word delay="delay-700" dim>
             in
           </Word>{" "}
-          <Word delay="delay-800">Every</Word>
+          <Word delay="delay-800">Full</Word>
         </span>
         <span className="block">
-          <Word delay="delay-900">Capsule</Word>
-          <img
-            src={CAPSULE_INLINE}
-            alt=""
-            className="animate-scale-in delay-1000 ml-2 hidden w-auto align-middle sm:inline-block lg:ml-4"
-            style={{ height: "clamp(60px, 10vw, 160px)" }}
-          />
+          <Word delay="delay-900">Bloom</Word>
         </span>
       </h1>
 
@@ -194,10 +244,6 @@ function Hero() {
           Explore Now
           <ArrowUpRight size={22} strokeWidth={1.5} />
         </button>
-        <p className="max-w-[310px] font-sans text-sm font-normal leading-[1.45] tracking-[-0.03em] text-cream sm:text-base lg:text-lg">
-          Nourish your gut with fermented mare's milk, restoring natural
-          radiance from within.
-        </p>
       </div>
     </section>
   );
@@ -258,11 +304,11 @@ function CardCarousel() {
 function PanelStrip() {
   return (
     <div className="relative z-10 grid grid-cols-1 md:grid-cols-[2fr_1fr_2fr]">
-      <div className="animate-fade-up delay-900 relative overflow-hidden bg-cream p-6 sm:p-8 lg:p-10">
+      <div className="animate-fade-up delay-900 relative bg-[#ece7da] p-6 sm:p-8 lg:p-10">
         <img
           src={PANEL1_DECOR}
           alt=""
-          className="pointer-events-none absolute -bottom-2 -right-4 h-[72%] w-auto mix-blend-multiply"
+          className="pointer-events-none absolute bottom-0 right-2 w-[75px] h-auto hidden drop-shadow-2xl sm:block sm:-bottom-9 sm:right-3 sm:h-[165%] sm:w-auto lg:top-1/2 lg:bottom-auto lg:left-auto lg:right-[-3px] lg:-translate-y-1/2 lg:w-[242px] lg:h-auto"
         />
         <div className="relative flex h-full flex-col justify-between gap-8">
           <p className="max-w-[350px] font-serif text-2xl font-normal leading-[1.1] tracking-[-0.05em] text-forest sm:text-[28px] lg:text-[35px]">
@@ -292,7 +338,7 @@ function PanelStrip() {
             +14K
           </span>
           <p className="max-w-[240px] font-sans text-sm font-normal leading-[1.2] text-cream/60 sm:text-base lg:text-lg">
-            Women embracing natural radiance from within
+            People who've made Steppe Gut part of their morning
           </p>
         </div>
       </div>
