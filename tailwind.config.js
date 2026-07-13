@@ -65,6 +65,9 @@ module.exports = {
         'body-lg': typography.sizes['body-lg'], // 16px
         'body-sm': typography.sizes['body-sm'], // 12px
       },
+      screens: {
+        '1395': '1395px',
+      },
     },
   },
   plugins: [],

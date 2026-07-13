@@ -308,9 +308,9 @@ function PanelStrip() {
         <img
           src={PANEL1_DECOR}
           alt=""
-          className="pointer-events-none absolute bottom-0 right-2 w-[75px] h-auto hidden drop-shadow-2xl sm:block sm:-bottom-9 sm:right-3 sm:h-[165%] sm:w-auto lg:top-1/2 lg:bottom-auto lg:left-auto lg:right-[-3px] lg:-translate-y-1/2 lg:w-[242px] lg:h-auto"
+          className="pointer-events-none absolute bottom-0 right-0 w-[242px] h-auto hidden drop-shadow-2xl 1395:block 1395:bottom-auto 1395:top-1/2 1395:-translate-y-1/2"
         />
-        <div className="relative flex h-full flex-col justify-between gap-8">
+        <div className="relative flex h-full flex-col justify-between gap-8 overflow-hidden">
           <p className="max-w-[350px] font-serif text-2xl font-normal leading-[1.1] tracking-[-0.05em] text-forest sm:text-[28px] lg:text-[35px]">
             Start your personal path to natural radiance
           </p>
