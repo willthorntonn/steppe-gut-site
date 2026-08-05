@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Steppe Gut Website Scope</title>
+<style>
+  @font-face {
+    font-family: 'Anton';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url(data:font/woff2;base64,__ANTON_B64__) format('woff2');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url(data:font/woff2;base64,__INTER_B64__) format('woff2');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url(data:font/woff2;base64,__INTER_B64__) format('woff2');
+  }
+
+  :root {
+    --ink: #E5E5E5;
+    --paper: #242424;
+    --paper-off: #3A3A3A;
+    --grey: #CCCCCC;
+    --grey-light: #A0A0A0;
+    --line: #404040;
+    --gold: #E5E5E5;
+    --gold-fill: #CCCCCC;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  h1, h2, p, ul { margin: 0; padding: 0; }
+  ul { list-style: none; }
+  button { font: inherit; }
+
+  .heavy {
+    font-family: 'Anton', Impact, 'Arial Narrow Bold', sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 16px;
+  }
+
+  /* Header / brandbar */
+  .brandbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 20px 18px;
+  }
+  .brandbar img {
+    width: 34px;
+    height: auto;
+    display: block;
+  }
+  .wordmark {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1.15;
+    letter-spacing: 0.10em;
+    color: var(--ink);
+  }
+  .wordmark span { display: block; }
+  .wordmark .sub { color: var(--grey); font-weight: 700; }
+
+  main { padding: 0 20px; max-width: 640px; margin: 0 auto; }
+
+  /* Hero */
+  .hero { padding: 18px 0 30px; border-bottom: 1px solid var(--line); }
+  .hero .eyebrow { margin-bottom: 14px; }
+  .hero h1 {
+    font-size: clamp(38px, 11.5vw, 54px);
+    line-height: 0.94;
+    color: var(--ink);
+  }
+  .hero p {
+    margin-top: 16px;
+    font-size: 15.5px;
+    line-height: 1.5;
+    color: var(--grey);
+    max-width: 38ch;
+  }
+
+  /* Core section */
+  .core { padding: 26px 0 8px; }
+  .core .section-sub {
+    font-size: 13px;
+    color: var(--grey-light);
+    margin-bottom: 6px;
+  }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  label.item { cursor: pointer; }
+  .item input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 44px;
+    height: 44px;
+    top: 6px;
+    left: -4px;
+    margin: 0;
+    cursor: pointer;
+  }
+  .box {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin-top: 3px;
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    position: relative;
+    transition: background-color 180ms ease, border-color 180ms ease;
+  }
+  .box::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--paper);
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+  .item input:checked + .box,
+  .tier input:checked + .box {
+    background: var(--gold-fill);
+    border-color: var(--gold-fill);
+  }
+  .item input:checked + .box::after,
+  .tier input:checked + .box::after { opacity: 1; }
+  .item input:disabled ~ .box { cursor: default; }
+  .item.is-capped .box { border-color: var(--line); }
+  .item.is-capped .title,
+  .item.is-capped .desc { color: var(--grey-light); }
+  .item input:focus-visible + .box,
+  .tier input:focus-visible + .box {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .box--locked {
+    background: var(--gold-fill);
+    border-color: var(--gold-fill);
+  }
+  .box--locked::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--paper);
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+    opacity: 1;
+  }
+
+  .num {
+    flex: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--line);
+    width: 30px;
+    padding-top: 1px;
+  }
+  .copy { flex: 1; min-width: 0; }
+  .title {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .desc {
+    display: block;
+    margin-top: 4px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--grey);
+  }
+  .included-tag {
+    flex: none;
+    align-self: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--paper-off);
+    border: 1px solid var(--line);
+    padding: 4px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  /* Counter bar */
+  .counter-bar {
+    padding: 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-top: 0;
+  }
+  .counter-bar .count { color: var(--gold); }
+  .counter-bar.is-full .count { color: var(--gold); }
+  .counter-bar .cap-note {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 11.5px;
+    color: var(--grey-light);
+    display: none;
+  }
+  .counter-bar.is-full .cap-note { display: block; }
+
+  /* Optional section */
+  .optional { padding: 0 0 6px; }
+
+  /* FAQ upsell panel */
+  .upsell {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 380ms cubic-bezier(0.16,1,0.3,1);
+    margin-left: 44px;
+  }
+  .upsell.is-open { max-height: 260px; }
+  .upsell-inner {
+    padding: 6px 0 18px;
+    margin: 0 0 4px;
+    border-top: 1px solid var(--line);
+  }
+  .upsell-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin: 14px 0 6px;
+  }
+  .tier {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    position: relative;
+  }
+  .tier + .tier { border-top: 1px solid var(--line); }
+  .tier input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 40px;
+    height: 40px;
+    top: 2px;
+    left: -6px;
+    margin: 0;
+    cursor: pointer;
+  }
+  .tier .box { width: 18px; height: 18px; margin-top: 2px; }
+  .tier .box::after { left: 4px; top: 1px; width: 4px; height: 8px; }
+  .tier-copy { flex: 1; }
+  .tier-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .tier-price { color: var(--gold); white-space: nowrap; }
+  .tier-desc { margin-top: 3px; font-size: 12.5px; color: var(--grey); }
+
+  /* Submit */
+  .submit-block { padding: 30px 0 28px; text-align: center; }
+  .submit-btn {
+    width: 100%;
+    border: none;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 17px 20px;
+    border-radius: 5px;
+    box-shadow: 0 10px 24px -10px rgba(0,0,0,0.4);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  .submit-btn:active { transform: scale(0.98); }
+  .microcopy {
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--grey-light);
+  }
+
+  .fallback {
+    margin-top: 18px;
+    padding: 16px;
+    background: var(--paper-off);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    text-align: left;
+    display: none;
+  }
+  .fallback.is-visible { display: block; }
+  .fallback-title {
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .fallback p {
+    font-size: 13px;
+    color: var(--grey);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .fallback-actions { display: flex; flex-direction: column; gap: 8px; }
+  .fallback a, .fallback button {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    background: var(--paper);
+    cursor: pointer;
+  }
+  .fallback .copy-btn.copied { background: var(--gold-fill); border-color: var(--gold-fill); color: var(--ink); }
+
+  footer {
+    padding: 24px 20px calc(28px + env(safe-area-inset-bottom));
+    text-align: center;
+    border-top: 1px solid var(--line);
+    margin-top: 10px;
+  }
+  footer p {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--grey-light);
+  }
+
+  .submit-btn:focus-visible,
+  .fallback a:focus-visible,
+  .fallback button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .box, .upsell, .submit-btn { transition: none; }
+  }
+
+  /* Dark mode scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--grey-light);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--grey);
+  }
+</style>
+</head>
+<body>
+
+  <header class="brandbar">
+    <img src="data:image/png;base64,__LOGO_B64__" alt="S72 Strategic logo">
+    <div class="wordmark"><span>S72</span><span class="sub">STRATEGIC</span></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 class="heavy">CHOOSE<br>THE BUILD</h1>
+      <p>Five pages are already part of your site. Add up to two more below, then send us your picks.</p>
+    </section>
+
+    <section class="core">
+      <p class="section-label">5 Core Pages, Already Included</p>
+
+      <div class="item">
+        <span class="box box--locked" aria-hidden="true"></span>
+        <span class="num">01</span>
+        <span class="copy">
+          <span class="title">Homepage</span>
+          <span class="desc">Your current one-page site, polished and made launch-ready.</span>
+        </span>
+        <span class="included-tag">Included</span>
+      </div>
+      <div class="item">
+        <span class="box box--locked" aria-hidden="true"></span>
+        <span class="num">02</span>
+        <span class="copy">
+          <span class="title">Shop / Product Catalog</span>
+          <span class="desc">One page to browse and compare all your products.</span>
+        </span>
+        <span class="included-tag">Included</span>
+      </div>
+      <div class="item">
+        <span class="box box--locked" aria-hidden="true"></span>
+        <span class="num">03</span>
+        <span class="copy">
+          <span class="title">Individual Product Pages</span>
+          <span class="desc">A dedicated page per product, full ingredients, benefits, buy box.</span>
+        </span>
+        <span class="included-tag">Included</span>
+      </div>
+      <div class="item">
+        <span class="box box--locked" aria-hidden="true"></span>
+        <span class="num">04</span>
+        <span class="copy">
+          <span class="title">Cart &amp; Checkout</span>
+          <span class="desc">A working cart and checkout flow, ready for payment later.</span>
+        </span>
+        <span class="included-tag">Included</span>
+      </div>
+      <div class="item">
+        <span class="box box--locked" aria-hidden="true"></span>
+        <span class="num">05</span>
+        <span class="copy">
+          <span class="title">Contact Us</span>
+          <span class="desc">An easy way for customers to reach you, form, email, socials.</span>
+        </span>
+        <span class="included-tag">Included</span>
+      </div>
+    </section>
+
+    <div class="counter-bar" id="counterBar" aria-live="polite">
+      <span>Add-Ons <span class="count" id="counterCount">0 / 2 Selected</span></span>
+      <span class="cap-note">Max reached, uncheck one to swap</span>
+    </div>
+
+    <section class="optional" id="optionalList">
+      <label class="item" data-title="Gut Quiz">
+        <input type="checkbox" data-title="Gut Quiz">
+        <span class="box" aria-hidden="true"></span>
+        <span class="num">01</span>
+        <span class="copy">
+          <span class="title">Gut Quiz</span>
+          <span class="desc">A short quiz that recommends the right product for each customer.</span>
+        </span>
+      </label>
+
+      <label class="item" data-title="Ingredients &amp; Sourcing Deep-Dive">
+        <input type="checkbox" data-title="Ingredients &amp; Sourcing Deep-Dive">
+        <span class="box" aria-hidden="true"></span>
+        <span class="num">02</span>
+        <span class="copy">
+          <span class="title">Ingredients &amp; Sourcing Deep-Dive</span>
+          <span class="desc">A page unpacking every ingredient, the fermentation science, and where it's sourced.</span>
+        </span>
+      </label>
+
+      <label class="item" data-title="Social Hub / Social Feed Integration">
+        <input type="checkbox" data-title="Social Hub / Social Feed Integration">
+        <span class="box" aria-hidden="true"></span>
+        <span class="num">03</span>
+        <span class="copy">
+          <span class="title">Social Hub / Social Feed</span>
+          <span class="desc">A live feed of your Instagram/TikTok posts and customer photos on site.</span>
+        </span>
+      </label>
+
+      <label class="item" data-title="Customer Reviews &amp; Testimonials">
+        <input type="checkbox" data-title="Customer Reviews &amp; Testimonials">
+        <span class="box" aria-hidden="true"></span>
+        <span class="num">04</span>
+        <span class="copy">
+          <span class="title">Reviews &amp; Testimonials</span>
+          <span class="desc">A page of real customer reviews and ratings to build trust fast.</span>
+        </span>
+      </label>
+
+      <label class="item" data-title="Subscribe &amp; Save Explainer">
+        <input type="checkbox" data-title="Subscribe &amp; Save Explainer">
+        <span class="box" aria-hidden="true"></span>
+        <span class="num">05</span>
+        <span class="copy">
+          <span class="title">Subscribe &amp; Save Explainer</span>
+          <span class="desc">A simple page explaining your subscription option and the savings.</span>
+        </span>
+      </label>
+
+      <label class="item" data-title="Journal / Blog">
+        <input type="checkbox" data-title="Journal / Blog">
+        <span class="box" aria-hidden="true"></span>
+        <span class="num">06</span>
+        <span class="copy">
+          <span class="title">Journal / Blog</span>
+          <span class="desc">Articles on gut health and Mongolia, good for SEO too.</span>
+        </span>
+      </label>
+
+      <label class="item" id="faqRow" data-title="FAQ Section / Manual Support Setup">
+        <input type="checkbox" id="faqCheckbox" data-title="FAQ Section / Manual Support Setup">
+        <span class="box" aria-hidden="true"></span>
+        <span class="num">07</span>
+        <span class="copy">
+          <span class="title">FAQ Section / Support Setup</span>
+          <span class="desc">Answers to common questions, plus your customer support setup.</span>
+        </span>
+      </label>
+
+      <div class="upsell" id="upsellPanel">
+        <div class="upsell-inner">
+          <p class="upsell-label">Optional support setup tiers</p>
+
+          <label class="tier">
+            <input type="checkbox" id="tierEssential" data-title="Essential Setup" data-price="$350 (~฿12,500)">
+            <span class="box" aria-hidden="true"></span>
+            <span class="tier-copy">
+              <span class="tier-title"><span>Essential Setup</span><span class="tier-price">$350</span></span>
+              <span class="tier-desc">Core FAQ content written and built, ready to publish. (~฿12,500)</span>
+            </span>
+          </label>
+
+          <label class="tier">
+            <input type="checkbox" id="tierChatbot" data-title="Chatbot AI Add-on" data-price="$850 (~฿30,000)">
+            <span class="box" aria-hidden="true"></span>
+            <span class="tier-copy">
+              <span class="tier-title"><span>Chatbot AI Add-on</span><span class="tier-price">$850</span></span>
+              <span class="tier-desc">An AI chat assistant layered on top, answering customers live. (~฿30,000)</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="submit-block">
+      <button type="button" class="submit-btn" id="submitBtn">Send My Scope</button>
+      <p class="microcopy">Opens your email app with your picks pre-filled.</p>
+
+      <div class="fallback" id="fallback">
+        <p class="fallback-title">If your email app didn't open</p>
+        <p>Tap the button below, or copy your picks and paste them into an email to willcthornton99@gmail.com.</p>
+        <div class="fallback-actions">
+          <a href="#" id="fallbackLink">Open Email App</a>
+          <button type="button" class="copy-btn" id="copyBtn">Copy My Picks</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>S72 Strategic Co., LTD &middot; Strategic Solutions. Simplified Success.</p>
+  </footer>
+
+<script>
+(function () {
+  var MAX_OPTIONAL = 2;
+  var EMAIL = 'willcthornton99@gmail.com';
+
+  var CORE = [
+    'Homepage',
+    'Shop / Product Catalog',
+    'Individual Product Pages',
+    'Cart & Checkout',
+    'Contact Us'
+  ];
+
+  var optionalBoxes = Array.prototype.slice.call(
+    document.querySelectorAll('#optionalList > label.item > input[type="checkbox"]')
+  );
+  var counterBar = document.getElementById('counterBar');
+  var counterCount = document.getElementById('counterCount');
+  var faqCheckbox = document.getElementById('faqCheckbox');
+  var upsellPanel = document.getElementById('upsellPanel');
+  var tierEssential = document.getElementById('tierEssential');
+  var tierChatbot = document.getElementById('tierChatbot');
+  var submitBtn = document.getElementById('submitBtn');
+  var fallback = document.getElementById('fallback');
+  var fallbackLink = document.getElementById('fallbackLink');
+  var copyBtn = document.getElementById('copyBtn');
+
+  function renderOptional() {
+    var selected = optionalBoxes.filter(function (cb) { return cb.checked; });
+    var n = selected.length;
+    counterCount.textContent = n + ' / ' + MAX_OPTIONAL + ' Selected';
+    counterBar.classList.toggle('is-full', n >= MAX_OPTIONAL);
+
+    optionalBoxes.forEach(function (cb) {
+      var capped = n >= MAX_OPTIONAL && !cb.checked;
+      cb.disabled = capped;
+      cb.closest('.item').classList.toggle('is-capped', capped);
+    });
+  }
+
+  function renderUpsell() {
+    var open = faqCheckbox.checked;
+    upsellPanel.classList.toggle('is-open', open);
+    if (!open) {
+      tierEssential.checked = false;
+      tierChatbot.checked = false;
+    }
+  }
+
+  optionalBoxes.forEach(function (cb) {
+    cb.addEventListener('change', function () {
+      renderOptional();
+      if (cb === faqCheckbox) renderUpsell();
+    });
+  });
+
+  renderOptional();
+  renderUpsell();
+
+  function buildMailto() {
+    var selectedOptional = optionalBoxes
+      .filter(function (cb) { return cb.checked; })
+      .map(function (cb) { return cb.dataset.title; });
+
+    var tiers = [];
+    if (tierEssential.checked) tiers.push(tierEssential.dataset.title + ', ' + tierEssential.dataset.price);
+    if (tierChatbot.checked) tiers.push(tierChatbot.dataset.title + ', ' + tierChatbot.dataset.price);
+
+    var lines = [];
+    lines.push('Hi S72 team,');
+    lines.push('');
+    lines.push("Here's my website scope:");
+    lines.push('');
+    lines.push('CORE PAGES (included):');
+    CORE.forEach(function (t) { lines.push('• ' + t); });
+    lines.push('');
+    lines.push('ADD-ONS SELECTED (' + selectedOptional.length + ' of ' + MAX_OPTIONAL + '):');
+    if (selectedOptional.length) {
+      selectedOptional.forEach(function (t) { lines.push('• ' + t); });
+    } else {
+      lines.push('None selected');
+    }
+    if (tiers.length) {
+      lines.push('');
+      lines.push('FAQ / SUPPORT SETUP TIER(S):');
+      tiers.forEach(function (t) { lines.push('• ' + t); });
+    }
+    lines.push('');
+    lines.push('Sent from the scope checklist.');
+
+    var subject = 'Steppe Gut Website, Scope Selection';
+    var body = lines.join('\n');
+    return 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  }
+
+  function plainPicksText() {
+    var selectedOptional = optionalBoxes
+      .filter(function (cb) { return cb.checked; })
+      .map(function (cb) { return cb.dataset.title; });
+    var tiers = [];
+    if (tierEssential.checked) tiers.push(tierEssential.dataset.title + ', ' + tierEssential.dataset.price);
+    if (tierChatbot.checked) tiers.push(tierChatbot.dataset.title + ', ' + tierChatbot.dataset.price);
+
+    var out = ['CORE PAGES (included):'].concat(CORE.map(function (t) { return '- ' + t; }));
+    out.push('');
+    out.push('ADD-ONS SELECTED:');
+    out = out.concat(selectedOptional.length ? selectedOptional.map(function (t) { return '- ' + t; }) : ['None selected']);
+    if (tiers.length) {
+      out.push('');
+      out.push('FAQ / SUPPORT SETUP TIER(S):');
+      out = out.concat(tiers.map(function (t) { return '- ' + t; }));
+    }
+    return out.join('\n');
+  }
+
+  submitBtn.addEventListener('click', function () {
+    var mailto = buildMailto();
+    fallbackLink.setAttribute('href', mailto);
+    fallback.classList.add('is-visible');
+    window.location.href = mailto;
+  });
+
+  copyBtn.addEventListener('click', function () {
+    var text = plainPicksText();
+    function done() {
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      setTimeout(function () {
+        copyBtn.textContent = 'Copy My Picks';
+        copyBtn.classList.remove('copied');
+      }, 1800);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+    function fallbackCopy() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      done();
+    }
+  });
+})();
+</script>
+</body>
+</html>

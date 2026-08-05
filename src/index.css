@@ -1,6 +1,49 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
+html {
+  background-color: #F5F1E9;
+}
+
+/* Seed Sans — scoped to the ViaCap panel (assets in /public/fonts) */
+@font-face {
+  font-family: "Seed Sans";
+  src: url("/fonts/SeedSans-Light-subset.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Seed Sans";
+  src: url("/fonts/SeedSans-Regular-subset.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Seed Sans";
+  src: url("/fonts/SeedSans-Medium-subset.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Seed Sans Mono";
+  src: url("/fonts/SeedSansMono-Regular-subset.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Swipeable rows keep their native scrolling but drop the visible bar, which
+   would otherwise sit under the cards on trackpad-less desktops. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
@@ -44,6 +87,20 @@
 .animate-word-reveal > span {
   display: inline-block;
   animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* The entrance animations above are decorative only — every element they run
+   on is already in its final position, so dropping the animation leaves the
+   content fully visible rather than stuck at opacity 0. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-slide-left,
+  .animate-slide-right,
+  .animate-scale-in,
+  .animate-word-reveal > span {
+    animation: none;
+  }
 }
 
 .delay-200 { animation-delay: 0.2s; }
