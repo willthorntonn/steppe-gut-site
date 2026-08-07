@@ -3,6 +3,21 @@
 
 html {
   background-color: #F5F1E9;
+  /* Guarantees the page itself never scrolls sideways, whatever a section
+     does internally. Two things on this site legitimately extend past the
+     viewport at narrow widths: the header's entrance animations, which start
+     at translateX(±40px), and the horizontal card tracks on the home page,
+     whose content is ~920px wide inside a 360px scroll container. Neither
+     should ever turn into page-level horizontal scroll.
+
+     `clip` rather than `hidden` on purpose: `overflow: hidden` on the root
+     makes it a scroll container, which breaks `position: sticky` descendants.
+     `clip` suppresses the scroll without that side effect.
+
+     Note: with this set, `documentElement.scrollWidth` can still report wider
+     than `clientWidth` on the home page — that is a reported metric, not a
+     scrollable state. Verified that scrollLeft cannot be moved off 0. */
+  overflow-x: clip;
 }
 
 /* Seed Sans — scoped to the ViaCap panel (assets in /public/fonts) */
@@ -33,6 +48,25 @@ html {
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+}
+
+/* Baseline keyboard focus ring for every interactive element, so an inline
+   link or a checkbox can never end up with no visible focus state just
+   because it was written without the utility class. Components that set their
+   own `focus-visible:outline-*` use the same gold/2px/offset-2 treatment, so
+   this is a floor rather than an override.
+   03_design_system.md §1.5 — focus is never `outline: none`. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* The <h1> on each page is focused programmatically on route change. It is a
+   move-focus-here target, not something the user tabbed to, so it should not
+   draw a ring. */
+:where(h1)[tabindex="-1"]:focus-visible {
+  outline: none;
 }
 
 /* Swipeable rows keep their native scrolling but drop the visible bar, which
@@ -100,6 +134,27 @@ html {
   .animate-scale-in,
   .animate-word-reveal > span {
     animation: none;
+  }
+
+  /* 03_design_system.md §10 makes reduced motion a hard requirement, not a
+     best effort: every transition collapses to a short opacity-only change,
+     and nothing moves or scales.
+
+     `!important` is deliberate — several components (the nav pills, Button)
+     set transition timing as an inline style for reasons documented at those
+     call sites, and an inline style would otherwise win over this rule. A
+     user asking for reduced motion should not have to lose that argument.
+
+     Scroll reveals and count-ups are handled separately, in JS: both render
+     their final state immediately rather than being animated faster. */
+  *,
+  *::before,
+  *::after {
+    transition-property: opacity !important;
+    transition-duration: 120ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
 

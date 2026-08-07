@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/products", "destination": "/index.html" },
+    { "source": "/products/", "destination": "/index.html" },
+    { "source": "/products/:slug", "destination": "/index.html" },
+    { "source": "/products/:slug/", "destination": "/index.html" },
+    { "source": "/ingredients-sourcing", "destination": "/index.html" },
+    { "source": "/ingredients-sourcing/", "destination": "/index.html" },
+    { "source": "/social", "destination": "/index.html" },
+    { "source": "/social/", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/contact/", "destination": "/index.html" },
+    { "source": "/cart", "destination": "/index.html" },
+    { "source": "/cart/", "destination": "/index.html" },
+    { "source": "/checkout", "destination": "/index.html" },
+    { "source": "/checkout/", "destination": "/index.html" },
+    { "source": "/checkout/confirmation", "destination": "/index.html" },
+    { "source": "/checkout/confirmation/", "destination": "/index.html" }
+  ]
+}
