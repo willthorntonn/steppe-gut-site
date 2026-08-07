@@ -1,23 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  CornerUpLeft,
-  Menu,
-  Search,
-  ShoppingBag,
-  X,
-} from "lucide-react";
-
-const AVATAR =
-  "https://polo-pecan-73837341.figma.site/_assets/v11/ca8093996e970200cbcf8bde8744175e52da5a79.png";
-
-const NAV_LINKS = [
-  "Products",
-  "Our Story",
-  "Gut Science",
-  "Gut Health",
-  "FAQ",
-  "Buy Steppe Gut",
-];
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Menu, ShoppingBag, X } from "lucide-react";
+import { NAV_LINKS } from "../../data/site";
+import { useCart } from "../../cart/CartProvider";
 
 // Flat pill colours per section theme (no gradients). Sections declare their
 // theme with data-navtheme="dark|light"; the nav samples whichever section is
@@ -91,6 +76,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [theme, setTheme] = useState("dark");
+  const { count } = useCart();
+  const location = useLocation();
 
   useEffect(() => {
     // Scroll events are already frame-aligned in modern browsers, and this
@@ -116,7 +103,28 @@ export default function Navbar() {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, []);
+    // Re-sampled on navigation: a new route replaces every [data-navtheme]
+    // node, so the theme measured for the previous page is stale.
+  }, [location.pathname]);
+
+  // The menu is a full-screen overlay, so the page behind it must not scroll,
+  // and Escape must close it (01_navigation.md §4).
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    document.documentElement.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.documentElement.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
+
+  // Close on navigation, so tapping a link in the overlay doesn't leave it
+  // open over the new page.
+  useEffect(() => setMenuOpen(false), [location.pathname]);
 
   // Ink follows the section theme at every scroll position — the page now
   // opens on cream, so cream ink at rest would be invisible. Only the pill
@@ -152,76 +160,86 @@ export default function Navbar() {
   const pillCls = `rounded-full border ${scrolled ? "backdrop-blur-xl" : ""}`;
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-2 px-3 py-3 sm:px-4 lg:px-5 lg:py-4">
-      <a
-        href="/"
+    <nav
+      aria-label="Primary"
+      className="fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-2 px-3 py-3 sm:px-4 lg:px-5 lg:py-4"
+    >
+      <Link
+        to="/"
         aria-label="Steppe Gut — Home"
         className={`animate-slide-left delay-200 flex shrink-0 items-center gap-2 whitespace-nowrap px-3 py-[6px] font-serif text-[37.5px] font-semibold tracking-[-0.05em] ${ink} ${pillCls} 1395:gap-2.5 1395:px-4 1395:py-[7px] 1395:text-[56px]`}
         style={pillStyle}
       >
         <HorseMark className="h-[37.5px] w-auto shrink-0 1395:h-[56px]" />
         Steppe Gut
-      </a>
+      </Link>
 
+      {/* Four items, not the six-item mega-menu in 01_navigation.md §2.3 —
+          that spec predates the 7-page rescope. Every item is a plain
+          top-level link; there are no submenus to open. */}
       <div
-        className={`animate-fade-in delay-400 hidden items-center gap-5 px-3 py-1.5 md:flex ${pillCls} 1395:gap-9 1395:px-6 1395:py-2`}
+        className={`animate-fade-in delay-400 hidden items-center gap-5 px-4 py-1.5 lg:flex ${pillCls} 1395:gap-8 1395:px-6 1395:py-2`}
         style={pillStyle}
       >
         {NAV_LINKS.map((link) => (
-          <a
-            key={link}
-            href="#"
-            className={`whitespace-nowrap font-sans text-[13px] font-semibold transition-colors ${inkSoft} 1395:text-[22px]`}
+          <NavLink
+            key={link.to}
+            to={link.to}
+            className={({ isActive }) =>
+              `relative whitespace-nowrap py-1 font-sans text-[13px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold 1395:text-[22px] ${inkSoft} ${
+                // 2px gold underline on the active route. Gold is a rule
+                // colour here, never the label colour — gold text on cream
+                // fails contrast (03_design_system.md §1.4), so the label
+                // stays forest/cream and the underline is decoration on top
+                // of an already-legible word.
+                isActive
+                  ? "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:bg-gold after:content-['']"
+                  : ""
+              }`
+            }
           >
-            {link}
-          </a>
+            {link.label}
+          </NavLink>
         ))}
       </div>
 
+      {/* Search, account and returns were removed with the rescope: there is
+          no search index across 7 pages, no auth, and no returns portal.
+          01_navigation.md §2.4 is explicit that a dead icon should be omitted
+          rather than shipped. */}
       <div
         className={`animate-slide-right delay-300 flex items-center gap-2 px-3 py-1.5 ${pillCls} 1395:gap-3 1395:px-4 1395:py-2`}
         style={pillStyle}
       >
-        <button
-          type="button"
-          aria-label="Search"
-          className={`transition-colors ${iconInk}`}
-        >
-          <Search
-            strokeWidth={1.5}
-            className="h-6 w-6 1395:h-[37px] 1395:w-[37px]"
-          />
-        </button>
-        <button
-          type="button"
-          aria-label="Shopping bag"
-          className={`transition-colors ${iconInk}`}
+        <Link
+          to="/cart/"
+          aria-label={
+            count > 0
+              ? `Your basket, ${count} ${count === 1 ? "item" : "items"}`
+              : "Your basket, empty"
+          }
+          className={`relative flex h-11 w-11 items-center justify-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${iconInk}`}
         >
           <ShoppingBag
             strokeWidth={1.5}
             className="h-6 w-6 1395:h-[37px] 1395:w-[37px]"
           />
-        </button>
-        <button
-          type="button"
-          aria-label="Returns"
-          className={`transition-colors ${iconInk}`}
-        >
-          <CornerUpLeft
-            strokeWidth={1.5}
-            className="h-6 w-6 1395:h-[37px] 1395:w-[37px]"
-          />
-        </button>
-        <img
-          src={AVATAR}
-          alt="Account"
-          className="h-10 w-10 rounded-full object-cover 1395:h-[75px] 1395:w-[75px]"
-        />
+          {count > 0 && (
+            <span
+              aria-hidden="true"
+              className="absolute right-0.5 top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-gold px-1 font-sans text-[10px] font-bold text-forest"
+            >
+              {count}
+            </span>
+          )}
+        </Link>
+
         <button
           type="button"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
-          className={`relative z-40 transition-colors duration-500 md:hidden ${ink}`}
+          className={`relative z-40 flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold lg:hidden ${ink}`}
         >
           {menuOpen ? (
             <X size={24} strokeWidth={1.5} />
@@ -232,16 +250,22 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="fixed inset-0 z-30 flex flex-col items-center justify-center gap-8 bg-forest/90 backdrop-blur-md md:hidden">
+        <div
+          id="mobile-menu"
+          className="fixed inset-0 z-30 flex flex-col items-center justify-center gap-8 bg-forest/95 backdrop-blur-md lg:hidden"
+        >
           {NAV_LINKS.map((link) => (
-            <a
-              key={link}
-              href="#"
-              onClick={() => setMenuOpen(false)}
-              className="font-sans text-[36px] font-semibold text-cream"
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                `font-sans text-[30px] font-semibold text-cream focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold ${
+                  isActive ? "underline decoration-gold decoration-2 underline-offset-8" : ""
+                }`
+              }
             >
-              {link}
-            </a>
+              {link.label}
+            </NavLink>
           ))}
         </div>
       )}

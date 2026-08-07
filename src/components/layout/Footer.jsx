@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { COMPANY, FOOTER_LINKS, REGULATORY_DISCLOSURE } from "../../data/site";
+
 // Social glyphs are the standard simplified brand marks used site-wide for
 // outbound "follow us" links (the common open-source icon set every major
 // footer draws from) — not a reproduction of Steppe Gut's own identity, so
@@ -24,20 +27,12 @@ const SOCIAL_CELLS = [
   null,
 ];
 
-const ABOUT_LINKS = [
-  "Shop Steppe Gut",
-  "Careers",
-  "Press",
-  "Steppe Gut Corporate",
-  "FAQs",
-];
-
-const LEGAL_LINKS = [
-  "Terms and conditions",
-  "Cookies",
-  "Privacy Policy",
-  "Sitemap",
-];
+// Rescoped to the seven live routes. The previous set (Careers, Press,
+// Corporate, FAQs) and the legal row (Terms, Cookies, Privacy, Sitemap)
+// pointed at pages that were deliberately cut from the build — a footer link
+// to a page that does not exist is worse than no link, so they are removed
+// rather than left as `href="#"`. They come back when those pages do.
+const SITE_LINKS = FOOTER_LINKS;
 
 function SocialIcon({ d }) {
   return (
@@ -51,13 +46,13 @@ function LinkList({ items }) {
   return (
     <ul className="mt-9 flex flex-col gap-6 lg:mt-14 lg:gap-9">
       {items.map((item) => (
-        <li key={item}>
-          <a
-            href="#"
-            className="font-sans text-lg font-bold text-cream/90 transition-colors hover:text-gold lg:text-2xl"
+        <li key={item.to}>
+          <Link
+            to={item.to}
+            className="font-sans text-lg font-bold text-cream/90 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold lg:text-2xl"
           >
-            {item}
-          </a>
+            {item.label}
+          </Link>
         </li>
       ))}
     </ul>
@@ -116,46 +111,41 @@ export default function Footer() {
             Do you have a specific enquiry or would simply like more
             information about Steppe Gut?
           </p>
-          <a
-            href="#"
+          <Link
+            to="/contact/"
             className="mt-9 inline-flex h-12 items-center justify-center rounded-2xl border border-cream px-8 font-sans text-[21px] font-bold tracking-[-0.02em] text-cream transition-colors hover:bg-cream hover:text-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold lg:mt-12 lg:h-16 lg:px-11 lg:text-[26px]"
           >
             Contact Us
-          </a>
+          </Link>
         </div>
 
         <div className="sm:w-fit sm:justify-self-end lg:w-fit lg:shrink-0">
           <h3 className="font-serif text-[26px] font-normal tracking-[-0.03em] text-cream lg:text-[46px]">
-            About Us
+            Explore
           </h3>
-          <LinkList items={ABOUT_LINKS} />
+          <LinkList items={SITE_LINKS} />
         </div>
       </div>
 
+      {/* Mandatory on every page — 01_navigation.md §7.5. The Thai FDA
+          sentence states the status as in-progress. It must not be softened
+          into implying registration is issued, and must not be dropped. */}
       <div className="mx-auto max-w-[2000px] border-t border-cream/15 px-5 py-6 sm:px-8 lg:px-16 lg:py-9">
         <p className="max-w-[70ch] font-sans text-xs leading-[1.7] text-cream/40 lg:max-w-[90ch] lg:text-base">
-          Product of Mongolia. Made by Monsubi Foods LLC. Contains milk. These
-          statements have not been evaluated by any regulatory authority.
-          This product is not intended to diagnose, treat, cure, or prevent
-          any disease.
+          {REGULATORY_DISCLOSURE}
         </p>
       </div>
 
       <div className="mx-auto flex max-w-[2000px] flex-col gap-4 border-t border-cream/15 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-16 lg:py-11">
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-3 lg:gap-x-12">
-          {LEGAL_LINKS.map((link) => (
-            <a
-              key={link}
-              href="#"
-              className="font-sans text-base text-cream/90 transition-colors hover:text-cream lg:text-xl"
-            >
-              {link}
-            </a>
-          ))}
-        </div>
-        <p className="font-sans text-xs text-cream/60 lg:text-base">
-          &copy; {new Date().getFullYear()} Copyright Steppe Gut. All rights
-          reserved.
+        {/* The quietest possible way to keep provenance on every page
+            (01_navigation.md §7.4). */}
+        <p className="max-w-[60ch] font-sans text-xs text-cream/50 lg:text-base">
+          {COMPANY.origin}. Manufactured by {COMPANY.manufacturer.name}.
+          Imported and distributed in Thailand by {COMPANY.importer.name}.
+        </p>
+        <p className="shrink-0 font-sans text-xs text-cream/60 lg:text-base">
+          &copy; {new Date().getFullYear()} {COMPANY.brandOwner.name}. All
+          rights reserved.
         </p>
       </div>
     </footer>
