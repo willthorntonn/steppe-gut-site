@@ -88,6 +88,7 @@ export const READS = {
   items: [
     {
       id: "fermentation",
+      href: "/ingredients-sourcing/#fermentation",
       category: "Fermentation",
       title: "How fermentation changes everything",
       plate: {
@@ -100,6 +101,7 @@ export const READS = {
     },
     {
       id: "provenance",
+      href: "/ingredients-sourcing/#sourcing",
       category: "Provenance",
       title: "Why Mongolia is irreplaceable",
       plate: {
@@ -112,6 +114,7 @@ export const READS = {
     },
     {
       id: "the-herd",
+      href: "/ingredients-sourcing/#sourcing",
       category: "The herd",
       title: "Animals that choose their own pace",
       plate: {
@@ -124,6 +127,7 @@ export const READS = {
     },
     {
       id: "quality",
+      href: "/ingredients-sourcing/#honest-limits",
       category: "Quality",
       title: "Each batch, carefully considered",
       plate: {
@@ -136,6 +140,7 @@ export const READS = {
     },
     {
       id: "the-product",
+      href: "/products/",
       category: "The product",
       title: "Tradition meets practicality",
       plate: {

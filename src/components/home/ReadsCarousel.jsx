@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { READS } from "../../content/home";
 import Placeholder from "../ui/Placeholder";
 
@@ -123,8 +124,11 @@ export default function ReadsCarousel() {
                   index % 2 === 1 ? RAISED : ""
                 }`}
               >
-                <a
-                  href={`#${item.id}`}
+                {/* These pointed at `#id` anchors that had no targets on the
+                    page. Now that the routes exist they go to the real
+                    destination, from content/home.js. */}
+                <Link
+                  to={item.href}
                   className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
                 >
                   <Placeholder
@@ -143,7 +147,7 @@ export default function ReadsCarousel() {
                   >
                     {item.title}
                   </h3>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
