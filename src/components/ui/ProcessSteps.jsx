@@ -1,0 +1,44 @@
+import Container from "./Container";
+import { BODY_SM, H3 } from "../../styles/type";
+
+const ORDINALS = ["One", "Two", "Three", "Four", "Five"];
+
+// 05_component_library.md §13. Renders a real <ol>.
+//
+// The oversized numeral is decorative and aria-hidden — the actual ordinal is
+// in the heading text ("One — Tear the sachet"), so the order survives for a
+// screen-reader user without the numeral being read twice.
+export default function ProcessSteps({ steps, width = "content" }) {
+  return (
+    <Container width={width}>
+      <ol className="grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-8 lg:gap-14">
+        {steps.map((step, index) => (
+          <li key={step.title} className="relative">
+            <span
+              aria-hidden="true"
+              className="block font-serif font-normal leading-[0.9] text-gold/40"
+              style={{ fontSize: "clamp(3.4rem, 5vw, 4.8rem)" }}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+
+            <h3
+              className="mt-5 max-w-[18ch] font-serif font-normal text-forest"
+              style={H3}
+            >
+              <span className="sr-only">{ORDINALS[index]} — </span>
+              {step.title}
+            </h3>
+
+            <p
+              className="mt-4 max-w-[38ch] font-serif text-forest/75"
+              style={BODY_SM}
+            >
+              {step.body}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </Container>
+  );
+}
