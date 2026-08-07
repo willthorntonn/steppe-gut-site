@@ -8,10 +8,19 @@ const ORDINALS = ["One", "Two", "Three", "Four", "Five"];
 // The oversized numeral is decorative and aria-hidden — the actual ordinal is
 // in the heading text ("One — Tear the sachet"), so the order survives for a
 // screen-reader user without the numeral being read twice.
-export default function ProcessSteps({ steps, width = "content" }) {
+const COLUMNS = {
+  3: "sm:grid-cols-3",
+  // Four steps go two-up at sm rather than four-up: four columns on a tablet
+  // leaves each step about 22 characters wide.
+  4: "sm:grid-cols-2 lg:grid-cols-4",
+};
+
+export default function ProcessSteps({ steps, width = "content", columns = 3 }) {
   return (
     <Container width={width}>
-      <ol className="grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-8 lg:gap-14">
+      <ol
+        className={`grid grid-cols-1 gap-12 sm:gap-8 lg:gap-14 ${COLUMNS[columns]}`}
+      >
         {steps.map((step, index) => (
           <li key={step.title} className="relative">
             <span
