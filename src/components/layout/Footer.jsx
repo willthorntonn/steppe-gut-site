@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { COMPANY, FOOTER_LINKS, REGULATORY_DISCLOSURE } from "../../data/site";
+import { SOCIAL_PLATFORMS } from "../../data/social";
 
 // Social glyphs are the standard simplified brand marks used site-wide for
 // outbound "follow us" links (the common open-source icon set every major
@@ -18,14 +19,24 @@ const TIKTOK_PATH =
 // YouTube stack down the left column in that order, with TikTok sitting to
 // Facebook's right on the top row only — matching the reference exactly
 // rather than an evenly-spaced grid.
+// Every account is still unopened, so none of these can point at a real
+// profile. They previously carried href="#" — a dead link on every page.
+// They now go to /social/, which explains the position honestly, and each
+// carries a label saying so rather than promising a profile that isn't there.
+// When SOCIAL_PLATFORMS in data/social.js gains real URLs, these follow.
 const SOCIAL_CELLS = [
-  { label: "Facebook", href: "#", d: FACEBOOK_PATH },
-  { label: "TikTok", href: "#", d: TIKTOK_PATH },
-  { label: "Instagram", href: "#", d: INSTAGRAM_PATH },
+  { label: "Facebook", d: FACEBOOK_PATH },
+  { label: "TikTok", d: TIKTOK_PATH },
+  { label: "Instagram", d: INSTAGRAM_PATH },
   null,
-  { label: "YouTube", href: "#", d: YOUTUBE_PATH },
+  { label: "YouTube", d: YOUTUBE_PATH },
   null,
 ];
+
+function socialTarget(label) {
+  const platform = SOCIAL_PLATFORMS.find((item) => item.name === label);
+  return platform?.href ?? null;
+}
 
 // Rescoped to the seven live routes. The previous set (Careers, Press,
 // Corporate, FAQs) and the legal row (Terms, Cookies, Privacy, Sitemap)
@@ -88,14 +99,32 @@ export default function Footer() {
           <div className="mt-9 grid w-fit grid-cols-2 gap-6 lg:mt-14 lg:gap-9">
             {SOCIAL_CELLS.map((cell, index) =>
               cell ? (
-                <a
-                  key={cell.label}
-                  href={cell.href}
-                  aria-label={cell.label}
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-forest transition-colors hover:bg-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold lg:h-[70px] lg:w-[70px]"
-                >
-                  <SocialIcon d={cell.d} />
-                </a>
+                (() => {
+                  const live = socialTarget(cell.label);
+                  const cls =
+                    "flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cream text-forest transition-colors hover:bg-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold lg:h-[70px] lg:w-[70px]";
+                  return live ? (
+                    <a
+                      key={cell.label}
+                      href={live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Steppe Gut on ${cell.label}`}
+                      className={cls}
+                    >
+                      <SocialIcon d={cell.d} />
+                    </a>
+                  ) : (
+                    <Link
+                      key={cell.label}
+                      to="/social/"
+                      aria-label={`${cell.label} — our accounts are not open yet`}
+                      className={cls}
+                    >
+                      <SocialIcon d={cell.d} />
+                    </Link>
+                  );
+                })()
               ) : (
                 <span key={`spacer-${index}`} aria-hidden="true" />
               )
