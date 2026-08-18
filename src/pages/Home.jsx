@@ -2,16 +2,19 @@ import HeroBox from "../components/home/HeroBox";
 import SteppeArmyProgress from "../components/home/SteppeArmyProgress";
 import OriginFeature from "../components/home/OriginFeature";
 import ProcessRow from "../components/home/ProcessRow";
-import ProductRail from "../components/home/ProductRail";
-import HowItWorks from "../components/home/HowItWorks";
 import ReadsCarousel from "../components/home/ReadsCarousel";
-import ClosingCTA from "../components/ui/ClosingCTA";
 import Reveal from "../components/ui/Reveal";
 import PageMeta from "../components/ui/PageMeta";
 
-// The hero, supporter counter, origin feature, process row and reads carousel
-// are the existing homepage, unchanged. ProductRail, HowItWorks and ClosingCTA
-// are the sections home.md still had outstanding.
+// The hero, origin feature, process row, reads carousel and supporter counter
+// are the existing homepage, unchanged in substance. The product-formats rail
+// ("The formats" / "Three ways to take it"), the "How it works" section and
+// the "Start with one sachet a day" closing CTA were all removed by request —
+// ClosingCTA still bookends every other page; HowItWorks was only ever used
+// here, so components/home/HowItWorks.jsx is now unreferenced — kept on disk
+// rather than deleted in case the section is wanted back. The supporter
+// counter (SteppeArmyProgress) moved from right after the hero to the very
+// bottom of the page, directly above the footer, also by request.
 //
 // Two of home.md's sections are deliberately not built:
 //
@@ -37,33 +40,18 @@ export default function Home() {
           stage sequence on load, which a scroll reveal would fight. */}
       <HeroBox />
 
-      <SteppeArmyProgress />
-
       <Reveal>
         <OriginFeature />
       </Reveal>
       <Reveal>
         <ProcessRow />
       </Reveal>
-      <Reveal>
-        <ProductRail />
-      </Reveal>
-      <Reveal>
-        <HowItWorks />
-      </Reveal>
-      <ReadsCarousel />
 
       <Reveal>
-        <ClosingCTA
-          heading="Start with one sachet a day"
-          body="Twenty-five mornings in a box. That is a reasonable place to find out whether it suits you."
-          primary={{ label: "See the products", to: "/products/" }}
-          secondary={{
-            label: "What is in it",
-            to: "/ingredients-sourcing/",
-          }}
-        />
+        <SteppeArmyProgress />
       </Reveal>
+
+      <ReadsCarousel />
     </>
   );
 }

@@ -77,9 +77,12 @@ export default function ReadsCarousel() {
   return (
     <section id={READS.id} data-navtheme="light" className="scroll-mt-28 bg-cream">
       <div className="pb-24 pt-3 sm:pb-28 lg:pb-36 lg:pt-5">
+        {/* Held to one line at every width, so the size is driven by what
+            fits rather than by a rem floor — a `clamp()` minimum would push
+            the line past the screen edge on a small phone. */}
         <h2
-          className="mx-auto max-w-[16ch] px-5 text-center font-serif font-normal leading-[1.04] tracking-[-0.04em] text-forest sm:px-8 lg:px-10"
-          style={{ fontSize: "clamp(2.45rem, 5.2vw, 4.9rem)", textWrap: "balance" }}
+          className="mx-auto whitespace-nowrap px-5 text-center font-serif font-semibold leading-[1.04] tracking-[-0.04em] text-forest sm:px-8 lg:px-10"
+          style={{ fontSize: "min(calc(9 * var(--vw)), 4.9rem)" }}
         >
           {READS.title}
         </h2>
@@ -137,16 +140,22 @@ export default function ReadsCarousel() {
                     image={item.plate.image}
                     alt={item.plate.alt}
                     tone="light"
+                    className="rounded-[20px]"
                   />
-                  <p className="mt-6 font-sans text-[11px] uppercase tracking-[0.28em] text-forest/80">
-                    {item.category}
-                  </p>
                   <h3
-                    className="mt-3 max-w-[20ch] font-serif font-normal leading-[1.14] tracking-[-0.03em] text-forest decoration-gold decoration-2 underline-offset-[6px] group-hover:underline"
-                    style={{ fontSize: "clamp(1.32rem, 1.85vw, 1.75rem)" }}
+                    className="mt-6 max-w-[20ch] font-serif font-bold leading-[1.14] tracking-[-0.03em] text-forest decoration-gold decoration-2 underline-offset-[6px] group-hover:underline"
+                    style={{ fontSize: "clamp(1.32rem, calc(1.85 * var(--vw)), 1.75rem)" }}
                   >
                     {item.title}
                   </h3>
+                  {item.subtext && (
+                    <p
+                      className="mt-3 font-sans font-medium text-forest/80 text-center"
+                      style={{ fontSize: "clamp(1.32rem, calc(1.85 * var(--vw)), 1.75rem)" }}
+                    >
+                      {item.subtext}
+                    </p>
+                  )}
                 </Link>
               </li>
             ))}

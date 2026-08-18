@@ -21,12 +21,14 @@ import theProductImg from "../assets/photography/reads-the-product.png";
 
 export const ORIGIN = {
   id: "origin",
-  eyebrow: "Origin",
-  title: "Wellness with eight centuries behind it.",
-  body: [
-    "For eight hundred years, herders on the Mongolian steppe have fermented mare's milk. Not as a health invention. As a response to the land itself. The grasslands yield what they will: hardy animals that thrive on open ground. The mares give milk only briefly, in the warmest months: precious, seasonal, impossible to waste.",
-    "Fermentation was the answer. A way to preserve what summer offers. Families cultured milk in their own gers, season after season, keeping the same culture alive through generations. The result was gentle, active, and real: something people drank daily because their bodies felt better for it.",
-  ],
+  title: "Old Tradition, Same Great Taste!",
+  // Exactly the sentences meant to show — line-clamp-3 in OriginFeature is
+  // the actual guardrail, this is just written to land close to 3 lines on
+  // its own, ~31 words. Product-update + gut-health beat: the refill pouch is
+  // a real lower-packaging format (see data/products.js), and the actives
+  // named are the same ones BRAND_GUIDELINES.md and content/home.js's
+  // removed HowItWorks copy already claim — nothing here is a new assertion.
+  body: "Our new refill pouch still carries the same fermented mare's milk in far less packaging. Inside: vitamin C, omega-3 and B vitamins, unlocked by fermentation — the same living culture, simply repackaged.",
   link: { label: "See how it is made", href: "#process" },
   plate: {
     ratio: "4 / 5",
@@ -43,8 +45,14 @@ export const PROCESS = {
     {
       id: "milking",
       step: "01",
-      title: "Living animals, living milk",
-      body: "Steppe mares were born to this grassland, not bred for production. They graze year-round on wild forage, following the seasons as they always have. Milk comes only when nature intends: a brief window each year. The milking happens by hand, outdoors, as part of daily life rather than a process.",
+      // Titles and body copy follow 02_brand_guidelines.md §3.2: short
+      // sentences, one idea each, concrete nouns, no wordplay (the old
+      // "Living animals, living milk" was exactly the kind of phrase §2 says
+      // to keep out of copy that has to survive translation into Thai).
+      title: "Milked by hand, in season",
+      body: "Steppe mares graze wild grassland all year. They are milked by hand, outdoors, in a short season once a year.",
+      href: "/our-story/#sourcing",
+      cta: "Learn more",
       plate: {
         ratio: "16 / 9",
         brief:
@@ -57,7 +65,9 @@ export const PROCESS = {
       id: "culturing",
       step: "02",
       title: "Time does the work",
-      body: "Fresh milk enters a vessel where a living culture already waits. Then it's stirred, not once, but continuously over hours, by whoever walks past. Nothing is forced. Fermentation breaks down proteins and lactose naturally, making the milk more digestible and more alive with beneficial cultures. The patience is the point.",
+      body: "Fresh milk goes into a vessel that already holds a living culture. Hours of hand-stirring follow. Fermentation breaks down lactose and protein.",
+      href: "/our-story/#fermentation",
+      cta: "Learn more",
       plate: {
         ratio: "16 / 9",
         brief:
@@ -69,8 +79,10 @@ export const PROCESS = {
     {
       id: "sealing",
       step: "03",
-      title: "Preserved at source",
-      body: "After fermentation, the culture is dried, water removed and potency concentrated, then sealed. Nothing travels to you as liquid, and nothing gets reconstituted or re-cultured elsewhere. What arrives is the same ferment your body knows how to welcome, ready at room temperature, kept exactly as the herders intended.",
+      title: "Steppe Gut Balance",
+      body: "Rich in Vitamin D to support immunity & muscle + bone health.",
+      href: "/gut-health/#nutrition",
+      cta: "Learn more",
       plate: {
         ratio: "16 / 9",
         brief:
@@ -84,13 +96,14 @@ export const PROCESS = {
 
 export const READS = {
   id: "reads",
-  title: "What actually makes it different?",
+  title: "What makes us different?",
   items: [
     {
       id: "fermentation",
-      href: "/ingredients-sourcing/#fermentation",
+      href: "/our-story/#fermentation",
       category: "Fermentation",
-      title: "How fermentation changes everything",
+      title: "Gut health",
+      subtext: "Fermented milk",
       plate: {
         ratio: "3 / 4",
         brief:
@@ -101,9 +114,10 @@ export const READS = {
     },
     {
       id: "provenance",
-      href: "/ingredients-sourcing/#sourcing",
+      href: "/our-story/#sourcing",
       category: "Provenance",
-      title: "Why Mongolia is irreplaceable",
+      title: "Our story",
+      subtext: "From Mongolia",
       plate: {
         ratio: "3 / 4",
         brief:
@@ -114,9 +128,10 @@ export const READS = {
     },
     {
       id: "the-herd",
-      href: "/ingredients-sourcing/#sourcing",
+      href: "/our-story/#sourcing",
       category: "The herd",
-      title: "Animals that choose their own pace",
+      title: "Our story",
+      subtext: "Happy mares",
       plate: {
         ratio: "3 / 4",
         brief:
@@ -127,9 +142,10 @@ export const READS = {
     },
     {
       id: "quality",
-      href: "/ingredients-sourcing/#honest-limits",
+      href: "/our-story/#honest-limits",
       category: "Quality",
-      title: "Each batch, carefully considered",
+      title: "Our story",
+      subtext: "Made with care",
       plate: {
         ratio: "3 / 4",
         brief:
@@ -142,7 +158,8 @@ export const READS = {
       id: "the-product",
       href: "/products/",
       category: "The product",
-      title: "Tradition meets practicality",
+      title: "Gut health",
+      subtext: "Simple routine",
       plate: {
         ratio: "3 / 4",
         brief:
@@ -159,5 +176,5 @@ export const READS = {
 export const CONTENTS = [
   { id: ORIGIN.id, numeral: "I", label: "Origin" },
   { id: PROCESS.id, numeral: "II", label: "How it is made" },
-  { id: READS.id, numeral: "III", label: "What actually makes it different" },
+  { id: READS.id, numeral: "III", label: "What makes us different" },
 ];
