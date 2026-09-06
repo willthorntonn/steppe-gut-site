@@ -14,8 +14,8 @@ import { INGREDIENTS_DECLARATION, NUTRITION } from "../../data/products";
 //
 // So the panel states plainly that the figures are not published yet, rather
 // than printing numbers that do not add up or quietly omitting the section as
-// if it were never planned. Everything that IS verified — the full ingredient
-// declaration, the allergen, the origin, the named manufacturer — is here in
+// if it were never planned. Everything that IS verified - the full ingredient
+// declaration, the allergen, the origin, the named manufacturer - is here in
 // full, because none of that depends on the unreconciled figures.
 //
 // When the figures are reconciled, populate NUTRITION in data/products.js and
@@ -30,14 +30,14 @@ export default function NutritionPanel({ servingNote }) {
 
         {NUTRITION == null ? (
           <p
-            className="mt-4 font-serif text-forest/80"
+            className="mt-4 font-sans text-forest/80"
             style={BODY_SM}
           >
             We have not published the nutrition panel yet. The serving figures
             on the current pack artwork do not reconcile against the pack
             weight, and we would rather say that than print numbers we cannot
             stand behind. They will be published here, per serving and per
-            100 g, once they are checked.
+            100 g, once they are checked
           </p>
         ) : null}
 
@@ -54,7 +54,7 @@ export default function NutritionPanel({ servingNote }) {
             Ingredients
           </h3>
           <p
-            className="mt-3 font-serif text-forest/80"
+            className="mt-3 font-sans text-forest/80"
             style={BODY_SM}
           >
             {INGREDIENTS_DECLARATION}
@@ -65,8 +65,8 @@ export default function NutritionPanel({ servingNote }) {
           <h3 className="font-sans text-sm font-semibold uppercase tracking-[0.16em] text-forest">
             Allergen
           </h3>
-          <p className="mt-3 font-serif text-forest/80" style={BODY_SM}>
-            Contains milk.
+          <p className="mt-3 font-sans text-forest/80" style={BODY_SM}>
+            Contains milk
           </p>
         </div>
 
@@ -74,8 +74,8 @@ export default function NutritionPanel({ servingNote }) {
           <h3 className="font-sans text-sm font-semibold uppercase tracking-[0.16em] text-forest">
             Origin
           </h3>
-          <p className="mt-3 font-serif text-forest/80" style={BODY_SM}>
-            {COMPANY.origin}. Manufactured by {COMPANY.manufacturer.name}.
+          <p className="mt-3 font-sans text-forest/80" style={BODY_SM}>
+            {COMPANY.origin}. Manufactured by {COMPANY.manufacturer.name}
           </p>
         </div>
       </div>

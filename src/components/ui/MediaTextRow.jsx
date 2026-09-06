@@ -1,5 +1,4 @@
 import Container from "./Container";
-import Eyebrow from "./Eyebrow";
 import LinkArrow from "./LinkArrow";
 import Picture from "./Picture";
 import Placeholder from "./Placeholder";
@@ -11,7 +10,6 @@ import { BODY, H2 } from "../../styles/type";
 // `reverse` swaps the columns visually via `order`, never in the DOM, so the
 // reading order stays image → text at every width and down every page.
 export default function MediaTextRow({
-  eyebrow,
   heading,
   headingId,
   body = [],
@@ -43,11 +41,9 @@ export default function MediaTextRow({
         </div>
 
         <div className={reverse ? "md:order-1" : undefined}>
-          {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-
           <h2
             id={headingId}
-            className="mt-7 max-w-[16ch] font-serif font-normal text-forest"
+            className="max-w-[16ch] font-serif font-normal text-forest"
             style={H2}
           >
             {heading}
@@ -56,7 +52,7 @@ export default function MediaTextRow({
           {body.map((paragraph, index) => (
             <p
               key={paragraph.slice(0, 32)}
-              className={`max-w-[50ch] font-serif text-forest/80 ${
+              className={`max-w-[50ch] font-sans text-forest/80 ${
                 index === 0 ? "mt-9" : "mt-6"
               }`}
               style={BODY}

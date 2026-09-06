@@ -42,7 +42,8 @@ export const H4 = {
   letterSpacing: "-0.02em",
 };
 
-/** Lead paragraph, directly under a page title. */
+/** Lead paragraph, directly under a page title. Set in the sans (Inter) -
+ *  the description/lead voice is sans, not the display serif (05_component_library.md §7). */
 export const LEAD = {
   fontSize: "clamp(1.25rem, 1.6vw, 1.55rem)",
   lineHeight: 1.7,
@@ -65,13 +66,3 @@ export const CAPTION = {
   fontSize: "0.9375rem",
   lineHeight: 1.6,
 };
-
-/**
- * The eyebrow treatment used above every heading on the homepage.
- * A class string rather than a style object — it is all Tailwind.
- */
-export const EYEBROW_CLS =
-  "font-sans text-[13px] uppercase tracking-[0.3em] text-forest/45";
-
-export const EYEBROW_CLS_DARK =
-  "font-sans text-[13px] uppercase tracking-[0.3em] text-cream/50";

@@ -8,7 +8,7 @@ import {
   SocialGlyph,
 } from "../icons/SocialGlyphs";
 
-// Persistent social rail, pinned to the left edge and vertically centred —
+// Persistent social rail, pinned to the left edge and vertically centred -
 // the reference's own on-scroll strip, called out but deliberately left
 // unbuilt in Footer.jsx until now. Present on every page Layout wraps;
 // Checkout uses CheckoutLayout instead, so it drops away there along with
@@ -26,7 +26,7 @@ function socialTarget(label) {
 }
 
 // Each cell sits white-on-forest at rest. Hover/focus rises a forest wedge
-// up from the bottom edge — starting as a wide sliver hugging the bottom
+// up from the bottom edge - starting as a wide sliver hugging the bottom
 // centre, then widening out to the full square as it climbs, rather than a
 // flat curtain rising evenly. clip-path (not scale) draws that wedge, with
 // both rest and hover states sharing four points so the browser interpolates
@@ -36,6 +36,7 @@ function socialTarget(label) {
 export default function SocialRail() {
   return (
     <div
+      data-social-rail=""
       className="fixed left-0 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-3 rounded-r-[28px] border border-forest/8 bg-cream px-3 py-6 shadow-[0_20px_48px_-16px_rgba(38,50,38,0.38)] sm:gap-4 sm:px-3.5 sm:py-7"
       aria-label="Steppe Gut on social media"
     >
@@ -49,7 +50,7 @@ export default function SocialRail() {
         const fill = (
           <span
             aria-hidden="true"
-            className="absolute inset-0 bg-forest transition-[clip-path] duration-300 ease-out [clip-path:polygon(15%_100%,85%_100%,65%_100%,35%_100%)] group-hover:[clip-path:polygon(0%_100%,100%_100%,100%_0%,0%_0%)] group-focus-visible:[clip-path:polygon(0%_100%,100%_100%,100%_0%,0%_0%)]"
+            className="absolute inset-0 bg-forest transition-[clip-path] duration-300 ease-out [clip-path:ellipse(0%_0%_at_50%_100%)] group-hover:[clip-path:ellipse(180%_115%_at_50%_100%)] group-focus-visible:[clip-path:ellipse(180%_115%_at_50%_100%)]"
           />
         );
 
@@ -69,7 +70,7 @@ export default function SocialRail() {
           <Link
             key={cell.label}
             to="/social/"
-            aria-label={`${cell.label} — our accounts are not open yet`}
+            aria-label={`${cell.label}, our accounts are not open yet`}
             className={cls}
           >
             {fill}

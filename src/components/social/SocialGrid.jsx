@@ -2,7 +2,7 @@ import Container from "../ui/Container";
 import { BODY, BODY_SM } from "../../styles/type";
 import { SOCIAL_POSTS } from "../../data/social";
 
-// Curated static grid. No embed script, no API, no token refresh — that was
+// Curated static grid. No embed script, no API, no token refresh - that was
 // the point of choosing a curated grid over a live feed.
 //
 // The empty state is a single line in a bordered panel. Deliberately not
@@ -15,11 +15,11 @@ export default function SocialGrid() {
       <Container width="content">
         <div className="rounded-2xl border border-forest/15 bg-[#FFFDF9] px-8 py-14 text-center">
           <p
-            className="mx-auto max-w-[46ch] font-serif text-forest/75"
+            className="mx-auto max-w-[46ch] font-sans text-forest/75"
             style={BODY}
           >
             There is nothing here yet. When there is, it will be posts we made,
-            not reposts of other people&rsquo;s.
+            not reposts of other people&rsquo;s
           </p>
         </div>
       </Container>
@@ -47,14 +47,14 @@ export default function SocialGrid() {
                 className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               />
               <p
-                className="line-clamp-3 px-4 py-4 font-serif text-forest/75"
+                className="line-clamp-3 px-4 py-4 font-sans text-forest/75"
                 style={BODY_SM}
               >
                 {post.caption}
               </p>
               <span className="sr-only">
                 {" "}
-                — opens {post.platform} in a new tab
+                opens {post.platform} in a new tab
               </span>
             </a>
           </li>

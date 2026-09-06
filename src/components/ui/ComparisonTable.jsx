@@ -63,7 +63,7 @@ export default function ComparisonTable({
                 {row.values.map((value, index) => (
                   <td
                     key={columns[index]}
-                    className={`px-5 py-4 font-serif text-forest/80 ${
+                    className={`px-5 py-4 font-sans text-forest/80 ${
                       index === highlightColumn ? "border-x border-gold" : ""
                     }`}
                     style={BODY_SM}

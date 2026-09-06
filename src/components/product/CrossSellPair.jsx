@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Container from "../ui/Container";
 import Picture from "../ui/Picture";
 import { BODY_SM, H3 } from "../../styles/type";
-import { EYEBROW_CLS } from "../../styles/type";
 
 // 05_component_library.md §26. The two SKUs that are not the current page.
 export default function CrossSellPair({ products }) {
@@ -16,15 +15,14 @@ export default function CrossSellPair({ products }) {
               className="flex h-full min-h-[200px] items-center justify-between gap-6 overflow-hidden rounded-2xl border border-forest/12 bg-[#FFFDF9] p-7 transition-colors hover:border-forest/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
             >
               <div className="min-w-0">
-                <p className={EYEBROW_CLS}>{product.format}</p>
                 <h3
-                  className="mt-3 font-serif font-normal text-forest"
+                  className="font-serif font-normal text-forest"
                   style={H3}
                 >
                   {product.name}
                 </h3>
                 <p
-                  className="mt-3 max-w-[28ch] font-serif text-forest/70"
+                  className="mt-3 max-w-[28ch] font-sans text-forest/70"
                   style={BODY_SM}
                 >
                   {product.railDescriptor}

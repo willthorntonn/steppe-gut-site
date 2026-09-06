@@ -108,7 +108,7 @@ The standard top of every page except Home and PDP.
 | Breadcrumbs | Above title, per `01_navigation.md` §9 |
 | Eyebrow | Optional |
 | Title | `<h1>`, `h1` token, `text-wrap: balance`, `tabindex="-1"` (route-change focus target) |
-| Lead | `body-lg`, `text-secondary`, `max-w-prose-measure`, 20px below title |
+| Lead | `body-lg`, **`font-sans` (Inter — the description/lead voice is sans, not the display serif)**, `text-secondary`, `max-w-prose-measure`, 20px below title |
 | Alignment | `center` for hubs and utility pages; `left` for articles |
 
 ## 8. `Breadcrumbs`

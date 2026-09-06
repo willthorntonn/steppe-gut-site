@@ -12,36 +12,31 @@ export default function OriginFeature() {
       <div className="mx-auto max-w-[2000px] px-6 pb-28 pt-7 sm:px-10 sm:pb-36 sm:pt-9 lg:px-14 lg:pb-48 lg:pt-12">
         <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-[1fr_1fr] lg:gap-24 xl:gap-32">
           <div>
-            <p className="font-sans text-[13px] uppercase tracking-[0.3em] text-forest/45">
-              {ORIGIN.eyebrow}
-            </p>
-
+            {/* Header: extra-large, bold, held to two lines - line-clamp is
+                a hard stop rather than a size guess, so a longer title never
+                spills a third line on a narrow phone. */}
             <h2
-              className="mt-8 max-w-[15ch] font-serif font-normal leading-[0.98] tracking-[-0.045em] text-forest"
+              className="line-clamp-2 max-w-[15ch] font-serif font-bold leading-[0.98] tracking-[-0.045em] text-forest"
               style={{
-                fontSize: "clamp(3.2rem, 6.4vw, 6.4rem)",
-                // Stops short titles dropping a single orphaned word onto the
-                // last line.
+                fontSize: "clamp(3.2rem, calc(6.4 * var(--vw)), 6.4rem)",
                 textWrap: "balance",
               }}
             >
               {ORIGIN.title}
             </h2>
 
-            {ORIGIN.body.map((paragraph, index) => (
-              <p
-                key={paragraph.slice(0, 32)}
-                className={`max-w-[54ch] font-serif text-forest/80 ${
-                  index === 0 ? "mt-12" : "mt-8"
-                }`}
-                style={{
-                  fontSize: "clamp(1.25rem, 1.6vw, 1.55rem)",
-                  lineHeight: 1.75,
-                }}
-              >
-                {paragraph}
-              </p>
-            ))}
+            {/* Body: medium-weight sans, held to exactly three lines the
+                same way - clipped rather than sized-to-fit, so copy edits
+                later can't silently push a fourth line back in. */}
+            <p
+              className="line-clamp-3 mt-12 max-w-[54ch] font-sans font-medium text-forest/80"
+              style={{
+                fontSize: "clamp(1.15rem, calc(1.4 * var(--vw)), 1.35rem)",
+                lineHeight: 1.65,
+              }}
+            >
+              {ORIGIN.body}
+            </p>
 
             <a
               href={ORIGIN.link.href}
@@ -62,6 +57,7 @@ export default function OriginFeature() {
             image={ORIGIN.plate.image}
             alt={ORIGIN.plate.alt}
             tone="light"
+            navTheme="dark"
             className="rounded-[28px]"
           />
         </div>

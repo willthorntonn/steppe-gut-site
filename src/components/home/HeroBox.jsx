@@ -4,7 +4,7 @@ import { HeroStageMobile, HeroStageDesktop } from "./HeroStage";
 
 // The page opens on a boxed hero: one rounded, inset container holding the
 // whole opening statement, with the page background visible around it on all
-// four sides. The hero's own content is unchanged — it has simply been moved
+// four sides. The hero's own content is unchanged - it has simply been moved
 // off the full-bleed viewport and into the box.
 //
 // Two nav themes are declared here on purpose. The cream gutter is what sits
@@ -26,7 +26,7 @@ export default function HeroBox() {
           with the sections below it instead of over- or under-hanging them. */}
       <div
         data-navtheme="dark"
-        className="relative mx-auto flex min-h-[595px] max-w-[2000px] flex-col justify-center overflow-hidden rounded-[20px] bg-forest bg-cover bg-center bg-no-repeat sm:min-h-[680px] sm:rounded-[26px] lg:min-h-[min(918px,calc(100vh-120px))] lg:rounded-[32px]"
+        className="relative mx-auto flex min-h-[640px] max-w-[1600px] flex-col justify-center overflow-hidden rounded-[20px] bg-forest bg-cover bg-center bg-no-repeat sm:min-h-[700px] sm:rounded-[26px] lg:min-h-[min(840px,calc(100vh-140px))] lg:rounded-[32px]"
         style={{ backgroundImage: `url('${heroBgBokeh}')` }}
       >
         <div

@@ -1,12 +1,21 @@
 import Container from "./Container";
 import { BODY_SM, H3 } from "../../styles/type";
 
-const ORDINALS = ["One", "Two", "Three", "Four", "Five"];
+const ORDINALS = [
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+];
 
 // 05_component_library.md §13. Renders a real <ol>.
 //
-// The oversized numeral is decorative and aria-hidden — the actual ordinal is
-// in the heading text ("One — Tear the sachet"), so the order survives for a
+// The oversized numeral is decorative and aria-hidden - the actual ordinal is
+// in the heading text ("One - Tear the sachet"), so the order survives for a
 // screen-reader user without the numeral being read twice.
 const COLUMNS = {
   3: "sm:grid-cols-3",
@@ -35,12 +44,12 @@ export default function ProcessSteps({ steps, width = "content", columns = 3 }) 
               className="mt-5 max-w-[18ch] font-serif font-normal text-forest"
               style={H3}
             >
-              <span className="sr-only">{ORDINALS[index]} — </span>
+              <span className="sr-only">{ORDINALS[index]} - </span>
               {step.title}
             </h3>
 
             <p
-              className="mt-4 max-w-[38ch] font-serif text-forest/75"
+              className="mt-4 max-w-[38ch] font-sans text-forest/75"
               style={BODY_SM}
             >
               {step.body}

@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 
 // Shared CTA button. Variant map (not cva) mirrors every bg/hover pair
-// already in use across the site — the first three are a pure extraction,
+// already in use across the site - the first three are a pure extraction,
 // each existing call site's exact classes moved here, not redesigned.
 //
 // The outline pair was added when the site grew past the homepage: pages
 // beyond Home need a secondary action that doesn't compete with the solid
-// forest primary. Gold is deliberately absent as a fill — 03_design_system.md
+// forest primary. Gold is deliberately absent as a fill - 03_design_system.md
 // §14 rules it out, because a gold button beside a forest one creates two
 // competing primaries.
 const VARIANTS = {

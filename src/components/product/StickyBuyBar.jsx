@@ -6,7 +6,7 @@ import { useCart } from "../../cart/CartProvider";
 // 05_component_library.md §27.
 //
 // Triggered by an IntersectionObserver on the buy box itself, not a
-// scroll-position threshold — a threshold breaks at different viewport
+// scroll-position threshold - a threshold breaks at different viewport
 // heights.
 //
 // While hidden the bar is removed from the document entirely rather than just

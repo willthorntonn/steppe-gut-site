@@ -16,7 +16,7 @@ const BOX_SHADOW_LAYER = {
 
 // Desktop-only: box grows 25% independently of the stump's own 15% growth
 // (its footprint is scaled by 1.25/1.15 against the bigger wrapper), and both
-// keep their bottom-right corner fixed — width increases while `left`
+// keep their bottom-right corner fixed - width increases while `left`
 // shrinks by the same amount, so the box grows toward the top-left from the
 // same point on the stump rather than drifting outward from its center.
 const DESKTOP_BOX_LAYER = { width: "49.9%", left: "23.75%", bottom: "52.2%" };
@@ -53,7 +53,7 @@ export function HeroStageDesktop() {
     <div
       className="animate-scale-in delay-700 pointer-events-none absolute z-0 hidden lg:block"
       style={{
-        // Width only — the rock PNG is a true 1:1 square (1024x1024) and
+        // Width only - the rock PNG is a true 1:1 square (1024x1024) and
         // the <img> below is sized by its own intrinsic ratio (`w-full
         // h-auto`), so the stage's height already comes out square as a
         // side effect of wrapping that image; giving the wrapper its own
@@ -64,7 +64,7 @@ export function HeroStageDesktop() {
         //
         // Sized as a percentage of the hero box itself (the positioning
         // container) rather than the viewport, so it tracks the box's
-        // actual rendered width at every desktop size — including past the
+        // actual rendered width at every desktop size - including past the
         // box's own max-width cap. `78vh` is the safety net for short/wide
         // viewports: since height equals width here, this is what stops the
         // product from growing tall enough to crowd the top of the box.

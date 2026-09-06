@@ -1,4 +1,4 @@
-// Owns vertical rhythm. No page section sets its own top padding —
+// Owns vertical rhythm. No page section sets its own top padding -
 // 05_component_library.md §1, and the reason the homepage's sections already
 // line up with each other.
 //
@@ -15,6 +15,7 @@ const SIZES = {
 
 const BACKGROUNDS = {
   cream: { cls: "bg-cream text-forest", theme: "light" },
+  white: { cls: "bg-white text-forest", theme: "light" },
   "cream-raised": { cls: "bg-[#FFFDF9] text-forest", theme: "light" },
   "sage-tint": { cls: "bg-[#E8EDE4] text-forest", theme: "light" },
   forest: { cls: "bg-forest text-cream", theme: "dark" },

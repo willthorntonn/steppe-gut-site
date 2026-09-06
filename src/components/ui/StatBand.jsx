@@ -4,7 +4,7 @@ import { BODY_SM, CAPTION } from "../../styles/type";
 
 // 05_component_library.md §15.
 //
-// Claim discipline: every stat here is a compositional or provenance fact —
+// Claim discipline: every stat here is a compositional or provenance fact -
 // grams, days of fermentation, months of the milking season. Never an
 // efficacy figure (02_brand_guidelines.md §6).
 //
@@ -38,7 +38,7 @@ function Stat({ number, suffix, label, note, inView }) {
 
 export default function StatBand({ stats }) {
   // useCountUp already renders the final value immediately when reduced
-  // motion is set — the hook the homepage's supporter counter uses.
+  // motion is set - the hook the homepage's supporter counter uses.
   const [ref, inView] = useInView(0.3);
 
   return (

@@ -4,7 +4,7 @@ import { useId } from "react";
 //
 // Always renders a real visible <label for>. A placeholder is never a label.
 // Required fields say "(required)" in the label text, not a bare asterisk.
-// Inputs are 16px minimum — anything smaller triggers iOS zoom on focus, which
+// Inputs are 16px minimum - anything smaller triggers iOS zoom on focus, which
 // looks like the layout breaking.
 const BASE =
   "mt-2 w-full rounded-lg border bg-[#FFFDF9] px-4 font-sans text-base text-forest placeholder:text-forest/35 focus:outline-none focus:ring-2 focus:ring-gold/40 disabled:cursor-not-allowed disabled:bg-[#EDE8DD] disabled:text-forest/45";

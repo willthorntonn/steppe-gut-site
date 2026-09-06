@@ -1,217 +1,196 @@
-import PageHeader from "../components/ui/PageHeader";
+import { useMemo, useState } from "react";
 import PageMeta from "../components/ui/PageMeta";
 import Section from "../components/ui/Section";
 import Container from "../components/ui/Container";
-import MediaTextRow from "../components/ui/MediaTextRow";
-import ComparisonTable from "../components/ui/ComparisonTable";
-import ProcessSteps from "../components/ui/ProcessSteps";
-import Accordion from "../components/ui/Accordion";
-import ClosingCTA from "../components/ui/ClosingCTA";
-import Reveal from "../components/ui/Reveal";
 import ProductCard from "../components/product/ProductCard";
-import BadgeRow from "../components/product/BadgeRow";
-import { PRODUCTS, PRODUCT_BY_SLUG, SHARED_BADGES } from "../data/products";
-import { BODY, CAPTION, H2 } from "../styles/type";
+import CollectionToolbar from "../components/product/CollectionToolbar";
+import {
+  PRODUCTS,
+  MARKETING_PRICE_BY_SLUG,
+  REVIEWS_BY_SLUG,
+} from "../data/products";
 
-// products-collection.md.
+// The products landing page. Three formats, one row, no cross-sell logic -
+// each card links straight into its own /products/:slug/ detail page where
+// the actual buying decision happens (05_component_library.md §21).
 //
-// Deliberately short grid, long explanation underneath — the ratio that
-// separates this from a shop grid for an unfamiliar category.
+// A Shopify-style filter/sort bar sits above the grid. Its state lives here
+// so the visible count in the bar and the cards below it are computed from
+// one list.
 
-const CHOOSING_ROWS = [
-  { label: "Servings per pack", values: ["25", "90", "25"] },
-  { label: "Serving size", values: ["10 g", "3 capsules", "10 g (one scoop)"] },
-  { label: "Taste", values: ["Mild, slightly sour", "None", "Mild, slightly sour"] },
-  {
-    label: "Best for",
-    values: ["Starting out", "Travel, or avoiding the taste", "Established routine"],
-  },
-  {
-    label: "Packaging per serving",
-    values: ["Individual sachet", "None", "None"],
-  },
-  { label: "Needs water", values: ["Yes, 100 ml", "No", "Yes, 100 ml"] },
-];
+// No format is out of stock in the pre-launch catalogue; the field is read
+// defensively so flipping one to `inStock: false` in data/products.js is the
+// only change needed.
+const isInStock = (product) => product.inStock !== false;
+const amountOf = (product) => MARKETING_PRICE_BY_SLUG[product.slug]?.amount ?? 0;
+const reviewsOf = (product) => REVIEWS_BY_SLUG[product.slug]?.count ?? 0;
 
-const COMPOSITION_BODY = [
-  "Fermented mare's milk powder, with the lactose, whey and casein proteins, milk fat and fatty acids that survive fermentation. Alongside them: vitamin C, vitamin A, vitamins B1, B2 and B12, calcium, phosphorus, iron, lactoferrin and lysozyme — all of them present in the milk itself rather than added afterwards.",
-  "The full list, with the allergen declaration and where each thing comes from, is on one page.",
-];
+const PRICE_CEILING = Math.max(...PRODUCTS.map(amountOf));
 
-const POWDER_BRIEF =
-  "An opened sachet lying on its side, fine ivory powder drifting out across a deep forest-green stone surface in a soft sculptural ridge. Macro detail, warm golden side light raking across the powder texture. Subject sits lower-left with the upper right open. Premium scientific editorial still life, subtle film grain.";
-
-// Answers 3 and 4 deliberately decline to overclaim. That is the honest-limits
-// principle applied at the point of sale (02_brand_guidelines.md §6.3) — and
-// on this page it is the most persuasive thing on it.
-const QUESTIONS = [
-  {
-    id: "taste",
-    question: "Does it taste like milk?",
-    answer:
-      "It tastes faintly sour and slightly savoury, closer to plain yoghurt than to milk. In water it is mild. Most people stop noticing it within a week.",
-  },
-  {
-    id: "lactose",
-    question: "Is it suitable if I am lactose intolerant?",
-    answer:
-      "Fermentation breaks down most of the lactose, but not all of it, and the product contains milk. If you react to yoghurt, you may react to this. Speak to your doctor first.",
-  },
-  {
-    id: "how-long",
-    question: "How long until I notice anything?",
-    answer:
-      "We are not going to give you a number. Nutritional intake works on the scale of weeks and months, and anyone promising a date is guessing. Take it daily and judge for yourself.",
-  },
-  {
-    id: "thai-fda",
-    question: "Is it registered with the Thai FDA?",
-    answer:
-      "Registration is in progress. We will publish the registration details on this site as soon as they are issued, and we are not going to claim it is complete before it is.",
-  },
-];
+const SORTERS = {
+  "best-selling": (a, b) => reviewsOf(b) - reviewsOf(a),
+  "title-asc": (a, b) => a.name.localeCompare(b.name),
+  "title-desc": (a, b) => b.name.localeCompare(a.name),
+  "price-asc": (a, b) => amountOf(a) - amountOf(b),
+  "price-desc": (a, b) => amountOf(b) - amountOf(a),
+};
 
 export default function Products() {
+  const [sort, setSort] = useState("best-selling");
+  const [availability, setAvailability] = useState([]);
+  const [price, setPrice] = useState({ from: "", to: "" });
+
+  const availabilityCounts = useMemo(
+    () => ({
+      inStock: PRODUCTS.filter(isInStock).length,
+      outOfStock: PRODUCTS.filter((product) => !isInStock(product)).length,
+    }),
+    []
+  );
+
+  const visibleProducts = useMemo(() => {
+    const from = price.from === "" ? null : Number(price.from);
+    const to = price.to === "" ? null : Number(price.to);
+
+    return PRODUCTS.filter((product) => {
+      if (availability.length > 0) {
+        const stock = isInStock(product) ? "in-stock" : "out-of-stock";
+        if (!availability.includes(stock)) return false;
+      }
+      const amount = amountOf(product);
+      if (from != null && !Number.isNaN(from) && amount < from) return false;
+      if (to != null && !Number.isNaN(to) && amount > to) return false;
+      return true;
+    }).sort(SORTERS[sort] ?? SORTERS["best-selling"]);
+  }, [sort, availability, price]);
+
   return (
     <>
       <PageMeta
-        title="Products — Steppe Gut Fermented Mare's Milk"
-        description="Three formats of the same fermented mare's milk powder: 25-day sachet boxes, 90-count capsules, and a 250 g refill pouch. Full composition and how to take it."
+        title="Products"
+        description="Fermented mare's milk powder from Mongolia, in three formats: sachets, capsules, and a refill pouch"
       />
 
-      <PageHeader
-        eyebrow="Products"
-        title="One formula, three formats"
-        lead="The powder is the same in every pack we make — the same milk, from the same season, fermented the same way. What changes is how you take it, and how often you want to think about it."
-      />
+      {/* Top of the page: the fixed header's clearance and the open space
+          the individual product pages give their format switcher, but the
+          switcher itself is gone and so is the old "Three formats, one
+          formula" heading block - the space is kept (trimmed a little) so
+          the grid still starts below the fold rather than tight under the
+          nav. The page title stays as a visually-hidden <h1> so the
+          route-change focus target and the document outline still exist. */}
+      <div
+        data-navtheme="light"
+        className="bg-cream pt-[80px] pb-5 sm:pt-[92px] sm:pb-6 lg:pt-[120px] lg:pb-7"
+      >
+        <h1 id="page-title" tabIndex={-1} className="sr-only">
+          Products: three formats, one formula
+        </h1>
+      </div>
 
-      {/* No badges on the cards: no "bestseller", no "new", no "limited".
-          Those are pressure devices and 02_brand_guidelines.md §4.2 rules
-          the vocabulary out. */}
-      <Section size="sm">
+      <Section bg="white" size="sm">
         <Container>
-          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {PRODUCTS.map((product) => (
-              // At sm the third card sits alone on row 2 and keeps its column
-              // width rather than stretching across both
-              // (products-collection.md, responsive behaviour).
-              <li key={product.slug} className="sm:max-w-none">
-                <ProductCard product={product} className="h-full" />
-              </li>
-            ))}
-          </ul>
+          {/* The grid is capped inside the 2000px page measure rather than
+              running the full width. The cap is sized off the product photo
+              rather than picked round: at this width each column is
+              (1486 - 40px of gap) / 3 = 482px, and each card spends 2 x 20px
+              of its own padding, leaving a 442px photo - 30% wider than the
+              340px it was at the previous 1180px cap, and 30% taller with it
+              since the frame holds a fixed 4/5 aspect. Below roughly 1600px
+              of usable width the page gutters take over and the cards scale
+              down from here. The toolbar is inset a little further still, so
+              the "Filter:" / "Sort by:" line sits within the card edges. */}
+          <div className="mx-auto max-w-[1486px]">
+            <div className="lg:px-6">
+              <CollectionToolbar
+                count={visibleProducts.length}
+                sort={sort}
+                onSortChange={setSort}
+                availability={availability}
+                onAvailabilityChange={setAvailability}
+                availabilityCounts={availabilityCounts}
+                price={price}
+                onPriceChange={setPrice}
+                priceCeiling={PRICE_CEILING}
+              />
+            </div>
+
+            {visibleProducts.length > 0 ? (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {visibleProducts.map((product) => (
+                  <ProductCard key={product.slug} product={product} />
+                ))}
+              </div>
+            ) : (
+              <p className="py-16 text-center font-sans text-[15px] text-forest/60">
+                No products match these filters.
+              </p>
+            )}
+          </div>
         </Container>
       </Section>
 
-      <Reveal>
-        <Section size="default">
-          <Container width="content">
-            <h2
-              className="max-w-[16ch] font-serif font-normal text-forest"
-              style={H2}
-            >
-              Which one to start with
-            </h2>
-            <p
-              className="mt-8 max-w-[62ch] font-serif text-forest/80"
-              style={BODY}
-            >
-              If you have not taken it before, start with the sachets. They are
-              portioned, they travel, and twenty-five mornings is long enough to
-              know whether it suits you. Everything else is a preference.
-            </p>
-          </Container>
-
-          <div className="mt-14">
-            <ComparisonTable
-              caption="Comparison of the three Steppe Gut formats"
-              columns={PRODUCTS.map((product) => product.name)}
-              rows={CHOOSING_ROWS}
-            />
-          </div>
-        </Section>
-      </Reveal>
-
-      <Reveal>
-        <Section size="default">
-          <MediaTextRow
-            eyebrow="Composition"
-            heading="The same milk in every pack"
-            body={COMPOSITION_BODY}
-            imageBrief={POWDER_BRIEF}
-            cta={{
-              label: "See what is inside",
-              to: "/ingredients-sourcing/",
-            }}
-          />
-
-          <div className="mt-20 lg:mt-28">
-            <BadgeRow items={SHARED_BADGES} />
-          </div>
-        </Section>
-      </Reveal>
-
-      <Reveal>
-        <Section size="default">
-          <Container width="content">
-            <h2
-              className="max-w-[16ch] font-serif font-normal text-forest"
-              style={H2}
-            >
-              How to take it
-            </h2>
-            <p
-              className="mt-8 max-w-[52ch] font-serif text-forest/80"
-              style={BODY}
-            >
-              It takes about thirty seconds.
-            </p>
-          </Container>
-
-          <div className="mt-16">
-            <ProcessSteps steps={PRODUCT_BY_SLUG["daily-sachets"].howToTake} />
-          </div>
-
-          <Container width="content">
-            <p
-              className="mt-14 max-w-[62ch] font-sans text-forest/60"
-              style={CAPTION}
-            >
-              For capsules: three with water, once a day. For the pouch: one
-              level scoop, the same as one sachet.
-            </p>
-          </Container>
-        </Section>
-      </Reveal>
-
-      <Reveal>
-        <Section size="default">
-          <Container width="content">
-            <h2
-              className="mb-14 max-w-[16ch] font-serif font-normal text-forest"
-              style={H2}
-            >
-              Common questions
-            </h2>
-            {/* No "read the full answer" links: the FAQ pages these pointed at
-                were cut in the rescope, and each answer here is complete on
-                its own. */}
-            <Accordion items={QUESTIONS} />
-          </Container>
-        </Section>
-      </Reveal>
-
-      <Reveal>
-        <ClosingCTA
-          heading="Twenty-five mornings"
-          body="Long enough to know whether it belongs in your routine."
-          primary={{ label: "See the Daily Sachets", to: "/products/daily-sachets/" }}
-          secondary={{
-            label: "Where it comes from",
-            to: "/ingredients-sourcing/",
-          }}
-        />
-      </Reveal>
+      <NewsletterSignup />
     </>
+  );
+}
+
+// Same layout as the reference Shopify block - centred heading, lead line,
+// bordered input, solid button - rebuilt in the site's own forest/cream/gold
+// palette instead of the generic black-on-grey defaults. Sits on the same
+// cream as the grid above it, with no rule between the two.
+function NewsletterSignup() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!email) return;
+    setSubmitted(true);
+  };
+
+  return (
+    <Section bg="cream" size="default">
+      <Container width="content">
+        <div className="mx-auto max-w-[500px] text-center">
+          <h2 className="font-sans text-[32px] font-semibold tracking-[-0.02em] text-forest sm:text-[38px] lg:text-[44px]">
+            Subscribe to our emails
+          </h2>
+          <p className="mx-auto mt-3 whitespace-nowrap font-sans text-base text-forest/70 lg:text-xl">
+            Join our email list for exclusive offers and the latest news
+          </p>
+
+          {submitted ? (
+            <p className="mt-7 font-sans text-sm font-semibold text-forest">
+              You're on the list
+            </p>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="mt-7 flex flex-col gap-3"
+              noValidate
+            >
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email
+              </label>
+              <input
+                id="newsletter-email"
+                type="email"
+                required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="Email"
+                className="h-14 w-full border border-forest/40 bg-cream px-5 font-sans text-base text-forest placeholder:text-forest/50 focus:outline-none focus:ring-2 focus:ring-gold/50"
+              />
+              <button
+                type="submit"
+                className="h-14 w-full bg-forest font-sans text-[15px] font-bold tracking-[0.08em] text-cream transition-colors hover:bg-forest/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              >
+                Sign up
+              </button>
+            </form>
+          )}
+        </div>
+      </Container>
+    </Section>
   );
 }

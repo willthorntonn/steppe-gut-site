@@ -11,7 +11,7 @@ const ICONS = {
 
 // 05_component_library.md §23.
 //
-// Baseline-aligned, never staggered — the reference site offsets these
+// Baseline-aligned, never staggered - the reference site offsets these
 // vertically for a hand-placed feel, which reads as misalignment in a
 // restrained brand.
 //

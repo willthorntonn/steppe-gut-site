@@ -1,10 +1,55 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { COMPANY, FOOTER_LINKS, REGULATORY_DISCLOSURE } from "../../data/site";
 import { SOCIAL_PLATFORMS } from "../../data/social";
 
+const TRANSPARENT = ["rgba(0, 0, 0, 0)", "transparent"];
+
+// The corners uncovered by the footer's arc need to match whatever the page
+// actually ends on - cream on most pages, but plain white on the product
+// pages (the AG1 comparison/scoop sections are `all: initial` white blocks).
+// Hardcoding one color here drifts out of sync the moment a page's last
+// section changes, so instead this walks down the DOM's last-child chain
+// from #main, reading real computed backgrounds until it finds one that
+// isn't transparent - a DOM-order probe rather than a viewport hit-test, so
+// it isn't thrown off by scroll position.
+function findPageEndBackground() {
+  let el = document.getElementById("main")?.lastElementChild ?? null;
+  while (el) {
+    const color = getComputedStyle(el).backgroundColor;
+    if (color && !TRANSPARENT.includes(color)) return color;
+    el = el.lastElementChild;
+  }
+  return null;
+}
+
+function usePageEndBackground() {
+  const location = useLocation();
+  const [bg, setBg] = useState(null);
+
+  useEffect(() => {
+    const main = document.getElementById("main");
+    if (!main) return;
+
+    const update = () => setBg(findPageEndBackground());
+    update();
+
+    // Routes are lazy-loaded (App.jsx): #main first mounts a cream
+    // RouteFallback, then swaps in the real page once its chunk resolves.
+    // A MutationObserver catches that swap - and any later content change,
+    // e.g. an accordion opening the last section - so the sample never goes
+    // stale the way a one-shot read keyed only on the route would.
+    const observer = new MutationObserver(update);
+    observer.observe(main, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
+  return bg;
+}
+
 // Social glyphs are the standard simplified brand marks used site-wide for
 // outbound "follow us" links (the common open-source icon set every major
-// footer draws from) — not a reproduction of Steppe Gut's own identity, so
+// footer draws from) - not a reproduction of Steppe Gut's own identity, so
 // they carry none of the horse-mark's brand rules.
 const FACEBOOK_PATH =
   "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 7.626 7.626 0 0 0-.735-.034c-.408 0-.777.033-1.101.093-.294.086-.591.279-.844.501-.246.257-.472.582-.539.899-.077.302-.117.767-.117 1.397v1.115h3.828l-.542 3.667h-3.286v7.98H9.101z";
@@ -17,10 +62,10 @@ const TIKTOK_PATH =
 
 // Fixed 2-up arrangement rather than a generic map: Facebook, Instagram and
 // YouTube stack down the left column in that order, with TikTok sitting to
-// Facebook's right on the top row only — matching the reference exactly
+// Facebook's right on the top row only - matching the reference exactly
 // rather than an evenly-spaced grid.
 // Every account is still unopened, so none of these can point at a real
-// profile. They previously carried href="#" — a dead link on every page.
+// profile. They previously carried href="#" - a dead link on every page.
 // They now go to /social/, which explains the position honestly, and each
 // carries a label saying so rather than promising a profile that isn't there.
 // When SOCIAL_PLATFORMS in data/social.js gains real URLs, these follow.
@@ -40,7 +85,7 @@ function socialTarget(label) {
 
 // Rescoped to the seven live routes. The previous set (Careers, Press,
 // Corporate, FAQs) and the legal row (Terms, Cookies, Privacy, Sitemap)
-// pointed at pages that were deliberately cut from the build — a footer link
+// pointed at pages that were deliberately cut from the build - a footer link
 // to a page that does not exist is worse than no link, so they are removed
 // rather than left as `href="#"`. They come back when those pages do.
 const SITE_LINKS = FOOTER_LINKS;
@@ -70,17 +115,25 @@ function LinkList({ items }) {
   );
 }
 
-// Three-column footer — Follow us / Get in Touch! / About Us — plus a bottom
+// Three-column footer - Follow us / Get in Touch! / About Us - plus a bottom
 // legal bar, matching the reference's structure and rhythm exactly rather
 // than the previous colophon layout. The reference's own on-scroll social
 // rail sits to the side of the page as a separate fixed element, not inside
 // the footer, so it isn't part of this component.
 //
 // The top edge is a shallow convex arc. It's drawn as an elliptical
-// border-radius on the footer's own background rather than an SVG mask —
+// border-radius on the footer's own background rather than an SVG mask -
 // every child band is transparent, so nothing needs clipping.
+// The corners left uncovered by the arc's border-radius show whatever is
+// behind the footer. The outer div below is a plain (unrounded) rectangle
+// sized exactly to the footer, coloured to match whatever the page actually
+// ends on (see usePageEndBackground) - cream on most pages, white on the
+// product pages - instead of showing through to whatever sits underneath.
 export default function Footer() {
+  const pageEndBg = usePageEndBackground();
+
   return (
+    <div className="bg-cream" style={pageEndBg ? { backgroundColor: pageEndBg } : undefined}>
     <footer
       data-navtheme="dark"
       className="bg-forest text-cream"
@@ -118,7 +171,7 @@ export default function Footer() {
                     <Link
                       key={cell.label}
                       to="/social/"
-                      aria-label={`${cell.label} — our accounts are not open yet`}
+                      aria-label={`${cell.label} - our accounts are not open yet`}
                       className={cls}
                     >
                       <SocialIcon d={cell.d} />
@@ -156,7 +209,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Mandatory on every page — 01_navigation.md §7.5. The Thai FDA
+      {/* Mandatory on every page - 01_navigation.md §7.5. The Thai FDA
           sentence states the status as in-progress. It must not be softened
           into implying registration is issued, and must not be dropped. */}
       <div className="mx-auto max-w-[2000px] border-t border-cream/15 px-5 py-6 sm:px-8 lg:px-16 lg:py-9">
@@ -178,5 +231,6 @@ export default function Footer() {
         </p>
       </div>
     </footer>
+    </div>
   );
 }

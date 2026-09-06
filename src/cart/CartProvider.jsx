@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 
-// Cart state. Frontend only — nothing here talks to a server, because there
+// Cart state. Frontend only - nothing here talks to a server, because there
 // is no backend yet (cart-and-checkout.md, developer notes).
 //
 // Only `{ slug, qty }` is stored. Name, format and price are looked up from
@@ -36,7 +36,7 @@ function readStored() {
 export function CartProvider({ children }) {
   const [items, setItems] = useState(readStored);
   // Mirrored into an aria-live region by CartAnnouncer, so cart changes are
-  // announced rather than only reflected in the header badge — which is
+  // announced rather than only reflected in the header badge - which is
   // off-screen for a screen-reader user (cart-and-checkout.md §1).
   const [announcement, setAnnouncement] = useState("");
 

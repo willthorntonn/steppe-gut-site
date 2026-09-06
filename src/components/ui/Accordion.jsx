@@ -4,7 +4,7 @@ import { BODY_SM } from "../../styles/type";
 
 // 05_component_library.md §28.
 //
-// The trigger is a real <button> inside an <h3>, not a clickable <div> — the
+// The trigger is a real <button> inside an <h3>, not a clickable <div> - the
 // single most commonly broken accessibility pattern on marketing sites. The
 // panel is kept in the DOM and hidden with `hidden` so `aria-controls` always
 // resolves to a real element.
@@ -47,7 +47,7 @@ function AccordionItem({ item, isOpen, onToggle, headingLevel: H }) {
         className="pb-8"
       >
         <p
-          className="max-w-[62ch] font-serif text-forest/80"
+          className="max-w-[62ch] font-sans text-forest/80"
           style={BODY_SM}
         >
           {item.answer}

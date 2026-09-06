@@ -1,111 +1,29 @@
 import { Link } from "react-router-dom";
-import Container from "../components/ui/Container";
-import Eyebrow from "../components/ui/Eyebrow";
 import PageMeta from "../components/ui/PageMeta";
-import { BODY, BODY_SM, CAPTION, DISPLAY, H4 } from "../styles/type";
-import { COMPANY } from "../data/site";
+import Container from "../components/ui/Container";
 
-// Four destinations, rescoped from not-found.md's list — "How it works",
-// "Questions" and "Our story" were pages in the larger draft and no longer
-// exist, so linking them from the one page a lost visitor lands on would be
-// its own broken link.
-const DESTINATIONS = [
-  {
-    title: "Products",
-    excerpt: "The three formats, and what is in them.",
-    to: "/products/",
-  },
-  {
-    title: "Ingredients & Sourcing",
-    excerpt: "The full ingredient list, and where the milk comes from.",
-    to: "/ingredients-sourcing/",
-  },
-  {
-    title: "Social",
-    excerpt: "What we are posting, and where to follow along.",
-    to: "/social/",
-  },
-  {
-    title: "Contact",
-    excerpt: "How to reach a person.",
-    to: "/contact/",
-  },
-];
-
+// Matches the Confirmation page layout exactly - only the copy differs.
 export default function NotFound() {
   return (
     <>
       <PageMeta title="Page not found · Steppe Gut" noindex />
 
-      {/* min-h keeps the footer off the middle of a tall screen. */}
-      <div
-        data-navtheme="light"
-        className="min-h-[70vh] bg-cream pb-28 pt-[132px] lg:pb-40 lg:pt-[200px]"
-      >
-        <Container width="narrow">
-          <Eyebrow>404</Eyebrow>
-          {/* The heading describes the error rather than repeating the code —
-              "404" alone tells a screen-reader user nothing
-              (not-found.md, accessibility notes). */}
-          <h1
-            id="page-title"
-            tabIndex={-1}
-            className="mt-6 font-serif font-normal text-forest outline-none"
-            style={DISPLAY}
-          >
-            This page isn&rsquo;t here
+      <section data-navtheme="light" className="min-h-screen bg-cream flex flex-col">
+        <Container width="narrow" className="flex flex-1 flex-col items-center justify-center px-6 pb-24 pt-[136px] text-center">
+          <h1 className="-mt-10 font-serif text-[clamp(3.8rem,8.4vw,6.6rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-forest whitespace-nowrap">
+            Page not found
           </h1>
-          <p
-            className="mt-7 max-w-[46ch] font-serif text-forest/75"
-            style={BODY}
-          >
-            Either the link was wrong or we moved something. Try one of these.
+          <p className="mt-8 text-center font-sans text-2xl text-forest/70 whitespace-nowrap">
+            Sorry, this page doesn&rsquo;t exist
           </p>
-
-          {/* No search field: not-found.md specifies one, but there is no
-              search index across seven pages and 01_navigation.md's search
-              overlay was cut in the rescope. A box that returns nothing is
-              worse than no box. */}
-          <ul className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {DESTINATIONS.map((item) => (
-              <li key={item.to}>
-                <Link
-                  to={item.to}
-                  className="flex h-full flex-col rounded-2xl border border-forest/15 bg-[#FFFDF9] p-6 transition-colors hover:border-forest/35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-                >
-                  <h2
-                    className="font-serif font-normal text-forest"
-                    style={H4}
-                  >
-                    {item.title}
-                  </h2>
-                  <p
-                    className="mt-2 font-serif text-forest/70"
-                    style={BODY_SM}
-                  >
-                    {item.excerpt}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <p
-            className="mt-12 max-w-[56ch] font-sans text-forest/55"
-            style={CAPTION}
+          <Link
+            to="/"
+            className="mt-10 font-sans text-2xl font-semibold text-gold underline underline-offset-4 hover:text-forest"
           >
-            If you followed a link from somewhere on this site and it brought
-            you here, tell us at{" "}
-            <a
-              className="underline decoration-gold decoration-2 underline-offset-4 hover:text-forest"
-              href={`mailto:${COMPANY.brandOwner.email}`}
-            >
-              {COMPANY.brandOwner.email}
-            </a>{" "}
-            and we will fix it.
-          </p>
+            Return to homepage
+          </Link>
         </Container>
-      </div>
+      </section>
     </>
   );
 }

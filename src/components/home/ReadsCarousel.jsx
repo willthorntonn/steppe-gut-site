@@ -5,7 +5,7 @@ import { READS } from "../../content/home";
 import Placeholder from "../ui/Placeholder";
 
 // Closing beat: a centred section title, paged arrows on the right, and a row
-// of portrait cards that runs off the right edge — the reference's article
+// of portrait cards that runs off the right edge - the reference's article
 // carousel, with its alternating vertical offset kept.
 //
 // Paging is scroll-snap rather than a transform track, so the row is natively
@@ -77,12 +77,9 @@ export default function ReadsCarousel() {
   return (
     <section id={READS.id} data-navtheme="light" className="scroll-mt-28 bg-cream">
       <div className="pb-24 pt-3 sm:pb-28 lg:pb-36 lg:pt-5">
-        {/* Held to one line at every width, so the size is driven by what
-            fits rather than by a rem floor — a `clamp()` minimum would push
-            the line past the screen edge on a small phone. */}
         <h2
-          className="mx-auto whitespace-nowrap px-5 text-center font-serif font-semibold leading-[1.04] tracking-[-0.04em] text-forest sm:px-8 lg:px-10"
-          style={{ fontSize: "min(calc(9 * var(--vw)), 4.9rem)" }}
+          className="mx-auto max-w-[16ch] px-5 text-center font-serif font-normal leading-[1.04] tracking-[-0.04em] text-forest sm:px-8 lg:px-10"
+          style={{ fontSize: "clamp(2.45rem, 5.2vw, 4.9rem)", textWrap: "balance" }}
         >
           {READS.title}
         </h2>
@@ -112,7 +109,7 @@ export default function ReadsCarousel() {
 
         {/* The track clips at the container's content edge rather than the
             viewport, so the row stays on the same measure as every other
-            section while the next card is still cut mid-frame — which is what
+            section while the next card is still cut mid-frame - which is what
             signals there is more to scroll. */}
         <div className="mx-auto max-w-[2000px] px-5 sm:px-8 lg:px-10">
           <ul
@@ -123,40 +120,44 @@ export default function ReadsCarousel() {
             {READS.items.map((item, index) => (
               <li
                 key={item.id}
-                className={`w-[80%] flex-none snap-start sm:w-[47%] lg:w-[26%] ${
+                className={`w-[80%] flex-none snap-start sm:w-[47%] lg:w-[27%] ${
                   index % 2 === 1 ? RAISED : ""
                 }`}
               >
                 {/* These pointed at `#id` anchors that had no targets on the
                     page. Now that the routes exist they go to the real
-                    destination, from content/home.js. */}
-                <Link
-                  to={item.href}
-                  className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
-                >
-                  <Placeholder
-                    ratio={item.plate.ratio}
-                    brief={item.plate.brief}
-                    image={item.plate.image}
-                    alt={item.plate.alt}
-                    tone="light"
-                    className="rounded-[20px]"
-                  />
+                    destination, from content/home.js. Only the image is the
+                    link - the caption underneath is plain text. */}
+                <div className="text-center">
+                  <Link
+                    to={item.href}
+                    className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+                  >
+                    <Placeholder
+                      ratio={item.plate.ratio}
+                      brief={item.plate.brief}
+                      image={item.plate.image}
+                      alt={item.plate.alt}
+                      tone="light"
+                      navTheme="dark"
+                      className="rounded-[20px] transition-opacity group-hover:opacity-90"
+                    />
+                  </Link>
                   <h3
-                    className="mt-6 max-w-[20ch] font-serif font-bold leading-[1.14] tracking-[-0.03em] text-forest decoration-gold decoration-2 underline-offset-[6px] group-hover:underline"
-                    style={{ fontSize: "clamp(1.32rem, calc(1.85 * var(--vw)), 1.75rem)" }}
+                    className="mx-auto mt-6 max-w-[20ch] font-serif font-bold leading-[1.14] tracking-[-0.03em] text-forest"
+                    style={{ fontSize: "clamp(1.4rem, calc(1.95 * var(--vw)), 1.85rem)" }}
                   >
                     {item.title}
                   </h3>
                   {item.subtext && (
                     <p
-                      className="mt-3 font-sans font-medium text-forest/80 text-center"
-                      style={{ fontSize: "clamp(1.32rem, calc(1.85 * var(--vw)), 1.75rem)" }}
+                      className="mx-auto mt-3 font-sans font-medium text-forest/60"
+                      style={{ fontSize: "clamp(1.2rem, calc(1.7 * var(--vw)), 1.55rem)" }}
                     >
                       {item.subtext}
                     </p>
                   )}
-                </Link>
+                </div>
               </li>
             ))}
           </ul>

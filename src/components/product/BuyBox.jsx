@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import Container from "../ui/Container";
 import Button from "../ui/Button";
-import Eyebrow from "../ui/Eyebrow";
 import Picture from "../ui/Picture";
 import Placeholder from "../ui/Placeholder";
 import { useCart } from "../../cart/CartProvider";
@@ -10,9 +9,8 @@ import { BODY_SM, CAPTION, DISPLAY } from "../../styles/type";
 
 // 05_component_library.md §22.
 //
-// Content order inside the card is fixed: format eyebrow -> h1 -> price ->
-// paragraph -> 4 fact bullets -> quantity stepper -> Add to basket ->
-// reassurance -> allergen.
+// Content order inside the card is fixed: h1, price, paragraph, 4 fact
+// bullets, quantity stepper, Add to basket, reassurance, allergen.
 //
 // The allergen line is always visible and never inside an accordion
 // (product-detail.md, accessibility notes).
@@ -55,12 +53,10 @@ export default function BuyBox({ product, boxRef }) {
             is not enough for a card over an image without one of them
             becoming unreadable. */}
         <div className="rounded-2xl bg-[#FFFDF9] p-8 shadow-[0_22px_60px_-18px_rgba(47,62,47,0.22)] lg:-ml-12 lg:p-10">
-          <Eyebrow>{product.formatLong}</Eyebrow>
-
           <h1
             id="page-title"
             tabIndex={-1}
-            className="mt-5 font-serif font-normal text-forest outline-none"
+            className="font-serif font-normal text-forest outline-none"
             style={{ ...DISPLAY, fontSize: "clamp(2.6rem, 4vw, 4rem)" }}
           >
             {product.name}
@@ -75,7 +71,7 @@ export default function BuyBox({ product, boxRef }) {
           )}
 
           <p
-            className="mt-7 max-w-[46ch] font-serif text-forest/80"
+            className="mt-7 max-w-[46ch] font-sans text-forest/80"
             style={BODY_SM}
           >
             {product.paragraph}
@@ -89,7 +85,7 @@ export default function BuyBox({ product, boxRef }) {
                   className="mt-[0.6em] h-1 w-1 shrink-0 bg-gold"
                 />
                 <span
-                  className="font-serif text-forest/80"
+                  className="font-sans text-forest/80"
                   style={BODY_SM}
                 >
                   {bullet}

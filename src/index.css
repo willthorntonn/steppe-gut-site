@@ -1,8 +1,33 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
+:root {
+  /* The whole site renders one step smaller than it was drawn: what used to
+     need 85% browser zoom to look right is now what 100% gives you. `zoom`
+     rather than a transform because it is the one property that also widens
+     the layout viewport (a 1440px screen lays out at 1694px), which is what
+     makes it read as a zoom level instead of a shrunk screenshot. */
+  --page-zoom: 0.85;
+
+  /* Viewport units are the exception. A `vw` still resolves against the real
+     viewport, so inside the zoomed root it gets painted at 85% too — which
+     real browser zoom does not do: zooming out never shrinks a vw-sized
+     element, it just fits more of them. These put that back. Write
+     `calc(6 * var(--vw))` wherever you would have written `6vw`. */
+  --vw: calc(1vw / 0.85);
+  --vh: calc(1vh / 0.85);
+}
+
 html {
+  zoom: var(--page-zoom);
   background-color: #F5F1E9;
+  /* Reserve the vertical scrollbar's track at all times. When a modal locks
+     the page (sets `overflow: hidden` on this element - see components/ui/
+     Modal.jsx and the mobile menu in Nav.jsx) the scrollbar would otherwise
+     vanish, the layout viewport would widen by its width, and every centred
+     thing on the page would jump right for as long as the modal was open.
+     A no-op where the OS draws overlay scrollbars. */
+  scrollbar-gutter: stable;
   /* Guarantees the page itself never scrolls sideways, whatever a section
      does internally. Two things on this site legitimately extend past the
      viewport at narrow widths: the header's entrance animations, which start
@@ -18,6 +43,15 @@ html {
      than `clientWidth` on the home page — that is a reported metric, not a
      scrollable state. Verified that scrollLeft cannot be moved off 0. */
   overflow-x: clip;
+}
+
+/* Body / paragraph copy is set in the sans (Inter); the serif (EB Garamond)
+   is display type only — headings, the wordmark, pull quotes. This floor
+   catches any text written without an explicit `font-*` utility, which would
+   otherwise fall back to the browser's system UI font rather than Inter.
+   Elements that want the serif set `font-serif` themselves and still win. */
+body {
+  font-family: "Inter", system-ui, sans-serif;
 }
 
 /* Seed Sans — scoped to the ViaCap panel (assets in /public/fonts) */
@@ -67,6 +101,42 @@ html {
    draw a ring. */
 :where(h1)[tabindex="-1"]:focus-visible {
   outline: none;
+}
+
+/* Checkout text fields use a neutral grey focus ring instead of the site's
+   gold default — gold reads as an error/attention colour next to the payment
+   form. Specificity (not layer order) is what wins here: this selector beats
+   the :where() baseline above it. */
+.checkout-field:focus-visible {
+  outline-color: #9a9a9a;
+}
+
+/* Baseline keyboard focus ring for every interactive element, so an inline
+   link or a checkbox can never end up with no visible focus state just
+   because it was written without the utility class. Components that set their
+   own `focus-visible:outline-*` use the same gold/2px/offset-2 treatment, so
+   this is a floor rather than an override.
+   03_design_system.md §1.5 — focus is never `outline: none`. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* The <h1> on each page is focused programmatically on route change. It is a
+   move-focus-here target, not something the user tabbed to, so it should not
+   draw a ring. */
+:where(h1)[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
+/* Swipeable rows keep their native scrolling but drop the visible bar, which
+   would otherwise sit under the cards on trackpad-less desktops. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Swipeable rows keep their native scrolling but drop the visible bar, which
@@ -123,6 +193,53 @@ html {
   animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Signup confirmation mark (components/auth/AuthModal welcome view). The ring scales in with a soft
+   overshoot, the tick draws itself a beat later, then a single slow halo
+   pulse rings out behind it. */
+@keyframes checkRingIn {
+  from { opacity: 0; transform: scale(0.6); }
+  60%  { opacity: 1; transform: scale(1.06); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes checkTickDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes checkHalo {
+  0%   { transform: scale(0.9); opacity: 0.45; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.check-ring {
+  animation: checkRingIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.check-tick {
+  stroke-dasharray: 64;
+  stroke-dashoffset: 64;
+  animation: checkTickDraw 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0.4s both;
+}
+.check-halo {
+  animation: checkHalo 1.6s ease-out 0.9s 1 both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .check-ring { animation: none; }
+  .check-tick { animation: none; stroke-dashoffset: 0; }
+  .check-halo { animation: none; display: none; }
+}
+
+/* Basket badge acknowledging a landed item. Applied by Nav.jsx only when a
+   flyToCart() projectile arrives — see src/cart/flyToCart.js. The overshoot is
+   what makes the number feel caught rather than merely re-rendered. */
+@keyframes cartBump {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.55); }
+  70% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+.animate-cart-bump {
+  animation: cartBump 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
 /* The entrance animations above are decorative only — every element they run
    on is already in its final position, so dropping the animation leaves the
    content fully visible rather than stuck at opacity 0. */
@@ -132,6 +249,56 @@ html {
   .animate-slide-left,
   .animate-slide-right,
   .animate-scale-in,
+  .animate-cart-bump,
+  .animate-word-reveal > span {
+    animation: none;
+  }
+
+  /* 03_design_system.md §10 makes reduced motion a hard requirement, not a
+     best effort: every transition collapses to a short opacity-only change,
+     and nothing moves or scales.
+
+     `!important` is deliberate — several components (the nav pills, Button)
+     set transition timing as an inline style for reasons documented at those
+     call sites, and an inline style would otherwise win over this rule. A
+     user asking for reduced motion should not have to lose that argument.
+
+     Scroll reveals and count-ups are handled separately, in JS: both render
+     their final state immediately rather than being animated faster. */
+  *,
+  *::before,
+  *::after {
+    transition-property: opacity !important;
+    transition-duration: 120ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Basket badge acknowledging a landed item. Applied by Nav.jsx only when a
+   flyToCart() projectile arrives — see src/cart/flyToCart.js. The overshoot is
+   what makes the number feel caught rather than merely re-rendered. */
+@keyframes cartBump {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.55); }
+  70% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+.animate-cart-bump {
+  animation: cartBump 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* The entrance animations above are decorative only — every element they run
+   on is already in its final position, so dropping the animation leaves the
+   content fully visible rather than stuck at opacity 0. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-slide-left,
+  .animate-slide-right,
+  .animate-scale-in,
+  .animate-cart-bump,
   .animate-word-reveal > span {
     animation: none;
   }
@@ -168,3 +335,12 @@ html {
 .delay-900 { animation-delay: 0.9s; }
 .delay-1000 { animation-delay: 1s; }
 .delay-1100 { animation-delay: 1.1s; }
+
+/* The mobile menu is a full-bleed sheet, and the left-edge social rail is
+   fixed above the page at z-40 - without this it floats over the drawer's
+   links on a phone. Nav sets data-menu-open on <html> while the drawer is
+   open; the drawer carries its own social row at the foot, so nothing is
+   lost while the rail is away. */
+html[data-menu-open] [data-social-rail] {
+  display: none;
+}

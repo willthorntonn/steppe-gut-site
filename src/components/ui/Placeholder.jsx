@@ -23,21 +23,33 @@ export default function Placeholder({
   brief,
   tone = "light",
   className = "",
+  // Styles the <img> rather than its frame, so a caller can scale the photo
+  // inside a frame that is being scaled by a different amount (ProcessRow
+  // grows the frame and pushes the photo in slightly further on hover).
+  imageClassName = "",
   image,
   alt = "",
+  // Lets a frame tell the fixed nav what it is, for the stretch of scroll where
+  // the nav is over it - "dark" for the Mongolia photography, which is far
+  // darker than the cream sections holding it. Opt-in rather than assumed from
+  // `tone`: tone is about the frame's own furniture, and a light-toned frame
+  // can still hold a dark photograph. Only set on the real-photo branch; an
+  // unshot frame is hatched cream and reads as the section around it.
+  navTheme,
 }) {
   const t = TONES[tone];
 
   if (image) {
     return (
       <figure
+        data-navtheme={navTheme}
         className={`relative w-full overflow-hidden border ${t.border} ${className}`}
         style={{ aspectRatio: ratio }}
       >
         <img
           src={image}
           alt={alt}
-          className="h-full w-full object-cover"
+          className={`h-full w-full object-cover ${imageClassName}`}
         />
       </figure>
     );

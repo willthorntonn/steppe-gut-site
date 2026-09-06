@@ -2,7 +2,9 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Nav";
 import Footer from "./Footer";
 import RouteChange from "./RouteChange";
+import SocialRail from "./SocialRail";
 import BackToTop from "../ui/BackToTop";
+import AuthModal from "../auth/AuthModal";
 import { CartAnnouncer } from "../../cart/CartProvider";
 
 // Global chrome, present on every route except /checkout/ (which uses
@@ -26,7 +28,9 @@ export default function Layout() {
       </main>
 
       <Footer />
+      <SocialRail />
       <BackToTop />
+      <AuthModal />
       <CartAnnouncer />
     </>
   );

@@ -14,7 +14,7 @@ import { BODY, BODY_SM, H2, H4 } from "../styles/type";
 //
 // A social page for a brand that has not posted anything yet. The failure mode
 // is a grid of stock images pretending to be posts and a follower count that
-// is really a target — both of which 02_brand_guidelines.md §10 rules out by
+// is really a target - both of which 02_brand_guidelines.md §10 rules out by
 // name. So the page states its position instead, which is honest, costs
 // nothing, and matches the honest-limits principle used everywhere else.
 //
@@ -27,13 +27,12 @@ export default function Social() {
     <>
       <PageMeta
         title="Social · Steppe Gut"
-        description="What Steppe Gut intends to post, and how to find out when the accounts open."
+        description="What Steppe Gut intends to post, and how to find out when the accounts open"
       />
 
       <PageHeader
-        eyebrow="Social"
         title="We have not started posting yet"
-        lead="The accounts are not open. Rather than fill this page with pictures that are not ours and numbers that are not real, here is what we intend to post, and how to find out when it starts."
+        lead="The accounts are not open. Rather than fill this page with pictures that are not ours and numbers that are not real, here is what we intend to post, and how to find out when it starts"
       />
 
       <Section size="sm">
@@ -54,7 +53,7 @@ export default function Social() {
                   {pillar.title}
                 </h3>
                 <p
-                  className="mt-3 font-serif text-forest/75"
+                  className="mt-3 font-sans text-forest/75"
                   style={BODY_SM}
                 >
                   {pillar.body}
@@ -81,12 +80,12 @@ export default function Social() {
               Where to find us
             </h2>
             <p
-              className="mt-8 max-w-[58ch] font-serif text-forest/75"
+              className="mt-8 max-w-[58ch] font-sans text-forest/75"
               style={BODY}
             >
               These are the platforms we intend to use. None of the accounts is
-              open yet, so none of them is linked — when they are live, the
-              handles will appear here and in the footer.
+              open yet, so none of them is linked. When they are live, the
+              handles will appear here and in the footer
             </p>
 
             {/* Plain text, not links. A link to a nonexistent account is a
@@ -125,12 +124,12 @@ export default function Social() {
                 Tell me when it starts
               </h2>
               <p
-                className="mt-7 max-w-[54ch] font-serif text-forest/80"
+                className="mt-7 max-w-[54ch] font-sans text-forest/80"
                 style={BODY}
               >
                 We do not have a mailing list set up yet, and we are not going
                 to put up a form that quietly collects addresses into nothing.
-                Email us and we will write to you when the accounts go live.
+                Email us and we will write to you when the accounts go live
               </p>
               <Button
                 href={`mailto:${COMPANY.brandOwner.email}?subject=Tell%20me%20when%20Steppe%20Gut%20is%20on%20social`}
@@ -148,10 +147,11 @@ export default function Social() {
 
       <Reveal>
         <ClosingCTA
+          placeholder
           heading="In the meantime"
-          body="The product pages have more detail than anything we would post anyway."
+          body="The product pages have more detail than anything we would post anyway"
           primary={{ label: "See the products", to: "/products/" }}
-          secondary={{ label: "What is in it", to: "/ingredients-sourcing/" }}
+          secondary={{ label: "What is in it", to: "/gut-health/" }}
         />
       </Reveal>
     </>

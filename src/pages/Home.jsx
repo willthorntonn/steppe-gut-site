@@ -9,20 +9,20 @@ import PageMeta from "../components/ui/PageMeta";
 // The hero, origin feature, process row, reads carousel and supporter counter
 // are the existing homepage, unchanged in substance. The product-formats rail
 // ("The formats" / "Three ways to take it"), the "How it works" section and
-// the "Start with one sachet a day" closing CTA were all removed by request —
+// the "Start with one sachet a day" closing CTA were all removed by request -
 // ClosingCTA still bookends every other page; HowItWorks was only ever used
-// here, so components/home/HowItWorks.jsx is now unreferenced — kept on disk
+// here, so components/home/HowItWorks.jsx is now unreferenced - kept on disk
 // rather than deleted in case the section is wanted back. The supporter
 // counter (SteppeArmyProgress) moved from right after the hero to the very
 // bottom of the page, directly above the footer, also by request.
 //
 // Two of home.md's sections are deliberately not built:
 //
-// §3 "What it is" — folded into HowItWorks' first paragraph. OriginFeature
+// §3 "What it is" - folded into HowItWorks' first paragraph. OriginFeature
 //   already sits directly above it with a milk-changed-by-time narrative, and
 //   a separate row would have made the same point twice.
 //
-// §6 "Mongolia chapter break" — its stated purpose is to stop provenance
+// §6 "Mongolia chapter break" - its stated purpose is to stop provenance
 //   being a footnote. It already isn't: OriginFeature is a full section on the
 //   steppe, ProcessRow is three steps of Mongolian production, and two of the
 //   five reads cards are provenance. A fourth Mongolia beat would tip the page
@@ -32,8 +32,8 @@ export default function Home() {
   return (
     <>
       <PageMeta
-        title="Steppe Gut — Fermented Mare's Milk from Mongolia"
-        description="A daily fermented mare's milk supplement from the Mongolian steppe. What it is, how it is made, and what the research does and does not show."
+        title="Steppe Gut · Fermented Mare's Milk from Mongolia"
+        description="A daily fermented mare's milk supplement from the Mongolian steppe. What it is, how it is made, and what the research does and does not show"
       />
 
       {/* Not wrapped in Reveal: the hero runs its own 300–900ms word and
