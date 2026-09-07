@@ -79,25 +79,29 @@ export default function OurStoryScienceMission() {
         <Section
           size="none"
           bg="cream"
-          className="pt-24 pb-20 sm:pt-32 sm:pb-28 lg:pt-48 lg:pb-36"
+          className="pt-10 pb-20 sm:pt-12 sm:pb-28 lg:pt-20 lg:pb-36"
         >
           <Container width="content">
             {/* The heading carries a top margin of its own, the way the big
                 bold-serif beats elsewhere on the site do (MissionTimeline's
                 heading runs mt-20/lg:mt-28), so it sits a little lower in the
-                section rather than hard against the plate above. */}
+                section rather than hard against the plate above. Both this
+                margin and the section's own top padding above are scaled to
+                about 40% of their original values (Will's amendment,
+                2026-09-07), so the heading and everything below it sit
+                noticeably higher under the plate. */}
             {/* Runs at H2_XL, not H2: this is the page's banner beat, sized to
                 match the big bold-serif headings on /our-story/mission/. A plain
                 H2 gets pinned by its 4.2rem cap on a wide window, which reads
                 small against the plate above it. */}
             <h2
-              className="mt-12 font-serif font-bold tracking-[-0.02em] text-forest lg:mt-16"
+              className="mt-5 font-serif font-bold tracking-[-0.02em] text-forest lg:mt-6"
               style={H2_XL}
             >
               {intro.heading}
             </h2>
             <p
-              className="mt-16 max-w-[44ch] font-sans text-forest/80 lg:mt-20"
+              className="mt-10 max-w-[44ch] font-sans text-forest/80"
               style={FLOW_BODY}
             >
               {intro.body}
