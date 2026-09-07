@@ -35,6 +35,7 @@ be traced back to its source.
 | `manufacturing-facility.webp` | Sean Foster | https://unsplash.com/photos/dptVddIsXUc |
 | `manufacturing-hero.webp` | Ivan Pergasi | https://unsplash.com/photos/WqOhUUdCgEs |
 | `manufacturing-makers.webp` | marcelo guarnieri | https://unsplash.com/photos/AdchdCGeVyY |
+| `manufacturing-measured.webp` | ThisIsEngineering | https://www.pexels.com/photo/scientist-working-in-laboratory-3912364/ |
 | `microbiome-spoon-2.webp` | Anna Jackowska | https://unsplash.com/photos/ZZQxgP19gAg |
 | `mission-hero.webp` | C Cai | https://unsplash.com/photos/SsDFkpNvw34 |
 | `mission-sachets.webp` | Alinson torres | https://unsplash.com/photos/BZBtev-DM7Q |

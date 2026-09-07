@@ -112,7 +112,7 @@ export default function OurStoryManufacturing() {
         <Section
           size="none"
           bg="cream"
-          className="pt-4 pb-20 text-center sm:pt-6 sm:pb-28 lg:pt-10 lg:pb-36"
+          className="pt-4 pb-6 text-center sm:pt-6 sm:pb-8 lg:pt-10 lg:pb-10"
         >
           <Container width="content">
             <h2
@@ -122,7 +122,7 @@ export default function OurStoryManufacturing() {
               {intro.heading}
             </h2>
             <p
-              className="mx-auto mt-8 max-w-[48ch] font-sans text-forest/80"
+              className="mx-auto mt-8 max-w-[72ch] font-sans text-forest/80"
               style={BODY}
             >
               {intro.body}

@@ -1,6 +1,7 @@
 import manufacturingHero from "../assets/story/manufacturing-hero.webp";
 import theMilking from "../assets/story/story-milking.webp";
 import theVessel from "../assets/story/story-vessel.webp";
+import measured from "../assets/story/manufacturing-measured.webp";
 import makers from "../assets/story/manufacturing-makers.webp";
 
 // Copy for /our-story/manufacturing/. Built to the shape of the reference
@@ -73,6 +74,11 @@ export const MANUFACTURING = {
   measured: {
     heading: "Every batch is measured, not assumed",
     body: "Fermentation carried out in individual family vessels produces more variation than a single industrial tank would. We manage that by testing every batch before it is released and by blending batches from within one season to even out the difference, and nothing from outside the June to October season is ever blended in. Moisture, protein, fat, lactose, vitamin C, heavy metals and the declared allergen are all checked, and a certificate of analysis is available on request.",
+    imageBrief:
+      "plain editorial photograph of an analytical balance on a laboratory bench reading a small mass in grams, gloved hands settling a sample on the pan, a graduated cylinder alongside, cool daylight, matter-of-fact tone",
+    src: measured,
+    alt: "A sample being weighed on an analytical balance in a laboratory",
+    ratio: "3 / 4",
   },
 
   stepsHeading: "Seven steps, pail to sachet",
