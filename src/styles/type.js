@@ -28,6 +28,16 @@ export const H2 = {
   textWrap: "balance",
 };
 
+/** Oversized, heavy section heading. Used for the "Our Story" and "Fast
+ *  forward to today" beats on /our-story/mission/, which are meant to read
+ *  markedly larger and thicker than a normal H2. Pair with `font-bold`. */
+export const H2_XL = {
+  fontSize: "clamp(3.4rem, 7.4vw, 7rem)",
+  lineHeight: 1.02,
+  letterSpacing: "-0.04em",
+  textWrap: "balance",
+};
+
 /** Sub-section / card heading (`<h3>`). */
 export const H3 = {
   fontSize: "clamp(1.6rem, 2.3vw, 2.2rem)",

@@ -12,12 +12,13 @@ export default function ImagePlaceholder({
   alt = "",
   imgClassName = "",
   imgStyle,
+  style,
 }) {
   if (src) {
     return (
       <div
         className={`w-full overflow-hidden ${rounded} ${className}`}
-        style={{ aspectRatio: ratio }}
+        style={{ aspectRatio: ratio, ...style }}
       >
         <img
           src={src}
@@ -32,7 +33,7 @@ export default function ImagePlaceholder({
   return (
     <div
       className={`flex w-full items-center justify-center border border-dashed border-forest/25 bg-forest/[0.07] px-6 text-center ${rounded} ${className}`}
-      style={{ aspectRatio: ratio }}
+      style={{ aspectRatio: ratio, ...style }}
     >
       <span className="max-w-[38ch] font-sans text-sm leading-relaxed text-forest/55">
         Image: {description}

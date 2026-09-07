@@ -28,38 +28,43 @@ export const MISSION = {
   },
 
   heading: "Our Mission",
-  statement: [
-    "Our mission is to bring one of the world's oldest fermented foods out of Mongolia without changing what it is",
-    "Fermented mare's milk has been part of daily life on the steppe for eight hundred years. It was never designed as a health product. It is what the land gives, and what the people who live on it have always made",
-    "It had never travelled, because the fresh ferment spoils within days and the mares are only in milk for a few months of the year. We fixed that, and nothing else. It is fermented where it has always been fermented, dried where it is made, and sealed there before it leaves the country",
-  ],
-
-  quote:
-    "We didn't invent anything. We found where it was already happening, and arranged for it to reach you unchanged",
+  statement:
+    "Our mission is to bring one of the world's oldest fermented foods out of Mongolia without changing what it is. Fermented mare's milk has been part of daily life on the steppe for eight hundred years. It was never designed as a health product. It is what the land gives, and what the people who live on it have always made. It had never travelled, because the fresh ferment spoils within days and the mares are only in milk for a few months of the year. We fixed that, and nothing else. It is fermented where it has always been fermented, dried where it is made, and sealed there before it leaves the country",
 
   timelineHeading: "Our Story",
   timeline: [
     {
       era: "Eight hundred years ago",
       body: "Riders cross the steppe with herds of mares. The milk is fermented as the column moves, and made fresh wherever it stops to camp",
+      brief:
+        "a mounted column of riders moving across open steppe with a loose herd of mares alongside, low dust behind the hooves, wide unposed framing, muted overcast daylight, no modern objects in shot",
     },
     {
       era: "Every season since",
       body: "Herding families keep their own living cultures, each one carried from one summer to the next without a break",
+      brief:
+        "three generations of a herding family outside their ger at dawn passing a worn wooden pail between them, faint steam off fresh milk, warm low side light, quiet documentary tone",
     },
     {
       era: "Töv Province, today",
       body: "Steppe Gut is formed. The milk is bought from families who were already fermenting it, at a price agreed before each season starts",
+      brief:
+        "two herders and a Steppe Gut buyer talking beside a full milk churn on the tailgate of a weathered truck, open grassland behind, flat daylight, candid and unposed",
     },
     {
       era: "Now",
-      body: "The ferment is dried and sealed where it is made, then carried to you as a stable powder that is never reconstituted or re-cultured on the way",
+      body: "Dried and sealed where it is made, the ferment reaches you as a stable powder, never re-cultured on the way",
+      brief:
+        "sealed foil sachets of pale powder on a stainless bench inside a small production room, one gloved hand placing a sachet into a carton, clean even light, no branding visible",
     },
   ],
 
   todayHeading: "Fast forward to today",
-  todayBody:
-    "The method hasn't changed. What is new is that you can get it outside Mongolia, in a pack that keeps until you add water",
+  todayBody: [
+    "The way this milk is fermented on the steppe has not changed in eight centuries",
+    "and the one thing that has changed is only how far the sealed ferment can now travel",
+    "it reaches you unchanged as a dried powder that keeps until the day you add water",
+  ],
 
   chapters: [
     {

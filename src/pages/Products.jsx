@@ -4,6 +4,7 @@ import Section from "../components/ui/Section";
 import Container from "../components/ui/Container";
 import ProductCard from "../components/product/ProductCard";
 import CollectionToolbar from "../components/product/CollectionToolbar";
+import NewsletterSignup from "../components/marketing/NewsletterSignup";
 import {
   PRODUCTS,
   MARKETING_PRICE_BY_SLUG,
@@ -131,66 +132,5 @@ export default function Products() {
 
       <NewsletterSignup />
     </>
-  );
-}
-
-// Same layout as the reference Shopify block - centred heading, lead line,
-// bordered input, solid button - rebuilt in the site's own forest/cream/gold
-// palette instead of the generic black-on-grey defaults. Sits on the same
-// cream as the grid above it, with no rule between the two.
-function NewsletterSignup() {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-  };
-
-  return (
-    <Section bg="cream" size="default">
-      <Container width="content">
-        <div className="mx-auto max-w-[500px] text-center">
-          <h2 className="font-sans text-[32px] font-semibold tracking-[-0.02em] text-forest sm:text-[38px] lg:text-[44px]">
-            Subscribe to our emails
-          </h2>
-          <p className="mx-auto mt-3 whitespace-nowrap font-sans text-base text-forest/70 lg:text-xl">
-            Join our email list for exclusive offers and the latest news
-          </p>
-
-          {submitted ? (
-            <p className="mt-7 font-sans text-sm font-semibold text-forest">
-              You're on the list
-            </p>
-          ) : (
-            <form
-              onSubmit={handleSubmit}
-              className="mt-7 flex flex-col gap-3"
-              noValidate
-            >
-              <label htmlFor="newsletter-email" className="sr-only">
-                Email
-              </label>
-              <input
-                id="newsletter-email"
-                type="email"
-                required
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="Email"
-                className="h-14 w-full border border-forest/40 bg-cream px-5 font-sans text-base text-forest placeholder:text-forest/50 focus:outline-none focus:ring-2 focus:ring-gold/50"
-              />
-              <button
-                type="submit"
-                className="h-14 w-full bg-forest font-sans text-[15px] font-bold tracking-[0.08em] text-cream transition-colors hover:bg-forest/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-              >
-                Sign up
-              </button>
-            </form>
-          )}
-        </div>
-      </Container>
-    </Section>
   );
 }

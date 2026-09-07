@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node server/index.js",
+    "dev:all": "node scripts/dev-all.mjs",
+    "test:api": "node server/test/api.test.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },

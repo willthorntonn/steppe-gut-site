@@ -4,6 +4,7 @@ import Layout from "./components/layout/Layout";
 import CheckoutLayout from "./components/layout/CheckoutLayout";
 import { AuthProvider, useAuth } from "./auth/AuthProvider";
 import { CartProvider } from "./cart/CartProvider";
+import { OrdersProvider } from "./orders/OrdersProvider";
 import Home from "./pages/Home";
 
 // Home is imported eagerly: it is the entry point, and code-splitting it
@@ -39,6 +40,14 @@ function RouteFallback() {
   return <div className="min-h-[calc(60*var(--vh))] bg-cream" aria-hidden="true" />;
 }
 
+// Our Story and Gut Health are the site's long-form editorial pages. This
+// wrapper switches on `text-wrap: pretty` for their body copy (see
+// src/index.css) so no paragraph ever breaks to leave a single orphaned word
+// on its own line. A plain block wrapper - no layout or scroll effect.
+function Editorial({ children }) {
+  return <div className="editorial-copy">{children}</div>;
+}
+
 // Onboarding / sign-in is a modal now (components/auth/AuthModal), not a page.
 // The old /sign-in/ URL is kept alive for bookmarks and external links: it
 // pops the modal open and drops the visitor on the home page behind it.
@@ -53,6 +62,7 @@ function SignInRedirect() {
 export default function App() {
   return (
     <AuthProvider>
+    <OrdersProvider>
     <CartProvider>
       <BrowserRouter>
         <Suspense fallback={<RouteFallback />}>
@@ -61,39 +71,39 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/products/" element={<Products />} />
               <Route path="/products/:slug/" element={<ProductDetail />} />
-              <Route path="/our-story/" element={<OurStory />} />
-              <Route path="/our-story/mission/" element={<OurStoryMission />} />
+              <Route path="/our-story/" element={<Editorial><OurStory /></Editorial>} />
+              <Route path="/our-story/mission/" element={<Editorial><OurStoryMission /></Editorial>} />
               <Route
                 path="/our-story/science-mission/"
-                element={<OurStoryScienceMission />}
+                element={<Editorial><OurStoryScienceMission /></Editorial>}
               />
               <Route
                 path="/our-story/manufacturing/"
-                element={<OurStoryManufacturing />}
+                element={<Editorial><OurStoryManufacturing /></Editorial>}
               />
-              <Route path="/our-story/:section/" element={<OurStorySection />} />
-              <Route path="/gut-health/" element={<GutHealth />} />
-              <Route path="/gut-health/diet/" element={<GutDiet />} />
+              <Route path="/our-story/:section/" element={<Editorial><OurStorySection /></Editorial>} />
+              <Route path="/gut-health/" element={<Editorial><GutHealth /></Editorial>} />
+              <Route path="/gut-health/diet/" element={<Editorial><GutDiet /></Editorial>} />
               <Route
                 path="/gut-health/diet"
                 element={<Navigate to="/gut-health/diet/" replace />}
               />
-              <Route path="/gut-health/exercise/" element={<GutExercise />} />
+              <Route path="/gut-health/exercise/" element={<Editorial><GutExercise /></Editorial>} />
               <Route
                 path="/gut-health/exercise"
                 element={<Navigate to="/gut-health/exercise/" replace />}
               />
-              <Route path="/gut-health/routine/" element={<GutRoutine />} />
+              <Route path="/gut-health/routine/" element={<Editorial><GutRoutine /></Editorial>} />
               <Route
                 path="/gut-health/routine"
                 element={<Navigate to="/gut-health/routine/" replace />}
               />
-              <Route path="/gut-health/sleep/" element={<GutSleep />} />
+              <Route path="/gut-health/sleep/" element={<Editorial><GutSleep /></Editorial>} />
               <Route
                 path="/gut-health/sleep"
                 element={<Navigate to="/gut-health/sleep/" replace />}
               />
-              <Route path="/gut-health/:section/" element={<GutHealthSection />} />
+              <Route path="/gut-health/:section/" element={<Editorial><GutHealthSection /></Editorial>} />
               <Route path="/faq/" element={<FAQ />} />
               <Route path="/buy/" element={<Buy />} />
               <Route path="/social/" element={<Social />} />
@@ -103,8 +113,9 @@ export default function App() {
               <Route path="/checkout/confirmation/" element={<Confirmation />} />
               <Route path="/contact/" element={<Contact />} />
 
-              {/* Account area. No auth backend - a demo session is seeded
-                  client-side (see src/auth/AuthProvider.jsx). noindex is set
+              {/* Account area. Real accounts, served by the API in server/
+                  (see src/auth/AuthProvider.jsx and src/api/client.js) - the
+                  pages are empty until someone registers. noindex is set
                   per-page via PageMeta. Sign in / sign up are a modal
                   (components/auth/AuthModal); /sign-in/ just opens it. */}
               <Route path="/sign-in/" element={<SignInRedirect />} />
@@ -171,6 +182,7 @@ export default function App() {
         </Suspense>
       </BrowserRouter>
     </CartProvider>
+    </OrdersProvider>
     </AuthProvider>
   );
 }

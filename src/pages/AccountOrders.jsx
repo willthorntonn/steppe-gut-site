@@ -6,16 +6,16 @@ import Container from "../components/ui/Container";
 import Picture from "../components/ui/Picture";
 import { useAuth } from "../auth/AuthProvider";
 import { useCart } from "../cart/CartProvider";
-import { ordersNewestFirst, statusLabel } from "../data/orders";
+import { useOrders } from "../orders/OrdersProvider";
+import { statusLabel } from "../orders/orderStore";
 import { PRODUCT_BY_SLUG } from "../data/products";
-import {
-  DEMO_UNIT_PRICE,
-  PROMO_MIN_UNITS,
-  PROMO_RATE,
-  baht,
-} from "../checkout/demoPrices";
+import { baht } from "../checkout/demoPrices";
 
-// My Orders. Deliberately built on the cart page's layout - same forest / cream
+// My Orders. The history is fetched from the account API (orders/OrdersProvider
+// -> server/routes/orders.js), so it is the account's orders rather than one
+// browser's, and it is empty until that account has bought something.
+//
+// Deliberately built on the cart page's layout - same forest / cream
 // palette, same PRODUCT / QUANTITY / TOTAL rule, same right-aligned totals
 // block - so a past order reads like a frozen basket. The differences are all
 // the ones that follow from the order being finished: the quantity is a
@@ -37,31 +37,35 @@ function formatDate(iso) {
   });
 }
 
-// Line items resolved against products.js, plus the same promo maths the cart
-// runs. Kept out of the component so an order with an unknown slug (e.g. a
-// discontinued SKU) simply drops that row rather than crashing the page.
+// Rows for one stored order.
 //
-// A stand-in on top of a stand-in, and deliberately left that way for now.
-// DEMO_UNIT_PRICE is a placeholder for a price that was never set, and here
-// it is being used to value orders that were supposedly charged months ago -
-// so a past total silently re-prices itself whenever that constant moves,
-// which is not how an order history behaves. Every line also values at the
-// same figure regardless of SKU, so a bag, a box and a bottle all cost the
-// same in this view.
-//
-// The fix is data, not arithmetic: when real prices land in products.js, each
-// order in data/orders.js records the amounts it was actually charged and
-// this function reads those instead of recomputing. Until there are real
-// prices to record there is nothing truthful to write down, so it stays.
+// The money is read, never recomputed: `unitPrice` per line and the recorded
+// totals are what the account was charged at the time, so a past order does
+// not silently re-price itself when list prices move. products.js is only
+// consulted for the things that are safe to look up live - the image, and the
+// link to the product page. A slug that no longer exists (a discontinued SKU)
+// still renders its row from the name recorded on the order, because dropping
+// it would leave rows that no longer add up to the total beneath them.
 function resolveOrder(order) {
-  const lines = order.items
-    .map((item) => ({ product: PRODUCT_BY_SLUG[item.slug], qty: item.qty }))
-    .filter((line) => line.product);
+  const lines = order.items.map((item) => {
+    const product = PRODUCT_BY_SLUG[item.slug] ?? null;
+    return {
+      product,
+      slug: item.slug,
+      name: item.name ?? product?.name ?? "Item",
+      qty: item.qty,
+      unitPrice: item.unitPrice,
+      total: item.unitPrice * item.qty,
+    };
+  });
   const units = lines.reduce((sum, line) => sum + line.qty, 0);
-  const original = units * DEMO_UNIT_PRICE;
-  const savings = units >= PROMO_MIN_UNITS ? original * PROMO_RATE : 0;
-  const subtotal = original - savings;
-  return { lines, units, original, savings, subtotal };
+  return {
+    lines,
+    units,
+    savings: order.totals?.savings ?? 0,
+    subtotal: order.totals?.total ?? 0,
+    promoLabel: order.promoLabel,
+  };
 }
 
 /** Read-only quantity, styled to echo the cart's stepper field. */
@@ -74,13 +78,14 @@ function QtyValue({ qty }) {
 }
 
 export default function AccountOrders() {
-  const { user, openAuthModal } = useAuth();
+  const { user, loading: sessionLoading, offline, openAuthModal } = useAuth();
   const { add } = useCart();
+  const { orders, loading: ordersLoading, error: ordersError } = useOrders();
   const navigate = useNavigate();
   const [reordering, setReordering] = useState(null);
 
-  const orders = ordersNewestFirst();
-
+  // Reorder only puts back what is still buyable - a discontinued line shows
+  // in the history but cannot go into a basket.
   const handleReorder = (order) => {
     setReordering(order.id);
     order.items.forEach((item) => {
@@ -110,11 +115,29 @@ export default function AccountOrders() {
             </Link>
           </div>
 
-          {!user ? (
+          {/* The session and the history both come from the server, so there
+              is a moment on boot where neither the signed-out card nor the
+              empty state is true yet. Waiting is the only honest thing to
+              show in that gap. */}
+          {sessionLoading || (user && ordersLoading) ? (
+            <p className="mt-10 border-t border-forest/15 pt-10 font-sans text-[1.25rem] text-forest/60">
+              Loading your orders
+            </p>
+          ) : offline ? (
+            /* Not the same thing as being signed out: the session could not
+               be checked at all, so telling someone to sign in would send
+               them to a form that cannot work either. */
+            <div className="mt-10 border-t border-forest/15 pt-10">
+              <p className="max-w-[46ch] font-sans text-[1.25rem] leading-relaxed text-forest/75">
+                Your orders can&rsquo;t be reached right now. Check your
+                connection and reload the page
+              </p>
+            </div>
+          ) : !user ? (
             <div className="mt-10 border-t border-forest/15 pt-10">
               <p className="max-w-[46ch] font-sans text-[1.25rem] leading-relaxed text-forest/75">
                 You&rsquo;re signed out. Sign in to see your order history and
-                drop any past order back into your cart in one step.
+                drop any past order back into your cart in one step
               </p>
               <button
                 type="button"
@@ -124,11 +147,17 @@ export default function AccountOrders() {
                 Sign in
               </button>
             </div>
+          ) : ordersError ? (
+            <div className="mt-10 border-t border-forest/15 pt-10">
+              <p className="max-w-[46ch] font-sans text-[1.25rem] leading-relaxed text-forest/75">
+                {ordersError}
+              </p>
+            </div>
           ) : orders.length === 0 ? (
             <div className="mt-10 border-t border-forest/15 pt-10">
               <p className="max-w-[46ch] font-sans text-[1.25rem] leading-relaxed text-forest/75">
                 No orders yet. When you place one it shows up here, ready to
-                reorder in a single step.
+                reorder in a single step
               </p>
               <Link
                 to="/products/"
@@ -140,7 +169,8 @@ export default function AccountOrders() {
           ) : (
             <ul>
               {orders.map((order, index) => {
-                const { lines, units, savings, subtotal } = resolveOrder(order);
+                const { lines, units, savings, subtotal, promoLabel } =
+                  resolveOrder(order);
                 return (
                   <li
                     key={order.id}
@@ -190,32 +220,47 @@ export default function AccountOrders() {
                     <ul className="border-b border-forest/15 md:border-t-0">
                       {lines.map((line) => (
                         <li
-                          key={line.product.slug}
+                          key={line.slug}
                           className="grid grid-cols-[1fr_auto] items-start gap-5 border-t border-forest/15 py-12 first:border-t md:grid-cols-[1fr_auto_140px] md:items-center md:gap-8 md:first:border-t-0"
                         >
                           <div className="col-span-2 flex items-start gap-5 md:col-span-1">
-                            <Link
-                              to={`/products/${line.product.slug}/`}
-                              className="h-32 w-32 shrink-0 rounded-[12px] border border-forest/15 bg-[#FFFDF9] p-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-                            >
-                              <Picture
-                                avif={line.product.thumb.avif}
-                                webp={line.product.thumb.webp}
-                                alt={line.product.alt}
-                                width={128}
-                                height={128}
-                                imgClassName="h-full w-full object-contain"
-                              />
-                            </Link>
-                            <div className="min-w-0">
+                            {/* A line whose product is gone keeps the row and
+                                the empty frame, so the column rhythm holds. */}
+                            {line.product ? (
                               <Link
                                 to={`/products/${line.product.slug}/`}
-                                className="font-sans text-[16px] font-semibold leading-snug text-forest underline-offset-[4px] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+                                className="h-32 w-32 shrink-0 rounded-[12px] border border-forest/15 bg-[#FFFDF9] p-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
                               >
-                                {line.product.name}
+                                <Picture
+                                  avif={line.product.thumb.avif}
+                                  webp={line.product.thumb.webp}
+                                  alt={line.product.alt}
+                                  width={128}
+                                  height={128}
+                                  imgClassName="h-full w-full object-contain"
+                                />
                               </Link>
+                            ) : (
+                              <div
+                                className="h-32 w-32 shrink-0 rounded-[12px] border border-forest/15 bg-[#FFFDF9]"
+                                aria-hidden="true"
+                              />
+                            )}
+                            <div className="min-w-0">
+                              {line.product ? (
+                                <Link
+                                  to={`/products/${line.product.slug}/`}
+                                  className="font-sans text-[16px] font-semibold leading-snug text-forest underline-offset-[4px] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+                                >
+                                  {line.name}
+                                </Link>
+                              ) : (
+                                <p className="font-sans text-[16px] font-semibold leading-snug text-forest">
+                                  {line.name}
+                                </p>
+                              )}
                               <p className="mt-1.5 font-sans text-[15px] text-forest">
-                                {baht(DEMO_UNIT_PRICE)}
+                                {baht(line.unitPrice)}
                               </p>
                             </div>
                           </div>
@@ -228,7 +273,7 @@ export default function AccountOrders() {
                           </div>
 
                           <p className="text-right font-sans text-[18px] font-medium text-forest">
-                            {baht(DEMO_UNIT_PRICE * line.qty)}
+                            {baht(line.total)}
                           </p>
                         </li>
                       ))}
@@ -241,7 +286,7 @@ export default function AccountOrders() {
                         {savings > 0 && (
                           <div className="flex items-baseline justify-between gap-4 pb-4">
                             <span className="font-sans text-[15px] text-forest/70">
-                              Launch offer, 20% off two or more
+                              {promoLabel ?? "Discount applied"}
                             </span>
                             <span className="font-sans text-[15px] text-forest/70">
                               −{baht(savings)}

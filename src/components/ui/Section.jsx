@@ -28,12 +28,14 @@ export default function Section({
   id,
   className = "",
   children,
+  ref,
   ...props
 }) {
   const background = BACKGROUNDS[bg] ?? BACKGROUNDS.cream;
 
   return (
     <section
+      ref={ref}
       id={id}
       data-navtheme={background.theme ?? undefined}
       // scroll-mt clears the fixed nav when an in-page anchor is followed.

@@ -5,6 +5,7 @@ import Modal from "../ui/Modal";
 import Field from "../ui/Field";
 import PasswordField from "../account/PasswordField";
 import { useAuth } from "../../auth/AuthProvider";
+import { ApiError } from "../../api/client";
 import { fileToAvatarDataUrl, MAX_AVATAR_BYTES } from "../../auth/avatar";
 import defaultAvatar from "../../grey-avatar-icon-user-avatar-photo-icon-social-media-user-icon-vector.jpg";
 
@@ -15,8 +16,10 @@ import defaultAvatar from "../../grey-avatar-icon-user-avatar-photo-icon-social-
 // the visitor is on. Open state lives in AuthProvider (authModalOpen /
 // authModalMode); this component is mounted once, by Layout.
 //
-// Frontend only, exactly as before: "create" calls register() with the form
-// values, "signin" drops into the seeded demo session.
+// Both tabs are real requests to the account API now. "create" registers an
+// account and is refused when the email is already taken; "signin" is checked
+// against a stored scrypt hash and is refused when the password is wrong.
+// There is no sample account to fall into any more.
 //
 // A successful "create" doesn't navigate away - it swaps this modal to a
 // confirmation view (the animated forest checkmark, formerly its own
@@ -143,6 +146,11 @@ export default function AuthModal() {
   });
   const [promotions, setPromotions] = useState(false);
   const [errors, setErrors] = useState({});
+  // Set while a request is in flight, so the submit button cannot be pressed
+  // twice and says what it is doing.
+  const [busy, setBusy] = useState(false);
+  // Whatever the server refused with, when it does not belong to one field.
+  const [formError, setFormError] = useState("");
 
   // Reset the form every time the modal opens, seeding the tab from whichever
   // control opened it ("Become a Steppe Soldier" -> create, "Sign in" ->
@@ -155,14 +163,27 @@ export default function AuthModal() {
     setValues({ name: "", email: "", password: "", confirm: "" });
     setPromotions(false);
     setErrors({});
+    setBusy(false);
+    setFormError("");
   }, [authModalOpen, authModalMode]);
 
   const set = (key) => (event) => {
     setValues((v) => ({ ...v, [key]: event.target.value }));
     setErrors((e) => ({ ...e, [key]: undefined }));
+    setFormError("");
   };
 
-  const handleCreate = (event) => {
+  // A refusal from the server either names a field, and belongs under it, or
+  // does not, and belongs above the button.
+  const showFailure = (error) => {
+    if (error instanceof ApiError && error.field) {
+      setErrors((e) => ({ ...e, [error.field]: error.message }));
+      return;
+    }
+    setFormError(error.message ?? "Something went wrong, try again");
+  };
+
+  const handleCreate = async (event) => {
     event.preventDefault();
     const next = {};
     if (!values.name.trim()) next.name = "Enter your name";
@@ -175,13 +196,24 @@ export default function AuthModal() {
       setErrors(next);
       return;
     }
-    register({
-      name: values.name,
-      email: values.email,
-      avatar,
-      promotions,
-    });
-    setJustRegistered(true);
+    // The checks above are courtesy, not authority. The server runs its own,
+    // and it is the one that knows whether the email is already taken.
+    setBusy(true);
+    setFormError("");
+    try {
+      await register({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        avatar,
+        promotions,
+      });
+      setJustRegistered(true);
+    } catch (error) {
+      showFailure(error);
+    } finally {
+      setBusy(false);
+    }
   };
 
   // Welcome view actions. Closing (X / Escape / scrim) just dismisses it -
@@ -196,7 +228,7 @@ export default function AuthModal() {
     navigate("/products/");
   };
 
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
     const next = {};
     if (!EMAIL_RE.test(values.email.trim()))
@@ -206,14 +238,19 @@ export default function AuthModal() {
       setErrors(next);
       return;
     }
-    // Fakes a result. There are no credentials to check, so any well-formed
-    // email and any non-empty password get in - and signIn() restores the
-    // seeded demo account, which means the email just typed is discarded and
-    // the visitor lands as Anzhelika whoever they said they were. No
-    // wrong-password state exists because nothing can be wrong.
-    signIn();
-    navigate("/account/orders/");
-    closeAuthModal();
+    // A real check against a stored hash. Wrong password, unknown email and
+    // too many attempts all come back as refusals, and one of them is shown.
+    setBusy(true);
+    setFormError("");
+    try {
+      await signIn(values.email, values.password);
+      navigate("/account/orders/");
+      closeAuthModal();
+    } catch (error) {
+      showFailure(error);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const alreadyIn = Boolean(user);
@@ -324,7 +361,7 @@ export default function AuthModal() {
             onChange={set("email")}
             required
             error={errors.email}
-            help="We'll send the weekly Steppe Gut dispatch here, one email a week. Turn it off anytime in settings"
+            help="This is the address on your account, and where the weekly dispatch will go once it starts. Turn it off anytime in settings"
           />
           <PasswordField
             label="Password"
@@ -359,8 +396,16 @@ export default function AuthModal() {
           </label>
 
           <div>
-            <button type="submit" className={PRIMARY_BTN}>
-              Become a Steppe Soldier
+            {formError && (
+              <p
+                role="alert"
+                className="mb-4 font-sans text-[14px] text-[#8C3A2B]"
+              >
+                {formError}
+              </p>
+            )}
+            <button type="submit" disabled={busy} className={`${PRIMARY_BTN} disabled:opacity-60`}>
+              {busy ? "Creating your account" : "Become a Steppe Soldier"}
             </button>
             <p className="mt-4 font-sans text-[14px] text-forest/70">
               Already have an account?{" "}
@@ -398,13 +443,17 @@ export default function AuthModal() {
           />
 
           <div>
-            <button type="submit" className={PRIMARY_BTN}>
-              Sign in
+            {formError && (
+              <p
+                role="alert"
+                className="mb-4 font-sans text-[14px] text-[#8C3A2B]"
+              >
+                {formError}
+              </p>
+            )}
+            <button type="submit" disabled={busy} className={`${PRIMARY_BTN} disabled:opacity-60`}>
+              {busy ? "Signing you in" : "Sign in"}
             </button>
-            <p className="mt-3 font-sans text-[13px] leading-relaxed text-forest/55">
-              This is a preview build, signing in opens a sample account so you
-              can see the order history and settings
-            </p>
             <p className="mt-4 font-sans text-[14px] text-forest/70">
               New here?{" "}
               <button

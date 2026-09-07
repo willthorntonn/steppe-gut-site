@@ -54,6 +54,15 @@ body {
   font-family: "Inter", system-ui, sans-serif;
 }
 
+/* Our Story and Gut Health carry the site's long-form editorial copy. Turn on
+   `text-wrap: pretty` for their paragraphs so a line never breaks to strand a
+   single orphaned word on its own at the foot of a paragraph. Scoped to those
+   routes by the `.editorial-copy` wrapper in App.jsx; headings keep their own
+   `text-wrap: balance` from src/styles/type.js and are untouched here. */
+.editorial-copy p {
+  text-wrap: pretty;
+}
+
 /* Seed Sans — scoped to the ViaCap panel (assets in /public/fonts) */
 @font-face {
   font-family: "Seed Sans";

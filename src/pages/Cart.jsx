@@ -4,7 +4,10 @@ import PageMeta from "../components/ui/PageMeta";
 import Container from "../components/ui/Container";
 import Picture from "../components/ui/Picture";
 import { useCart } from "../cart/CartProvider";
-import { PRODUCT_BY_SLUG } from "../data/products";
+import { PRODUCTS, PRODUCT_BY_SLUG } from "../data/products";
+import ProductCard from "../components/product/ProductCard";
+import Section from "../components/ui/Section";
+import NewsletterSignup from "../components/marketing/NewsletterSignup";
 import {
   DEMO_UNIT_PRICE,
   PROMO_MIN_UNITS,
@@ -92,6 +95,13 @@ export default function Cart() {
   const promoRate = units >= PROMO_MIN_UNITS ? PROMO_RATE : 0;
   const savings = original * promoRate;
   const subtotal = original - savings;
+
+  // Cross-sell under the basket. The catalogue is only the three formats, so
+  // "you may also like" is simply the formats not already in the basket -
+  // shown as the shared ProductCard, same as the products grid. With an empty
+  // basket every format is offered.
+  const inCart = new Set(items.map((item) => item.slug));
+  const recommendations = PRODUCTS.filter((product) => !inCart.has(product.slug));
 
   return (
     <>
@@ -256,6 +266,37 @@ export default function Cart() {
           )}
         </Container>
       </section>
+
+      {recommendations.length > 0 && (
+        <Section bg="cream" size="none" className="pb-14 pt-4 sm:pb-16 sm:pt-6">
+          <Container width="wide">
+            <h2 className="text-center font-sans text-[28px] font-bold leading-tight tracking-[-0.02em] text-forest sm:text-[32px] lg:text-[38px]">
+              You may also like
+            </h2>
+            <div
+              className={`mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 ${
+                recommendations.length >= 3
+                  ? "max-w-[1100px] lg:grid-cols-3"
+                  : "max-w-[760px]"
+              }`}
+            >
+              {recommendations.map((product) => (
+                <ProductCard key={product.slug} product={product} />
+              ))}
+            </div>
+            <div className="mt-10 flex justify-center">
+              <Link
+                to="/products/"
+                className="inline-flex h-[50px] items-center justify-center rounded-[10px] bg-forest px-9 font-sans text-[14px] font-semibold uppercase tracking-[0.08em] text-cream transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              >
+                View all
+              </Link>
+            </div>
+          </Container>
+        </Section>
+      )}
+
+      <NewsletterSignup />
     </>
   );
 }

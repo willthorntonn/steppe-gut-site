@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BadgePercent, HelpCircle, Lock, Tag, Users } from "lucide-react";
 import PageMeta from "../components/ui/PageMeta";
@@ -6,6 +6,8 @@ import FloatField from "../components/checkout/brick/FloatField";
 import { AmexMark } from "../components/checkout/brick/marks";
 import Picture from "../components/ui/Picture";
 import { useCart } from "../cart/CartProvider";
+import { useOrders } from "../orders/OrdersProvider";
+import { useAuth } from "../auth/AuthProvider";
 import { PRODUCTS, PRODUCT_BY_SLUG } from "../data/products";
 import { getCountryFields, DEFAULT_COUNTRY_FIELDS } from "../data/countryFields";
 // Stand-in prices and the ฿ formatter, shared with the cart page.
@@ -83,7 +85,15 @@ function ExpressPayButton({ src, label, borderClassName = "border-black/12" }) {
 //   · Product names and images come from our own products.js, because the
 //     reference's product photography is not ours to take.
 //
-// NOTHING HERE TRANSMITS ANYTHING. No action, no method, no fetch.
+// PAYMENT IS STILL NOT CONNECTED. No card is charged, no processor is called,
+// and every payment control below is a stand-in.
+//
+// One thing here is real and did change: pressing "Pay now" records the order
+// with the account API (server/), against the signed-in account. The basket is
+// priced by the server, not by this page, and the delivery address is either
+// one picked from the account's address book or one typed here. A signed-out
+// visitor still gets the confirmation screen with nothing recorded, because
+// there is no account to record it against.
 // ─────────────────────────────────────────────────────────────────────────
 
 
@@ -248,6 +258,11 @@ function Radio({ checked, onChange, name, value }) {
 export default function Checkout() {
   const navigate = useNavigate();
   const { items, add, clear } = useCart();
+  const { placeOrder } = useOrders();
+  // Saved addresses come from the account, not this form. Account Settings
+  // promises "addresses you can pick from at checkout"; this is the checkout
+  // end of that promise.
+  const { user, openAuthModal } = useAuth();
   const [method, setMethod] = useState("");
   const [billingSame, setBillingSame] = useState(false);
   const [marketing, setMarketing] = useState(false);
@@ -258,6 +273,28 @@ export default function Checkout() {
   // switches the copy to the agreement text a real Shop-account save would
   // require; Not now switches it back.
   const [saveInfo, setSaveInfo] = useState(false);
+
+  // ── Delivery address ───────────────────────────────────────────────────
+  // A saved address by id, or "new" for the typed form below it. Empty until
+  // the session answers, so the default can be pre-selected once it does.
+  const savedAddresses = user?.addresses ?? [];
+  const defaultAddressId =
+    savedAddresses.find((address) => address.isDefault)?.id ??
+    savedAddresses[0]?.id ??
+    null;
+  const [addressChoice, setAddressChoice] = useState("");
+  const [saveAddress, setSaveAddress] = useState(false);
+  const [placing, setPlacing] = useState(false);
+  const [orderError, setOrderError] = useState("");
+
+  useEffect(() => {
+    // Only ever fills the blank. Once someone has picked, a session refresh
+    // must not move their choice back to the default underneath them.
+    setAddressChoice((current) => current || defaultAddressId || "new");
+  }, [defaultAddressId]);
+
+  const chosenAddress =
+    savedAddresses.find((address) => address.id === addressChoice) ?? null;
 
   // The region (state/province/...) and postal-code fields both vary by
   // country - some countries use neither, so the row below reflows rather
@@ -286,11 +323,72 @@ export default function Checkout() {
     (product) => !items.some((item) => item.slug === product.slug)
   );
 
-  function handleSubmit(event) {
-    // No action, no method, no network call.
+  /** The typed delivery fields, as an address. Uncontrolled, so read out. */
+  function typedAddress(form) {
+    const data = new FormData(form);
+    const value = (name) => (data.get(name) ?? "").toString().trim();
+    const name = [value("firstName"), value("lastName")].filter(Boolean).join(" ");
+    return {
+      label: "Delivery address",
+      name,
+      line1: value("address1"),
+      line2: value("address2"),
+      city: value("city"),
+      postalCode: value("postalCode"),
+      country: value("country"),
+      phone: "",
+    };
+  }
+
+  async function handleSubmit(event) {
+    // Payment is still not connected - no card is charged and nothing is sent
+    // to a processor. What is real is the order: the basket is priced and
+    // recorded by the account API against the signed-in account, and My
+    // Orders reads it back from there.
+    //
+    // Note what is not sent: no prices. The browser says which products, how
+    // many and where to; the server decides what that costs
+    // (server/catalog.js), which is why DEMO_UNIT_PRICE is no longer read
+    // here.
     event.preventDefault();
-    clear();
-    navigate("/checkout/confirmation/", { state: { order: "SG-REPLICA" } });
+    const form = event.currentTarget;
+    setOrderError("");
+
+    const draft = {
+      items: lines.map((line) => ({ slug: line.product.slug, qty: line.qty })),
+    };
+
+    if (chosenAddress) {
+      draft.shippingAddressId = chosenAddress.id;
+    } else {
+      const address = typedAddress(form);
+      const complete = address.name && address.line1 && address.city;
+      if (complete) {
+        draft.shippingAddress = address;
+        draft.saveAddress = Boolean(user) && saveAddress;
+      } else if (user && saveAddress) {
+        // Only blocking when the visitor asked for the address to be kept -
+        // an incomplete one is otherwise no reason to refuse a checkout that
+        // charges nothing.
+        setOrderError("Fill in the name, address and city to save this address");
+        return;
+      }
+    }
+
+    setPlacing(true);
+    try {
+      const order = await placeOrder(draft);
+      clear();
+      // A signed-out checkout has nothing to record against, so it lands on
+      // the same thank-you without an order number to point at.
+      navigate("/checkout/confirmation/", {
+        state: { placed: true, order: order?.id ?? null },
+      });
+    } catch (failure) {
+      setOrderError(failure.message ?? "That order could not be placed, try again");
+    } finally {
+      setPlacing(false);
+    }
   }
 
   return (
@@ -346,12 +444,19 @@ export default function Checkout() {
             <form noValidate onSubmit={handleSubmit}>
               <div className="flex items-baseline justify-between gap-4">
                 <SectionTitle>Contact</SectionTitle>
-                <button
-                  type="button"
-                  className="text-[14px] underline underline-offset-[3px]"
-                >
-                  Sign in
-                </button>
+                {user ? (
+                  <span className="text-[14px] text-forest/60">
+                    Signed in as {user.email}
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal("signin")}
+                    className="text-[14px] underline underline-offset-[3px]"
+                  >
+                    Sign in
+                  </button>
+                )}
               </div>
 
               <div className="mt-4 space-y-3">
@@ -360,6 +465,10 @@ export default function Checkout() {
                   type="email"
                   name="email"
                   autoComplete="email"
+                  // Uncontrolled, so the account's address is seeded rather
+                  // than bound - and re-seeded if the session arrives late.
+                  key={user?.email ?? "guest"}
+                  defaultValue={user?.email ?? ""}
                   suffix={<HelpCircle size={17} strokeWidth={1.5} aria-hidden="true" />}
                 />
                 <CheckBox
@@ -371,7 +480,82 @@ export default function Checkout() {
               </div>
 
               <SectionTitle className="mt-9">Delivery</SectionTitle>
-              <div className="mt-4 space-y-3">
+
+              {/* The account's address book, offered before the form. It only
+                  appears when there is something in it, so a guest and a new
+                  account see exactly the checkout they saw before. */}
+              {savedAddresses.length > 0 && (
+                <div
+                  role="radiogroup"
+                  aria-label="Delivery address"
+                  className="mt-4"
+                >
+                  {savedAddresses.map((address, index) => (
+                    <label
+                      key={address.id}
+                      className={`flex cursor-pointer items-start gap-3 border border-b-0 border-forest/20 bg-white px-4 py-[14px] transition-colors ${
+                        index === 0 ? "rounded-t-[12px]" : ""
+                      } ${addressChoice === address.id ? "border-forest" : ""}`}
+                    >
+                      <span className="pt-0.5">
+                        <Radio
+                          name="deliveryAddress"
+                          value={address.id}
+                          checked={addressChoice === address.id}
+                          onChange={() => setAddressChoice(address.id)}
+                        />
+                      </span>
+                      <span className="flex-1 text-[14px] leading-[1.5]">
+                        <span className="flex items-center gap-2 font-medium">
+                          {address.label}
+                          {address.isDefault && (
+                            <span className="rounded-full bg-[#E8EDE4] px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.08em]">
+                              Default
+                            </span>
+                          )}
+                        </span>
+                        <span className="mt-1 block text-forest/65">
+                          {address.name}, {address.line1}
+                          {address.line2 ? `, ${address.line2}` : ""},{" "}
+                          {[address.city, address.postalCode]
+                            .filter(Boolean)
+                            .join(" ")}
+                          {address.country ? `, ${address.country}` : ""}
+                        </span>
+                      </span>
+                    </label>
+                  ))}
+                  <label
+                    className={`flex cursor-pointer items-center gap-3 rounded-b-[12px] border border-forest/20 bg-white px-4 py-[14px] transition-colors ${
+                      addressChoice === "new" ? "border-forest" : ""
+                    }`}
+                  >
+                    <Radio
+                      name="deliveryAddress"
+                      value="new"
+                      checked={addressChoice === "new"}
+                      onChange={() => setAddressChoice("new")}
+                    />
+                    <span className="flex-1 text-[14px]">
+                      Deliver somewhere else
+                    </span>
+                  </label>
+                  <p className="mt-2 text-[13px] text-forest/55">
+                    Saved addresses come from your account, and are managed in{" "}
+                    <Link
+                      to="/account/settings/"
+                      className="underline underline-offset-[3px]"
+                    >
+                      Account settings
+                    </Link>
+                  </p>
+                </div>
+              )}
+
+              {/* Hidden, not disabled, when a saved address is chosen: an
+                  empty form under a chosen address is a second answer to a
+                  question already answered. */}
+              <div className={`mt-4 space-y-3 ${chosenAddress ? "hidden" : ""}`}>
                 <FloatField
                   label="Country/Region"
                   as="select"
@@ -432,6 +616,17 @@ export default function Checkout() {
                     />
                   )}
                 </div>
+
+                {/* Only an account has an address book to add to, so a guest
+                    is not offered a box that would do nothing. */}
+                {user && (
+                  <CheckBox
+                    checked={saveAddress}
+                    onChange={(event) => setSaveAddress(event.target.checked)}
+                  >
+                    Save this address to my account
+                  </CheckBox>
+                )}
               </div>
 
               <SectionTitle className="mt-9">Shipping method</SectionTitle>
@@ -648,11 +843,18 @@ export default function Checkout() {
                 )}
               </div>
 
+              {orderError && (
+                <p role="alert" className="mt-6 text-[14px] text-[#8C3A2B]">
+                  {orderError}
+                </p>
+              )}
+
               <button
                 type="submit"
-                className="mt-7 h-[52px] w-full rounded-[12px] bg-forest font-sans text-[15px] font-bold uppercase tracking-[0.08em] text-cream transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                disabled={placing}
+                className="mt-7 h-[52px] w-full rounded-[12px] bg-forest font-sans text-[15px] font-bold uppercase tracking-[0.08em] text-cream transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-60"
               >
-                Pay now
+                {placing ? "Placing your order" : "Pay now"}
               </button>
 
             </form>

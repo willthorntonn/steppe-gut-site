@@ -10,3 +10,8 @@ asset-src/
 /scratchpad_pav.jpg
 /scripts-fetch-tmp.mjs
 /src/subpages/fruit bowl.png
+
+# The account API store. Real accounts, hashed passwords and orders -
+# it belongs on the machine that runs the server, never in the history.
+server/data/*.json
+server/data/*.corrupt-*

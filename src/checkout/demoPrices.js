@@ -6,6 +6,10 @@
 // numbers live here, once, instead of being typed into each page.
 //
 // These are the first thing to delete once real prices exist in products.js.
+// Note before you do: the account API imports this file (server/catalog.js) to
+// price an order server-side, so the figures the checkout shows and the
+// figures an order is charged cannot drift apart. Repoint that import at the
+// same time.
 export const DEMO_UNIT_PRICE = 1956;
 export const DEMO_ADDON_PRICE = 498;
 

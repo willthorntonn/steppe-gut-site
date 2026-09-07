@@ -6,17 +6,17 @@ import { useAuth } from "../../auth/AuthProvider";
 import { fileToAvatarDataUrl, MAX_AVATAR_BYTES } from "../../auth/avatar";
 import defaultAvatar from "../../grey-avatar-icon-user-avatar-photo-icon-social-media-user-icon-vector.jpg";
 
-// Edit Profile, opened from the header account menu. Frontend only, like the
-// rest of the account area - name, photo and email are written into
-// AuthProvider and persisted to localStorage, and nothing is sent anywhere.
+// Edit Profile, opened from the header account menu. Name, photo and email
+// are saved to the account on the server (src/api/client -> server/), so a
+// change made here is the same change on any device that signs in.
 //
-// The email change is the part to be careful about, because it is built to
-// look like a real verification and is not one. Changing the address moves
-// the dialog to a 6-digit code step; no code is ever generated or mailed, any
-// six digits are accepted, and "Resend code" sends nothing. The step exists
-// so the flow is in place for when there is a service behind it - at that
-// point the code is issued server-side and handleVerifySubmit checks it
-// rather than counting the digits.
+// The email change is a real verification now. Changing the address asks the
+// server for a code; it issues one, holds its hash with an expiry and an
+// attempt count, and refuses anything else. The one thing still missing is a
+// way to deliver it, because transactional email is a separate piece of work
+// - so the code is displayed in the dialog rather than mailed, and says so.
+// When a mailer exists, stop returning the code (SG_ECHO_EMAIL_CODES in
+// server/routes/auth.js) and delete the panel that shows it.
 const MAX_FILE_BYTES = MAX_AVATAR_BYTES;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -82,7 +82,7 @@ const PRIMARY_BTN =
   "inline-flex h-12 items-center justify-center rounded-full bg-forest px-7 font-sans text-[15px] font-semibold text-cream transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50";
 
 export default function EditProfileModal({ open, onClose }) {
-  const { user, updateProfile, updateEmail } = useAuth();
+  const { user, updateProfile, requestEmailChange, confirmEmailChange } = useAuth();
   const fileInputRef = useRef(null);
   const nameFieldRef = useRef(null);
   const emailFieldRef = useRef(null);
@@ -96,6 +96,10 @@ export default function EditProfileModal({ open, onClose }) {
   const [avatar, setAvatar] = useState(user?.avatar ?? null);
   const [code, setCode] = useState("");
   const [resent, setResent] = useState(false);
+  // The code the server issued. It is on screen because there is no mail
+  // transport in this build to carry it to an inbox - see the note beside it
+  // in the verify step, and SG_ECHO_EMAIL_CODES in server/routes/auth.js.
+  const [issuedCode, setIssuedCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -111,6 +115,7 @@ export default function EditProfileModal({ open, onClose }) {
     setAvatar(user?.avatar ?? null);
     setCode("");
     setResent(false);
+    setIssuedCode("");
     setError("");
     setBusy(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -155,7 +160,7 @@ export default function EditProfileModal({ open, onClose }) {
     }
   };
 
-  const handleProfileSubmit = (event) => {
+  const handleProfileSubmit = async (event) => {
     event.preventDefault();
     const trimmedName = name.trim();
     if (!trimmedName) {
@@ -169,39 +174,68 @@ export default function EditProfileModal({ open, onClose }) {
       return;
     }
 
-    if (!emailChanged) {
-      updateProfile({ name: trimmedName, avatar });
-      onClose();
-      return;
-    }
-
-    // The email is changing. Save the parts that need no checking, then move
-    // to verification. No code is actually mailed - any six digits pass.
-    updateProfile({ name: trimmedName, avatar });
+    setBusy(true);
     setError("");
-    setCode("");
-    setResent(false);
-    setStep("verify");
+    try {
+      // The name and the photo need no confirming, so they are saved either
+      // way. Both calls are requests now, and both can be refused.
+      await updateProfile({ name: trimmedName, avatar });
+      if (!emailChanged) {
+        onClose();
+        return;
+      }
+      // The email is changing, so the server issues a code and holds it.
+      const started = await requestEmailChange(email.trim());
+      setIssuedCode(started?.code ?? "");
+      setCode("");
+      setResent(false);
+      setStep("verify");
+    } catch (failure) {
+      setError(failure.message ?? "That could not be saved, try again");
+    } finally {
+      setBusy(false);
+    }
   };
 
-  const handleVerifySubmit = (event) => {
+  const handleVerifySubmit = async (event) => {
     event.preventDefault();
-    // Fakes a result. There is no code to compare against, so the length
-    // check is the whole of "verification" and any six digits pass. A real
-    // implementation checks the code server-side and needs a wrong-code error
-    // path, which cannot exist while nothing issues a code.
     if (code.length !== 6) {
       setError("Enter the 6-digit code");
       codeFieldRef.current?.querySelector("input")?.focus();
       return;
     }
-    updateEmail(email.trim());
-    onClose();
+    // Checked against the code the server issued, which expires and counts
+    // wrong attempts. A wrong code is now a real error path.
+    setBusy(true);
+    try {
+      await confirmEmailChange(code);
+      onClose();
+    } catch (failure) {
+      setError(failure.message ?? "That code could not be checked");
+      codeFieldRef.current?.querySelector("input")?.focus();
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const resendCode = async () => {
+    setBusy(true);
+    setError("");
+    try {
+      const started = await requestEmailChange(email.trim());
+      setIssuedCode(started?.code ?? "");
+      setResent(true);
+    } catch (failure) {
+      setError(failure.message ?? "That code could not be sent again");
+    } finally {
+      setBusy(false);
+    }
   };
 
   const backToProfile = () => {
     setStep("profile");
     setCode("");
+    setIssuedCode("");
     setError("");
     setResent(false);
   };
@@ -209,7 +243,7 @@ export default function EditProfileModal({ open, onClose }) {
   const title = step === "verify" ? "Confirm your email" : "Edit profile";
   const description =
     step === "verify"
-      ? `Enter the 6-digit code we sent to ${email.trim()}`
+      ? `Confirm ${email.trim()} with the 6-digit code below`
       : "Update the name, photo and email shown on your account";
 
   return (
@@ -283,7 +317,7 @@ export default function EditProfileModal({ open, onClose }) {
               onChange={(event) => setEmail(event.target.value)}
               help={
                 emailChanged
-                  ? "We'll email a 6-digit code to confirm this address before it changes"
+                  ? "A 6-digit code confirms this address before it changes"
                   : undefined
               }
             />
@@ -336,21 +370,32 @@ export default function EditProfileModal({ open, onClose }) {
             )}
           </div>
 
-          {/* Fakes a result. Nothing is resent - this only flips the
-              confirmation line on, because there is no mailer to call. */}
+          {/* The code is real and the server checks it. What does not exist
+              yet is anything to carry it to an inbox, so it is shown here
+              instead of being emailed - the one honest way to run a genuine
+              verification step without a mail service. */}
+          {issuedCode && (
+            <div className="mt-4 rounded-[10px] border border-forest/15 bg-[#FFFDF9] p-4">
+              <p className="font-sans text-[13px] leading-relaxed text-forest/70">
+                No email is sent yet, so your code is shown here
+              </p>
+              <p className="mt-1 font-mono text-[18px] tracking-[0.3em] text-forest">
+                {issuedCode}
+              </p>
+            </div>
+          )}
+
           <button
             type="button"
-            onClick={() => {
-              setResent(true);
-              setError("");
-            }}
-            className="mt-3 font-sans text-[13px] font-semibold text-forest underline underline-offset-2 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+            onClick={resendCode}
+            disabled={busy}
+            className="mt-3 font-sans text-[13px] font-semibold text-forest underline underline-offset-2 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50"
           >
-            Resend code
+            Get a new code
           </button>
           {resent && (
             <p className="mt-2 font-sans text-[13px] text-forest/55">
-              We sent another code to {email.trim()}.
+              A new code was issued, the one above is the one that works
             </p>
           )}
 
@@ -358,8 +403,8 @@ export default function EditProfileModal({ open, onClose }) {
             <button type="button" onClick={backToProfile} className={CANCEL_BTN}>
               Back
             </button>
-            <button type="submit" className={PRIMARY_BTN}>
-              Verify &amp; save
+            <button type="submit" disabled={busy} className={PRIMARY_BTN}>
+              {busy ? "Checking" : "Verify & save"}
             </button>
           </div>
         </form>

@@ -1,17 +1,47 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { BODY_SM, H2, H3 } from "../../styles/type";
+import Placeholder from "../ui/Placeholder";
+import { H2_XL } from "../../styles/type";
 
-// The "Our Story" era rail on /our-story/mission/, in the reference page's
-// timeline shape: a centred section title, paged arrows on the right, and a
-// row of era cards that runs off the right edge so the cut card signals there
-// is more to scroll.
+// The "Our Story" beats on /our-story/mission/. Card look and hover are lifted
+// wholesale from home/ProcessRow - a cream band (never green), an oversized
+// heavy heading, then a row of cards where, on hover, a white panel lifts in
+// behind the card and grows outward on every side, the image frame grows with
+// it, and the photo tightens on its own centre.
 //
-// Paging is scroll-snap measured from the track rather than a transform, so
-// the row is natively swipeable, keyboard-scrollable and arrow-driven from one
-// piece of state - the same mechanism as home/ReadsCarousel, kept consistent
-// on purpose. Page count is measured, not assumed, because the number of cards
-// on screen changes at every breakpoint.
+// All four beats sit on one horizontal line. Only three fit at a time, so the
+// row is a scroll-snap carousel driven by the arrows above it and the dots
+// below - the same measured-from-the-track paging as home/ReadsCarousel and
+// the original of this component, kept swipeable and keyboard-scrollable.
+//
+// Vertical rhythm runs down -> up -> down -> up: the 2nd and 4th cards are
+// raised out of line on lg (RAISED), the 1st and 3rd sit at the baseline. The
+// offset is decorative and collapses below lg. Every image is a written brief
+// until the photography is shot.
+const RAISED = "lg:-mt-14";
+
+// On hover a white panel lifts in behind the card and grows 12px outward on
+// every side. Absolutely positioned, so growing it costs no layout.
+const PANEL_BOX =
+  "absolute -left-5 -right-5 -top-5 -bottom-10 rounded-[32px] transition-all duration-500 ease-out " +
+  "group-hover:-left-8 group-hover:-right-8 group-hover:-top-8 group-hover:-bottom-[3.25rem] " +
+  "group-focus-visible:-left-8 group-focus-visible:-right-8 group-focus-visible:-top-8 group-focus-visible:-bottom-[3.25rem]";
+
+// The frame grows with the panel; the photo inside pushes in a little further,
+// so the crop tightens on its own centre. The text is in neither, so it holds
+// its size while the boxes grow.
+const FRAME =
+  "rounded-[28px] transition-transform duration-500 ease-out " +
+  "group-hover:scale-[1.035] group-focus-visible:scale-[1.035]";
+const PHOTO =
+  "transition-transform duration-700 ease-out " +
+  "group-hover:scale-[1.06] group-focus-visible:scale-[1.06]";
+
+const TITLE_SIZE = { fontSize: "clamp(1.6rem, calc(2.3 * var(--vw)), 2.2rem)" };
+const BODY_SIZE = {
+  fontSize: "clamp(1.15rem, calc(1.4 * var(--vw)), 1.35rem)",
+  lineHeight: 1.7,
+};
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -30,8 +60,7 @@ export default function MissionTimeline({ heading, items }) {
     const track = trackRef.current;
     if (!track || track.clientWidth === 0) return;
     const maxScroll = track.scrollWidth - track.clientWidth;
-    // 2px slack absorbs sub-pixel rounding, so a track that fits doesn't report
-    // a phantom extra page or a live Next arrow.
+    // 2px slack absorbs sub-pixel rounding.
     setAtStart(track.scrollLeft <= 2);
     setAtEnd(track.scrollLeft >= maxScroll - 2);
     if (maxScroll <= 2) {
@@ -48,9 +77,18 @@ export default function MissionTimeline({ heading, items }) {
     const track = trackRef.current;
     if (!track) return;
     measure();
+    // The row sizes late - it is inside a Reveal and its image frames settle a
+    // frame or two after mount - so a single mount measure can read a stale
+    // width and wrongly disable Next. Re-measure on the next frame and whenever
+    // the track's own box changes, not just on window resize.
+    const raf = requestAnimationFrame(measure);
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
     track.addEventListener("scroll", measure, { passive: true });
     window.addEventListener("resize", measure);
     return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
       track.removeEventListener("scroll", measure);
       window.removeEventListener("resize", measure);
     };
@@ -70,16 +108,19 @@ export default function MissionTimeline({ heading, items }) {
     "flex h-12 w-12 items-center justify-center rounded-full bg-forest text-cream transition-colors hover:bg-forest/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:cursor-not-allowed disabled:opacity-35";
 
   return (
-    <section data-navtheme="light" className="scroll-mt-28 bg-cream py-20 sm:py-28 lg:py-36">
-      <div className="mx-auto max-w-[2000px] px-6 sm:px-10 lg:px-14">
+    <section
+      data-navtheme="light"
+      className="scroll-mt-28 bg-cream pt-8 pb-14 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20"
+    >
+      <div className="mx-auto max-w-[2000px] px-5 sm:px-8 lg:px-10">
         <h2
-          className="mx-auto max-w-[16ch] text-center font-serif font-normal text-forest"
-          style={H2}
+          className="mx-auto mt-1 max-w-[20ch] text-center font-serif font-bold text-forest lg:mt-3"
+          style={H2_XL}
         >
           {heading}
         </h2>
 
-        <div className="mt-12 flex items-center justify-end gap-3 lg:mt-16">
+        <div className="mt-16 flex items-center justify-end gap-3 lg:mt-24">
           <button
             type="button"
             aria-label="Previous"
@@ -102,22 +143,48 @@ export default function MissionTimeline({ heading, items }) {
           </button>
         </div>
 
+        {/* pt/pb give the raised cards and their hover panels headroom inside
+            the horizontal scroller (which clips the vertical axis), and the
+            extra top space drops the carousel a little below the heading
+            without shifting it sideways. */}
         <ol
           id="mission-timeline-track"
           ref={trackRef}
-          className="no-scrollbar mt-8 flex snap-x snap-mandatory list-none gap-5 overflow-x-auto overflow-y-hidden lg:mt-10 lg:gap-8"
+          className="no-scrollbar mt-4 flex snap-x snap-mandatory list-none items-start gap-6 overflow-x-auto overflow-y-hidden pb-16 pt-24 lg:mt-6 lg:gap-12 lg:pb-24 lg:pt-32"
         >
-          {items.map((item) => (
+          {items.map((item, index) => (
             <li
               key={item.era}
-              className="w-[78%] flex-none snap-start sm:w-[46%] lg:w-[30%]"
+              className={`group relative w-[82%] flex-none snap-start sm:w-[47%] lg:w-[31%] ${
+                index % 2 === 1 ? RAISED : ""
+              }`}
             >
-              <div className="flex h-full flex-col rounded-[20px] bg-[#E8EDE4] p-8 lg:p-10">
-                <span className="block h-px w-12 bg-gold" aria-hidden="true" />
-                <h3 className="mt-6 font-serif font-normal text-forest" style={H3}>
+              {/* The white panel, behind everything. */}
+              <span
+                aria-hidden
+                className={`${PANEL_BOX} bg-transparent group-hover:bg-white group-hover:shadow-[0_28px_64px_-24px_rgba(38,50,38,0.32)] group-focus-visible:bg-white group-focus-visible:shadow-[0_28px_64px_-24px_rgba(38,50,38,0.32)]`}
+              />
+
+              <div className="relative">
+                <Placeholder
+                  ratio="16 / 9"
+                  brief={item.brief}
+                  tone="light"
+                  className={FRAME}
+                  imageClassName={PHOTO}
+                />
+
+                <h3
+                  className="mt-12 max-w-[18ch] font-serif font-bold leading-[1.1] tracking-[-0.03em] text-forest"
+                  style={TITLE_SIZE}
+                >
                   {item.era}
                 </h3>
-                <p className="mt-4 font-sans text-forest/75" style={BODY_SM}>
+
+                <p
+                  className="mt-6 max-w-[44ch] font-sans text-forest/80"
+                  style={BODY_SIZE}
+                >
                   {item.body}
                 </p>
               </div>
@@ -126,7 +193,7 @@ export default function MissionTimeline({ heading, items }) {
         </ol>
 
         {pages > 1 && (
-          <div className="mt-12 flex items-center justify-center gap-1 lg:mt-16">
+          <div className="mt-8 flex items-center justify-center gap-1 lg:mt-10">
             {Array.from({ length: pages }, (_, index) => (
               <button
                 key={index}

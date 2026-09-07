@@ -7,14 +7,17 @@ import Container from "../components/ui/Container";
 //
 // Reachable only with confirmation state in the router location. A direct
 // visit redirects to "/" rather than rendering a thank-you for an order that
-// was never placed. In practice nothing can reach it yet, because payment is
-// disabled - the route exists so that turning payment on is a change to
-// Checkout alone.
+// was never placed.
+//
+// `placed` is what marks a genuine arrival, not the order number: a
+// signed-out checkout has no account to record against, so it arrives here
+// with `order: null` and still deserves its thank-you. When there is a
+// number, it belongs to a row that now exists in My Orders.
 export default function Confirmation() {
   const location = useLocation();
-  const order = location.state?.order;
+  const { placed, order } = location.state ?? {};
 
-  if (!order) return <Navigate to="/" replace />;
+  if (!placed) return <Navigate to="/" replace />;
 
   return (
     <>
@@ -28,6 +31,17 @@ export default function Confirmation() {
           <p className="mt-8 text-center font-sans text-2xl text-forest/70 whitespace-nowrap">
             Your order has been placed and is being processed. You will receive an email with the order details
           </p>
+          {order && (
+            <p className="mt-8 font-sans text-2xl text-forest/70">
+              Order #{order.replace(/\D/g, "")} &middot;{" "}
+              <Link
+                to="/account/orders/"
+                className="font-semibold text-gold underline underline-offset-4 hover:text-forest"
+              >
+                see it in My Orders
+              </Link>
+            </p>
+          )}
           <Link
             to="/"
             className="mt-10 font-sans text-2xl font-semibold text-gold underline underline-offset-4 hover:text-forest"

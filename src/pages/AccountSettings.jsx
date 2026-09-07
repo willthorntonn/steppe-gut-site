@@ -8,26 +8,26 @@ import Toggle from "../components/account/Toggle";
 import PasswordField from "../components/account/PasswordField";
 import { useAuth } from "../auth/AuthProvider";
 
-// Account Settings. Frontend only - there is no account backend and nothing
-// on this page reaches a server. Every section fakes something different, so
-// the specifics matter more than a blanket "demo" label:
+// Account Settings. Every section on this page now talks to the account API
+// in `server/`, so what is real and what is not has changed:
 //
-//   Password       changePassword() ignores both arguments and returns true
-//                  (see AuthProvider). The current password is never checked
-//                  because no password is stored anywhere, and "Password
-//                  updated." is shown unconditionally. Any three filled-in
-//                  fields pass.
-//   Notifications  Toggles persist, but only to localStorage. No preference
-//                  is registered with any mailing system.
-//   Addresses      Add / edit / remove / set-default all persist to
-//                  localStorage. Nothing is stored against a customer, and
-//                  the checkout does not read them back.
-//   Recruit        The referral code is derived from the account locally and
-//                  registered with nothing, so the link tracks no one and
-//                  redeems nowhere.
+//   Password       A real change. The current password is verified against a
+//                  stored scrypt hash and the request is refused when it is
+//                  wrong, so the success message waits on the server rather
+//                  than being shown unconditionally. Succeeding also ends
+//                  every other session on the account.
+//   Notifications  Saved against the account, and returned to any device that
+//                  signs in. Still nothing on the other end that sends email:
+//                  a preference is recorded, not acted on.
+//   Addresses      Saved against the account, and read back by the checkout
+//                  (pages/Checkout) as the "deliver to a saved address"
+//                  picker. Exactly one is the default, enforced server-side.
+//   Recruit        Still local. The referral code is derived from the account
+//                  in this file and registered with nothing, so the link
+//                  tracks no one and redeems nowhere.
 //
-// When a real account API exists each handler below becomes a request and the
-// success states stop being unconditional. The markup does not change.
+// Every handler below is async and every one can fail, which is why each
+// section carries an error line rather than assuming success.
 //
 // Account Settings, re-skinned to sit in the same visual family as the
 // individual product page (components/product/FybelleLayout) and the checkout
@@ -81,6 +81,7 @@ function PasswordSection() {
   const [values, setValues] = useState({ current: "", next: "", confirm: "" });
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   const set = (key) => (event) => {
     setValues((v) => ({ ...v, [key]: event.target.value }));
@@ -88,7 +89,7 @@ function PasswordSection() {
     setDone(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!values.current || !values.next || !values.confirm) {
       setError("Fill in all three fields");
@@ -102,15 +103,20 @@ function PasswordSection() {
       setError("The new password and confirmation don't match");
       return;
     }
-    // Fakes a result. changePassword() is a no-op returning true, so the
-    // three checks above are the only thing standing between any input and a
-    // success message - "Current password" is collected and thrown away. Once
-    // there is an API this call becomes a request and `done` waits on it,
-    // with a wrong-current-password error path that cannot exist today.
-    changePassword(values.current, values.next);
-    setValues({ current: "", next: "", confirm: "" });
+    // The checks above are the form's own. The one that matters happens on
+    // the server: the current password is verified, and a wrong one comes
+    // back as a refusal rather than a success message.
+    setBusy(true);
     setError("");
-    setDone(true);
+    try {
+      await changePassword(values.current, values.next);
+      setValues({ current: "", next: "", confirm: "" });
+      setDone(true);
+    } catch (failure) {
+      setError(failure.message ?? "That password could not be changed");
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -140,11 +146,16 @@ function PasswordSection() {
         />
         {done && (
           <p role="status" className="font-sans text-[14px] font-medium text-forest">
-            Password updated.
+            Password updated, and any other device you were signed in on has
+            been signed out
           </p>
         )}
-        <button type="submit" className={`${PRIMARY_BTN} w-full`}>
-          Update password
+        <button
+          type="submit"
+          disabled={busy}
+          className={`${PRIMARY_BTN} w-full disabled:opacity-60`}
+        >
+          {busy ? "Updating" : "Update password"}
         </button>
       </form>
     </SettingsSection>
@@ -180,11 +191,22 @@ const NOTIFICATION_ROWS = [
   },
 ];
 
-// Persists to localStorage only. Flipping a row here subscribes you to
-// nothing and unsubscribes you from nothing - there is no mailing system on
-// the other end of setNotification.
+// Saved against the account, so the same preferences follow you to another
+// device. What is still missing is the other end: nothing sends these emails
+// yet, so a row records an intention rather than subscribing you to anything.
 function NotificationsSection() {
   const { user, setNotification } = useAuth();
+  const [error, setError] = useState("");
+
+  const change = async (key, value) => {
+    setError("");
+    try {
+      await setNotification(key, value);
+    } catch (failure) {
+      setError(failure.message ?? "That preference could not be saved");
+    }
+  };
+
   return (
     <SettingsSection
       title="Notifications"
@@ -197,10 +219,15 @@ function NotificationsSection() {
             label={row.label}
             description={row.description}
             checked={Boolean(user.notifications?.[row.key])}
-            onChange={(value) => setNotification(row.key, value)}
+            onChange={(value) => change(row.key, value)}
           />
         ))}
       </div>
+      {error && (
+        <p role="alert" className="mt-4 font-sans text-[14px] text-[#8C3A2B]">
+          {error}
+        </p>
+      )}
     </SettingsSection>
   );
 }
@@ -272,15 +299,34 @@ function AddressForm({ initial, onCancel, onSave }) {
   );
 }
 
-// Persists to localStorage only, and only for this browser. The description
-// below says these are "addresses you can pick from at checkout", which is
-// the intent rather than the current behaviour: the checkout does not read
-// them back yet. Wiring that up is a checkout change, not a change here.
+// Saved against the account on the server, and read back by the checkout:
+// the description below ("addresses you can pick from at checkout") is now a
+// description of the behaviour rather than of the intent. The default is the
+// one the checkout offers first.
 function AddressesSection() {
   const { user, addAddress, updateAddress, removeAddress, setDefaultAddress } =
     useAuth();
   const [mode, setMode] = useState(null); // null | "add" | address id being edited
+  const [error, setError] = useState("");
+  // The id of whichever row is mid-request, so its buttons can be disabled.
+  const [pending, setPending] = useState(null);
   const addresses = user.addresses ?? [];
+
+  // One wrapper for every address call: clear the last error, run it, and
+  // show the message if the server refuses.
+  const run = async (id, work) => {
+    setError("");
+    setPending(id);
+    try {
+      await work();
+      return true;
+    } catch (failure) {
+      setError(failure.message ?? "That address could not be saved");
+      return false;
+    } finally {
+      setPending(null);
+    }
+  };
 
   return (
     <SettingsSection
@@ -294,9 +340,11 @@ function AddressesSection() {
               <AddressForm
                 initial={address}
                 onCancel={() => setMode(null)}
-                onSave={(next) => {
-                  updateAddress(address.id, next);
-                  setMode(null);
+                onSave={async (next) => {
+                  const ok = await run(address.id, () =>
+                    updateAddress(address.id, next)
+                  );
+                  if (ok) setMode(null);
                 }}
               />
             ) : (
@@ -350,8 +398,11 @@ function AddressesSection() {
                   {!address.isDefault && (
                     <button
                       type="button"
-                      onClick={() => setDefaultAddress(address.id)}
-                      className="inline-flex h-10 items-center rounded-full px-3 font-sans text-[13px] font-semibold text-forest/70 transition-colors hover:text-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                      onClick={() =>
+                        run(address.id, () => setDefaultAddress(address.id))
+                      }
+                      disabled={pending === address.id}
+                      className="inline-flex h-10 items-center rounded-full px-3 font-sans text-[13px] font-semibold text-forest/70 transition-colors hover:text-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50"
                     >
                       Set as default
                     </button>
@@ -366,8 +417,9 @@ function AddressesSection() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => removeAddress(address.id)}
-                    className="inline-flex h-10 items-center gap-1.5 rounded-full px-3 font-sans text-[13px] font-semibold text-[#8C3A2B] transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                    onClick={() => run(address.id, () => removeAddress(address.id))}
+                    disabled={pending === address.id}
+                    className="inline-flex h-10 items-center gap-1.5 rounded-full px-3 font-sans text-[13px] font-semibold text-[#8C3A2B] transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50"
                   >
                     <Trash2 size={14} strokeWidth={1.75} aria-hidden="true" />
                     Remove
@@ -381,7 +433,13 @@ function AddressesSection() {
 
       {addresses.length === 0 && mode !== "add" && (
         <p className="font-sans text-[15px] text-forest/60">
-          You have no saved addresses yet.
+          You have no saved addresses yet
+        </p>
+      )}
+
+      {error && (
+        <p role="alert" className="mt-4 font-sans text-[14px] text-[#8C3A2B]">
+          {error}
         </p>
       )}
 
@@ -389,9 +447,9 @@ function AddressesSection() {
         <div className="mt-4">
           <AddressForm
             onCancel={() => setMode(null)}
-            onSave={(next) => {
-              addAddress(next);
-              setMode(null);
+            onSave={async (next) => {
+              const ok = await run("add", () => addAddress(next));
+              if (ok) setMode(null);
             }}
           />
         </div>
@@ -527,7 +585,7 @@ function AccountSummary() {
           </p>
         ) : (
           <p className="mt-2 font-sans text-[14px] text-forest/55">
-            No address saved yet.
+            No address saved yet
           </p>
         )}
       </div>
@@ -551,7 +609,7 @@ function AccountSummary() {
 }
 
 export default function AccountSettings() {
-  const { user, openAuthModal } = useAuth();
+  const { user, loading, offline, openAuthModal } = useAuth();
 
   return (
     <>
@@ -579,7 +637,29 @@ export default function AccountSettings() {
         </Container>
 
         <Container width="wide" className="pb-24 pt-12 sm:pb-32 lg:pb-40">
-          {!user ? (
+          {loading ? (
+            /* The session is decided by the server, so there is a moment on
+               boot where neither state is true yet. Showing the signed-out
+               card in that gap would tell a signed-in visitor something
+               false, so the page waits instead. */
+            <p className="py-16 text-center font-sans text-[15px] text-forest/55">
+              Loading your account
+            </p>
+          ) : offline ? (
+            /* Not the same thing as being signed out: the session could not
+               be checked at all, so offering the sign-in form would offer
+               something that cannot work either. */
+            <Reveal>
+              <div className="mx-auto max-w-[520px] rounded-[12px] border border-forest/15 bg-[#FFFDF9] p-8 text-center sm:p-12">
+                <p className="font-serif text-[24px] font-semibold text-forest">
+                  Your account can&rsquo;t be reached
+                </p>
+                <p className="mx-auto mt-3 max-w-[46ch] font-sans text-[15px] leading-relaxed text-forest/65">
+                  Check your connection and reload the page
+                </p>
+              </div>
+            </Reveal>
+          ) : !user ? (
             <Reveal>
               <div className="mx-auto max-w-[520px] rounded-[12px] border border-forest/15 bg-[#FFFDF9] p-8 text-center sm:p-12">
                 <p className="font-serif text-[24px] font-semibold text-forest">
@@ -587,7 +667,7 @@ export default function AccountSettings() {
                 </p>
                 <p className="mx-auto mt-3 max-w-[46ch] font-sans text-[15px] leading-relaxed text-forest/65">
                   Sign in to manage your password, notifications and saved
-                  addresses.
+                  addresses
                 </p>
                 <button
                   type="button"

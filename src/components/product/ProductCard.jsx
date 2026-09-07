@@ -102,13 +102,13 @@ export default function ProductCard({ product, className = "" }) {
           aria-hidden="true"
           className="mt-6 inline-flex h-12 w-full items-center justify-center rounded-lg bg-forest px-4 font-sans text-[15px] font-semibold tracking-[-0.01em] text-cream transition-colors group-hover:bg-forest/90"
         >
-          Choose options
+          View product
         </span>
         {/* The visible label above is decorative because the whole card is
             already the link; this gives the link an accessible name that
-            names the product rather than repeating "Choose options" for every
+            names the product rather than repeating "View product" for every
             card in a row to a screen reader. */}
-        <span className="sr-only">Choose options for {product.name}</span>
+        <span className="sr-only">View {product.name}</span>
       </div>
     </Link>
   );

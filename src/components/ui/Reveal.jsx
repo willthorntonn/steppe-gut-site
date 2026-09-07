@@ -35,8 +35,15 @@ export default function Reveal({
   className = "",
   delay = 0,
   stagger = 0,
+  // Tune when the reveal fires. `threshold` is the fraction of the element
+  // that must be in view; `rootMargin` grows/shrinks the viewport the observer
+  // measures against - a positive bottom value (e.g. "0px 0px 20% 0px") trips
+  // the animation while the element is still below the fold, so it plays as it
+  // enters rather than after the reader has scrolled it well up the page.
+  threshold = 0.2,
+  rootMargin,
 }) {
-  const [ref, inView] = useInView();
+  const [ref, inView] = useInView({ threshold, rootMargin });
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;

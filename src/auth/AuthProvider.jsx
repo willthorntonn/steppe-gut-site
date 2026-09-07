@@ -6,89 +6,59 @@ import {
   useMemo,
   useState,
 } from "react";
+import { api } from "../api/client";
 
-// Account/session state. Frontend only - there is no backend and nothing here
-// talks to a server, exactly like CartProvider. It exists so the header
-// account menu, the Edit Profile modal, My Orders and Account Settings have a
-// single source of truth for "who is signed in" and can persist edits across
-// reloads.
+// Account/session state, backed by the account API in `server/`.
 //
-// A demo account is seeded on first load so the menu has something to show.
-// `signOut()` clears the stored session and the menu falls back to a single
-// "Sign in" action that re-seeds the demo account - there is no real login
-// screen to send anyone to.
-const STORAGE_KEY = "steppe-gut.account.v1";
-
-// The seeded demo account. `avatar: null` means "use the default grey icon"
-// (the nav supplies the fallback image); once a picture is uploaded it is
-// stored here as a data URL.
-const DEMO_ACCOUNT = {
-  signedIn: true,
-  name: "Anzhelika Batbayar",
-  // Seed email. Editable from Edit Profile, but only after a mock 6-digit
-  // verification step (updateEmail, below) - no code is really sent.
-  email: "anzhelika@steppegut.com",
-  avatar: null,
-  notifications: {
-    // The weekly dispatch comes with an account (you gave us an email);
-    // productNews is the promotions opt-in, off unless explicitly ticked.
-    weeklyDispatch: true,
-    orderUpdates: true,
-    dispatchAndDelivery: true,
-    productNews: false,
-    backInStock: false,
-  },
-  addresses: [
-    {
-      id: "addr-home",
-      label: "Home",
-      name: "Anzhelika Batbayar",
-      line1: "45/1 Silom Road, Soi 19",
-      line2: "Room 415, 4th Floor",
-      city: "Bang Rak, Bangkok",
-      postalCode: "10500",
-      country: "Thailand",
-      phone: "+66 97 251 5911",
-      isDefault: true,
-    },
-  ],
-};
+// This used to be a localStorage demo: a seeded account, a sign-in that
+// checked nothing, a changePassword that returned true. None of that is true
+// any more. What is true now:
+//
+//   - An account is a row on the server with a scrypt-hashed password. There
+//     is nothing to seed and nothing signed in until someone registers.
+//   - The session is an HttpOnly cookie. This file never sees a token, which
+//     is why `signedIn` is decided by asking the server on boot rather than by
+//     reading a flag out of storage.
+//   - Every mutator below is a request. They are async and they can fail, so
+//     each one either returns the updated account or throws an ApiError with
+//     a message (and sometimes a `field`) meant to be shown on the form.
+//   - Nothing about the account is cached in localStorage, so the same
+//     account looks the same in any browser that signs in.
+//
+// The email address is still the account's public identity, but it is no
+// longer the key to anything: orders and addresses hang off the account's
+// server-side id, so changing an email keeps the history attached.
 
 const AuthContext = createContext(null);
 
-function readStored() {
+// The keys the previous, browser-only version wrote. Nothing reads them now,
+// and one of them holds a name, an email address and a home address, so they
+// are cleared once on boot rather than left behind in everyone's browser.
+// Safe to delete this and its call a few releases after the switch.
+const LEGACY_KEYS = ["steppe-gut.account.v1", "steppe-gut.orders.v1"];
+
+function forgetLegacyStorage() {
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEMO_ACCOUNT;
-    const parsed = JSON.parse(raw);
-    if (!parsed || typeof parsed !== "object") return DEMO_ACCOUNT;
-    // A signed-out session is a real, valid state - don't overwrite it with
-    // the demo account on the next boot.
-    if (parsed.signedIn === false) return { signedIn: false };
-    // Defensive merge: a hand-edited or half-written value must not crash the
-    // app, and a new field added to DEMO_ACCOUNT later still gets a default.
-    return {
-      ...DEMO_ACCOUNT,
-      ...parsed,
-      signedIn: true,
-      notifications: { ...DEMO_ACCOUNT.notifications, ...(parsed.notifications ?? {}) },
-      addresses: Array.isArray(parsed.addresses)
-        ? parsed.addresses
-        : DEMO_ACCOUNT.addresses,
-    };
+    for (const key of LEGACY_KEYS) window.localStorage.removeItem(key);
   } catch {
-    return DEMO_ACCOUNT;
+    // Blocked storage is not a reason to fail the boot.
   }
 }
 
 export function AuthProvider({ children }) {
-  const [account, setAccount] = useState(readStored);
+  const [user, setUser] = useState(null);
+  // "loading" until the boot session check answers. Account pages wait on
+  // this rather than flashing their signed-out state at someone who is in.
+  const [status, setStatus] = useState("loading");
+  // The API could not be reached at all. Distinct from being signed out: it
+  // means "we don't know", and it is worth saying so on screen.
+  const [offline, setOffline] = useState(false);
 
-  // Onboarding / sign-in used to be its own route (pages/SignIn). It is now a
-  // centred modal that any control can open - the home page's "Become a Steppe
-  // Soldier" button, the header's "Sign in", the signed-out account pages.
-  // `null` = closed; "create" / "signin" = open on that tab. The modal itself
-  // (components/auth/AuthModal) is rendered once, from Layout.
+  // Onboarding / sign-in is a centred modal that any control can open - the
+  // home page's "Become a Steppe Soldier" button, the header's "Sign in", the
+  // signed-out account pages. `null` = closed; "create" / "signin" = open on
+  // that tab. The modal itself (components/auth/AuthModal) is rendered once,
+  // from Layout.
   const [authModal, setAuthModal] = useState(null);
   const openAuthModal = useCallback(
     (mode = "create") => setAuthModal(mode === "signin" ? "signin" : "create"),
@@ -96,128 +66,145 @@ export function AuthProvider({ children }) {
   );
   const closeAuthModal = useCallback(() => setAuthModal(null), []);
 
-  useEffect(() => {
+  const refresh = useCallback(async () => {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(account));
+      const data = await api.session();
+      setUser(data?.user ?? null);
+      setOffline(false);
     } catch {
-      // A full or blocked storage quota is not a reason to break the menu.
+      // Any failure here means the session could not be decided, which is not
+      // the same as being signed out - a proxy in front of a stopped API
+      // answers 500 as readily as the fetch fails outright, so every failure
+      // counts. The pages say "can't be reached" rather than "sign in".
+      setUser(null);
+      setOffline(true);
+    } finally {
+      setStatus("ready");
     }
-  }, [account]);
-
-  // Sign-in restores a fresh demo account rather than whatever half-state was
-  // last stored (a signed-out marker has no profile fields to restore).
-  const signIn = useCallback(() => setAccount({ ...DEMO_ACCOUNT }), []);
-  const signOut = useCallback(() => setAccount({ signedIn: false }), []);
-
-  // Create an account from the onboarding modal (components/auth/AuthModal).
-  // Frontend only -
-  // nothing is sent anywhere and no password is kept (see changePassword
-  // below); the point is that the header menu, My Orders and Account Settings
-  // then have a real name / email / photo to show instead of the demo seed.
-  // `promotions` is the form's single opt-in tickbox -> the productNews
-  // email; the weekly dispatch is on by default because an email was given.
-  const register = useCallback((profile) => {
-    setAccount({
-      signedIn: true,
-      name: (profile.name ?? "").trim(),
-      email: (profile.email ?? "").trim(),
-      avatar: profile.avatar ?? null,
-      notifications: {
-        weeklyDispatch: true,
-        orderUpdates: true,
-        dispatchAndDelivery: true,
-        productNews: Boolean(profile.promotions),
-        backInStock: false,
-      },
-      addresses: [],
-    });
   }, []);
 
-  const updateProfile = useCallback((patch) => {
-    // Name and avatar only. Email has its own path (updateEmail) because the
-    // UI puts it behind a verification step first.
-    setAccount((current) => ({
-      ...current,
+  useEffect(() => {
+    forgetLegacyStorage();
+    refresh();
+  }, [refresh]);
+
+  const register = useCallback(async (profile) => {
+    const data = await api.register({
+      name: profile.name,
+      email: profile.email,
+      password: profile.password,
+      avatar: profile.avatar ?? null,
+      promotions: Boolean(profile.promotions),
+    });
+    setUser(data.user);
+    setOffline(false);
+    return data.user;
+  }, []);
+
+  const signIn = useCallback(async (email, password) => {
+    const data = await api.login(email, password);
+    setUser(data.user);
+    setOffline(false);
+    return data.user;
+  }, []);
+
+  const signOut = useCallback(async () => {
+    // Cleared here first so the header and the account pages react at once;
+    // the request that ends the session server-side follows. A failure leaves
+    // the cookie alive but the screen signed out, and the next boot corrects
+    // itself, which is the right way round for a control someone just pressed.
+    setUser(null);
+    try {
+      await api.logout();
+    } catch {
+      // Nothing to tell the visitor: they asked to be signed out and they are.
+    }
+  }, []);
+
+  const updateProfile = useCallback(async (patch) => {
+    // Name and avatar only. Email has its own path (below) because changing
+    // it means confirming a code the server issued.
+    const data = await api.updateProfile({
       ...(patch.name !== undefined ? { name: patch.name } : null),
       ...(patch.avatar !== undefined ? { avatar: patch.avatar } : null),
-    }));
-  }, []);
-
-  // Called by Edit Profile only after the (mock) 6-digit code is accepted.
-  const updateEmail = useCallback((email) => {
-    setAccount((current) => ({ ...current, email }));
-  }, []);
-
-  const setNotification = useCallback((key, value) => {
-    setAccount((current) => ({
-      ...current,
-      notifications: { ...current.notifications, [key]: value },
-    }));
-  }, []);
-
-  const addAddress = useCallback((address) => {
-    setAccount((current) => {
-      const id = `addr-${Date.now().toString(36)}`;
-      const first = (current.addresses?.length ?? 0) === 0;
-      return {
-        ...current,
-        addresses: [
-          ...(current.addresses ?? []),
-          { ...address, id, isDefault: first || Boolean(address.isDefault) },
-        ],
-      };
     });
+    setUser(data.user);
+    return data.user;
   }, []);
 
-  const updateAddress = useCallback((id, patch) => {
-    setAccount((current) => ({
-      ...current,
-      addresses: (current.addresses ?? []).map((address) =>
-        address.id === id ? { ...address, ...patch } : address
-      ),
-    }));
+  /**
+   * Starts an email change. The server issues and holds the six-digit code.
+   *
+   * It also returns it, because nothing can post it to an inbox yet - there is
+   * no transactional email in this build. `code` disappears from the response
+   * the day that exists (server/routes/auth.js, SG_ECHO_EMAIL_CODES).
+   */
+  const requestEmailChange = useCallback((email) => api.requestEmailCode(email), []);
+
+  const confirmEmailChange = useCallback(async (code) => {
+    const data = await api.confirmEmailCode(code);
+    setUser(data.user);
+    return data.user;
   }, []);
 
-  const removeAddress = useCallback((id) => {
-    setAccount((current) => {
-      const remaining = (current.addresses ?? []).filter((a) => a.id !== id);
-      // If the default was removed, promote the first remaining address so
-      // there is always exactly one default when any address exists.
-      if (remaining.length > 0 && !remaining.some((a) => a.isDefault)) {
-        remaining[0] = { ...remaining[0], isDefault: true };
-      }
-      return { ...current, addresses: remaining };
-    });
+  const setNotification = useCallback(async (key, value) => {
+    const data = await api.setNotification(key, value);
+    setUser(data.user);
+    return data.user;
   }, []);
 
-  const setDefaultAddress = useCallback((id) => {
-    setAccount((current) => ({
-      ...current,
-      addresses: (current.addresses ?? []).map((address) => ({
-        ...address,
-        isDefault: address.id === id,
-      })),
-    }));
+  const addAddress = useCallback(async (address) => {
+    const data = await api.addAddress(address);
+    setUser(data.user);
+    return data.addresses;
   }, []);
 
-  // No password is stored, so there is nothing to check or change. The call
-  // exists so Account Settings can show a realistic success state.
-  const changePassword = useCallback(() => true, []);
+  const updateAddress = useCallback(async (id, patch) => {
+    const data = await api.updateAddress(id, patch);
+    setUser(data.user);
+    return data.addresses;
+  }, []);
+
+  const removeAddress = useCallback(async (id) => {
+    const data = await api.removeAddress(id);
+    setUser(data.user);
+    return data.addresses;
+  }, []);
+
+  const setDefaultAddress = useCallback(async (id) => {
+    const data = await api.setDefaultAddress(id);
+    setUser(data.user);
+    return data.addresses;
+  }, []);
+
+  /**
+   * Changes the password. The current one is verified server-side, so this
+   * throws when it is wrong - the old version returned true unconditionally.
+   * Succeeding also ends every other session on the account.
+   */
+  const changePassword = useCallback(
+    (current, next) => api.changePassword(current, next),
+    []
+  );
 
   const value = useMemo(
     () => ({
-      account,
-      signedIn: Boolean(account?.signedIn),
-      user: account?.signedIn ? account : null,
+      user,
+      status,
+      loading: status === "loading",
+      offline,
+      signedIn: Boolean(user),
       authModalOpen: authModal !== null,
       authModalMode: authModal,
       openAuthModal,
       closeAuthModal,
+      refresh,
+      register,
       signIn,
       signOut,
-      register,
       updateProfile,
-      updateEmail,
+      requestEmailChange,
+      confirmEmailChange,
       setNotification,
       addAddress,
       updateAddress,
@@ -226,15 +213,19 @@ export function AuthProvider({ children }) {
       changePassword,
     }),
     [
-      account,
+      user,
+      status,
+      offline,
       authModal,
       openAuthModal,
       closeAuthModal,
+      refresh,
+      register,
       signIn,
       signOut,
-      register,
       updateProfile,
-      updateEmail,
+      requestEmailChange,
+      confirmEmailChange,
       setNotification,
       addAddress,
       updateAddress,
