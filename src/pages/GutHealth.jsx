@@ -35,6 +35,7 @@ function FeatureRow({ heading, body, cta, image, src, alt, ratio, reverse, imgSt
           src={src}
           alt={alt}
           ratio={ratio}
+          rounded="rounded-[20px]"
           imgStyle={imgStyle}
         />
       </div>
