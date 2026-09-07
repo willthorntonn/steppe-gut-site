@@ -141,23 +141,32 @@ export default function OurStoryManufacturing() {
         </Section>
       </Reveal>
 
-      {/* What is measured */}
+      {/* What is measured. Mirrors MediaBlock's grid-cols-2 split with an
+          empty (hidden on mobile) first column, so the heading and body
+          land in the same second-column position as "It starts with the
+          milk" above - the first block's text, since that block isn't
+          reversed and sits in column two, not the image in column one. */}
       <Reveal>
         <Section size="sm" bg="cream">
           <Container width="content">
-            <h2
-              className="max-w-[16ch] font-serif font-normal text-forest"
-              style={H2}
-            >
-              {measured.heading}
-            </h2>
-            <div className="mt-8 md:max-w-[52ch]">
-              <p
-                className="font-sans text-forest/80"
-                style={BODY}
-              >
-                {measured.body}
-              </p>
+            <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
+              <div className="hidden md:block" aria-hidden="true" />
+              <div>
+                <h2
+                  className="max-w-[16ch] font-serif font-normal text-forest"
+                  style={H2}
+                >
+                  {measured.heading}
+                </h2>
+                <div className="mt-8 max-w-[52ch]">
+                  <p
+                    className="font-sans text-forest/80"
+                    style={BODY}
+                  >
+                    {measured.body}
+                  </p>
+                </div>
+              </div>
             </div>
           </Container>
         </Section>
