@@ -56,7 +56,7 @@ function renderInline(text, keyPrefix) {
 function AnswerText({ text }) {
   const paragraphs = text.split(/\n{2,}/);
   return (
-    <div className="space-y-2.5 font-sans text-[18px] leading-relaxed text-[#6b6b6b]">
+    <div className="space-y-2.5 font-sans text-[clamp(1.25rem,1.6vw,1.55rem)] leading-relaxed text-[#6b6b6b]">
       {paragraphs.map((para, pIndex) => (
         <p key={pIndex}>{renderInline(para, `p${pIndex}`)}</p>
       ))}
@@ -67,7 +67,7 @@ function AnswerText({ text }) {
 // The bulleted step list. Each step is either a string or { title, body }.
 function AnswerSteps({ steps }) {
   return (
-    <ol className="list-decimal space-y-1.5 pl-5 font-sans text-[18px] leading-relaxed text-[#6b6b6b] marker:text-[#6b6b6b]/60">
+    <ol className="list-decimal space-y-1.5 pl-5 font-sans text-[clamp(1.25rem,1.6vw,1.55rem)] leading-relaxed text-[#6b6b6b] marker:text-[#6b6b6b]/60">
       {steps.map((step, index) =>
         typeof step === "string" ? (
           <li key={index}>{renderInline(step, `s${index}`)}</li>

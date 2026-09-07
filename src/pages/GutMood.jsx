@@ -3,10 +3,11 @@ import Section from "../components/ui/Section";
 import Container from "../components/ui/Container";
 import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
+import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
 import BoosterCarousel from "../components/gut-health/BoosterCarousel";
 import { GUT_HEALTH_LINKS } from "../data/site";
-import { BODY, DISPLAY, H2, LEAD } from "../styles/type";
+import { BODY, H2, LEAD } from "../styles/type";
 import {
   GUT_MOOD_FEATURE,
   GUT_MOOD_HABITS_INTRO,
@@ -57,40 +58,40 @@ export default function GutMood() {
       />
 
       {/* No PageHeader: the section switcher sits directly under the fixed
-          main nav, in the same spot as on every other Gut Health page, with
-          the banner and title below it. */}
+          main nav, in the same spot as on every other Gut Health page. */}
       <div
         data-navtheme="light"
         className="bg-cream pt-[84px] sm:pt-[99px] lg:pt-[140px]"
       >
-        <SectionSubNav ariaLabel="Gut Health sections" links={GUT_HEALTH_LINKS} />
-
-        <Container width="wide" className="pb-4 pt-2 sm:pb-6 lg:pb-8">
-          <ImagePlaceholder
-            description={GUT_MOOD_HERO.image}
-            src={GUT_MOOD_HERO.src}
-            alt={GUT_MOOD_HERO.alt}
-            ratio="16 / 7"
-            rounded="rounded-[28px]"
-          />
-        </Container>
+        <div className="animate-fade-in delay-200">
+          <SectionSubNav ariaLabel="Gut Health sections" links={GUT_HEALTH_LINKS} />
+        </div>
       </div>
 
-      <Section size="sm" bg="cream">
-        <Container width="content" className="text-center">
-          <h1
-            id="page-title"
-            tabIndex={-1}
-            className="mx-auto max-w-[20ch] font-serif font-normal text-forest outline-none"
-            style={DISPLAY}
-          >
-            Gut and mood
-          </h1>
-        </Container>
+      {/* Opening plate: lands inset, widens to full bleed as the reader
+          scrolls, with the title pair nested in the arch - the same hero
+          every Our Story and Gut Health page now opens with. */}
+      <Section
+        size="none"
+        bg="cream"
+        className="overflow-x-clip pt-12 pb-0 sm:pt-16 lg:pt-20"
+      >
+        <PlateHero
+          brief={GUT_MOOD_HERO.image}
+          src={GUT_MOOD_HERO.src}
+          alt={GUT_MOOD_HERO.alt}
+          ratio="21 / 9"
+        >
+          <PlateHeroTitle section="Gut Health" title="Gut and Mood" />
+        </PlateHero>
       </Section>
 
       <Reveal>
-        <Section size="default" bg="cream">
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-10 pb-20 sm:pt-12 sm:pb-28 lg:pt-16 lg:pb-36"
+        >
           <Container width="content">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
               <h2 className="font-serif font-normal text-forest" style={H2}>

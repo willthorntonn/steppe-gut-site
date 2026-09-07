@@ -1,5 +1,5 @@
 import Container from "./Container";
-import { BODY_SM, H3 } from "../../styles/type";
+import { BODY, H3 } from "../../styles/type";
 
 const ORDINALS = [
   "One",
@@ -50,7 +50,7 @@ export default function ProcessSteps({ steps, width = "content", columns = 3 }) 
 
             <p
               className="mt-4 max-w-[38ch] font-sans text-forest/75"
-              style={BODY_SM}
+              style={BODY}
             >
               {step.body}
             </p>

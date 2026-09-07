@@ -95,7 +95,8 @@ export const MISSION = {
     },
     {
       id: "the-season",
-      heading: "Milk that appears, then goes",
+      // Two lines on purpose: the break falls at the comma.
+      heading: ["Milk that appears,", "then goes"],
       body: [
         "Steppe mares were never bred as dairy animals. They graze wild grassland all year and come into milk for one short window in summer, in small amounts, on a schedule the animal sets",
         "Milk that arrives for a few weeks and spoils quickly has to become something that lasts. Fermentation was the answer, and people here had understood it for centuries",

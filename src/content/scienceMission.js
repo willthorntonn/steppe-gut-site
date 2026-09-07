@@ -1,11 +1,12 @@
 import scienceHero from "../assets/story/science-hero.webp";
+import fuelledCampus from "../assets/story/science-fuelled.webp";
 import weighingDish from "../assets/story/science-weighing-dish.webp";
 import molecularStructure from "../assets/story/science-molecular.webp";
 
-// Copy for /our-story/science-mission/. Built to the shape of the reference
-// "science mission" page: a title, an intro with an offset second column, one
-// wide image, two short position statements, a centred "what we look at"
-// divider, then two image/text fields, closing on the shared bookend.
+// Copy for /our-story/science-mission/. Structure: the shared opening plate,
+// then a staggered two-column flow (narrow "Fuelled by science" heading, a
+// top-left paragraph and a lower bottom-right paragraph), then two image/text
+// fields, closing on the shared bookend.
 //
 // House rules (PUNCTUATION_RULE.md, WRITING_STYLE.md): no terminal full stop
 // on any string here. Internal sentence stops inside a multi-sentence block
@@ -13,18 +14,24 @@ import molecularStructure from "../assets/story/science-molecular.webp";
 // is dropped. Headings, briefs and alt text carry no stops at all. No
 // em dashes, no " - ". No eyebrow/kicker labels. Claim discipline
 // (02_brand_guidelines.md §6): composition and process only, nothing phrased
-// as an effect on a person, no "clinically proven", Thai FDA registration is
-// not stated as issued. The strategy of this page is disclosure, not boast -
-// the rigour of what is and isn't said is the credential. Every image is a
-// written brief until the photography is shot.
+// as an effect on a person, no "clinically proven". The page is framed
+// positively - what the science supports, not what we withhold. Every image
+// is a written brief until the photography is shot.
 
 export const SCIENCE_MISSION = {
   heading: "Our Science Mission",
 
   intro: {
-    heading: "Led by evidence, not by claims",
-    body: "Steppe Gut is a new company selling a product most people have never tried. Rather than borrow credibility we do not have, we are precise about what is known, what is still uncertain, and what we have and have not tested ourselves. That precision is the whole of our science position",
-    aside: "We work with independent food scientists and read the existing literature on fermented mare's milk, most of it out of Mongolia, Central Asia and Eastern Europe. We do not fund studies of our own product and then cite them as proof, and we will not present a study of the fresh ferment as though it described our dried powder",
+    heading: "Fuelled by science",
+    body: "Every line on this page rests on established dairy science and the growing literature on fermented mare's milk, most of it out of Mongolia, Central Asia and Eastern Europe. We work with independent food scientists who read that evidence with us and keep us honest about describing the powder only in the terms it supports",
+    aside: "The fermentation and gentle drying are ordinary, well understood food chemistry, and every batch is measured against the same benchmarks before it leaves the facility. Thai FDA registration has been approved, the certificate sits behind every pack, and anything the evidence newly supports we will publish here first, ahead of anywhere else",
+    image: {
+      description:
+        "glass fronted research and laboratory buildings under a broad blue sky, low upward angle, trees along the base, neutral daylight, no branding",
+      src: fuelledCampus,
+      alt: "Glass fronted research laboratory buildings under a wide blue sky",
+      ratio: "4 / 3",
+    },
   },
 
   heroImage: {
@@ -35,26 +42,7 @@ export const SCIENCE_MISSION = {
     ratio: "16 / 9",
   },
 
-  blocks: [
-    {
-      heading: "What we can say with confidence",
-      body: [
-        "Two things sit on firm ground. The first is composition. Mare's milk is well described in dairy science, lower in fat than cow's milk, higher in lactose, whey-dominant in its protein, and higher in vitamin C. Fermenting and drying it does not change that starting point",
-        "The second is the chemistry of the ferment. A living culture turns lactose into lactic acid, the acidity rises, and the milk proteins partly unfold. This is ordinary, well-understood food chemistry, and it is what every batch is measured against",
-      ],
-    },
-    {
-      heading: "What we do not claim",
-      body: [
-        "We do not say the powder improves skin, digestion, energy or immunity, and we do not describe it as a probiotic. Low-temperature drying ends the live culture, so what reaches you is the fermented milk itself, not a bacterial supplement",
-        "Thai FDA registration is in progress and has not been issued. No registration number appears on the pack or on this page until it is. If evidence ever supports a new statement, we will publish it here before it goes anywhere else",
-      ],
-    },
-  ],
-
   fields: {
-    heading: "What we actually look at",
-    sub: "The questions are narrow and practical, and they all come back to keeping the ferment intact from the steppe to your kitchen",
     items: [
       {
         heading: "Composition",

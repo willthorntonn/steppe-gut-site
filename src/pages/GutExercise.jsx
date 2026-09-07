@@ -5,6 +5,7 @@ import Container from "../components/ui/Container";
 import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
 import LinkArrow from "../components/ui/LinkArrow";
+import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
 import MovementCarousel from "../components/gut-health/MovementCarousel";
 import { GUT_HEALTH_LINKS } from "../data/site";
@@ -20,7 +21,7 @@ import {
   GUT_EXERCISE_TIPS,
   GUT_EXERCISE_MORE,
 } from "../content/gutExercise";
-import { BODY, BODY_SM, DISPLAY, H2, LEAD } from "../styles/type";
+import { BODY, BODY_SM, H2, LEAD } from "../styles/type";
 
 // /gut-health/exercise/ - "Gut and Exercise". Structure lifted from a
 // reference gut-health section page: an image band and centred title, a
@@ -87,8 +88,7 @@ export default function GutExercise() {
 
       {/* The section switcher sits directly under the fixed main nav, at the
           same height as on every other Gut Health page, so it does not jump
-          when you move between sections. The hero band, title and intro
-          follow it, in place of the standard PageHeader. */}
+          when you move between sections. */}
       <div
         data-navtheme="light"
         className="bg-cream pt-[84px] sm:pt-[99px] lg:pt-[140px]"
@@ -99,31 +99,35 @@ export default function GutExercise() {
             links={GUT_HEALTH_LINKS}
           />
         </div>
-
-        {/* Image band, standing in for the reference page's hero photo. */}
-        <Container width="wide" className="pb-4 pt-2 sm:pb-6 lg:pb-8">
-          <ImagePlaceholder
-            description={GUT_EXERCISE_HERO.image}
-            src={GUT_EXERCISE_HERO.src}
-            alt={GUT_EXERCISE_HERO.alt}
-            ratio="16 / 7"
-          />
-        </Container>
       </div>
 
+      {/* Opening plate: lands inset, widens to full bleed as the reader
+          scrolls, with the title pair nested in the arch - the same hero
+          every Our Story and Gut Health page now opens with. */}
+      <Section
+        size="none"
+        bg="cream"
+        className="overflow-x-clip pt-12 pb-0 sm:pt-16 lg:pt-20"
+      >
+        <PlateHero
+          brief={GUT_EXERCISE_HERO.image}
+          src={GUT_EXERCISE_HERO.src}
+          alt={GUT_EXERCISE_HERO.alt}
+          ratio="21 / 9"
+        >
+          <PlateHeroTitle section="Gut Health" title="Gut and Exercise" />
+        </PlateHero>
+      </Section>
+
       <Reveal>
-        <Section size="sm">
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-10 lg:pb-20"
+        >
           <Container width="content" className="text-center">
-            <h1
-              id="page-title"
-              tabIndex={-1}
-              className="mx-auto max-w-[20ch] font-serif font-normal text-forest outline-none"
-              style={DISPLAY}
-            >
-              Gut and Exercise
-            </h1>
             <p
-              className="mx-auto mt-8 max-w-[58ch] font-sans text-forest/80"
+              className="mx-auto max-w-[58ch] font-sans text-forest/80"
               style={LEAD}
             >
               {GUT_EXERCISE_INTRO}

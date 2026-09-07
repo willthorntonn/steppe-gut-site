@@ -39,7 +39,7 @@ const PHOTO =
 
 const TITLE_SIZE = { fontSize: "clamp(1.6rem, calc(2.3 * var(--vw)), 2.2rem)" };
 const BODY_SIZE = {
-  fontSize: "clamp(1.15rem, calc(1.4 * var(--vw)), 1.35rem)",
+  fontSize: "clamp(1.25rem, calc(1.6 * var(--vw)), 1.55rem)",
   lineHeight: 1.7,
 };
 
@@ -113,14 +113,7 @@ export default function MissionTimeline({ heading, items }) {
       className="scroll-mt-28 bg-cream pt-8 pb-14 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20"
     >
       <div className="mx-auto max-w-[2000px] px-5 sm:px-8 lg:px-10">
-        <h2
-          className="mx-auto mt-1 max-w-[20ch] text-center font-serif font-bold text-forest lg:mt-3"
-          style={H2_XL}
-        >
-          {heading}
-        </h2>
-
-        <div className="mt-16 flex items-center justify-end gap-3 lg:mt-24">
+        <div className="flex items-center justify-end gap-3">
           <button
             type="button"
             aria-label="Previous"
@@ -144,13 +137,11 @@ export default function MissionTimeline({ heading, items }) {
         </div>
 
         {/* pt/pb give the raised cards and their hover panels headroom inside
-            the horizontal scroller (which clips the vertical axis), and the
-            extra top space drops the carousel a little below the heading
-            without shifting it sideways. */}
+            the horizontal scroller (which clips the vertical axis). */}
         <ol
           id="mission-timeline-track"
           ref={trackRef}
-          className="no-scrollbar mt-4 flex snap-x snap-mandatory list-none items-start gap-6 overflow-x-auto overflow-y-hidden pb-16 pt-24 lg:mt-6 lg:gap-12 lg:pb-24 lg:pt-32"
+          className="no-scrollbar mt-8 flex snap-x snap-mandatory list-none items-start gap-6 overflow-x-auto overflow-y-hidden pb-16 pt-24 sm:mt-10 lg:mt-12 lg:gap-12 lg:pb-24 lg:pt-32"
         >
           {items.map((item, index) => (
             <li

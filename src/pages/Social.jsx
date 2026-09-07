@@ -8,7 +8,7 @@ import Reveal from "../components/ui/Reveal";
 import SocialGrid from "../components/social/SocialGrid";
 import { CONTENT_PILLARS, SOCIAL_PLATFORMS } from "../data/social";
 import { COMPANY } from "../data/site";
-import { BODY, BODY_SM, H2, H4 } from "../styles/type";
+import { BODY, H2, H4 } from "../styles/type";
 
 // See website_blueprint/pages/social.md.
 //
@@ -54,7 +54,7 @@ export default function Social() {
                 </h3>
                 <p
                   className="mt-3 font-sans text-forest/75"
-                  style={BODY_SM}
+                  style={BODY}
                 >
                   {pillar.body}
                 </p>

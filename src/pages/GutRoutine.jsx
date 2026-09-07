@@ -4,6 +4,7 @@ import Section from "../components/ui/Section";
 import Container from "../components/ui/Container";
 import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
+import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
 import { GUT_HEALTH_LINKS } from "../data/site";
 import {
@@ -18,7 +19,7 @@ import {
   GUT_ROUTINE_QUOTE,
   GUT_ROUTINE_MORE,
 } from "../content/gutRoutine";
-import { BODY, DISPLAY, H2, LEAD } from "../styles/type";
+import { BODY, H2, LEAD } from "../styles/type";
 
 // /gut-health/routine/ - "Gut and Routine". Structure lifted from a reference
 // gut-health section page: an image band and centred title, a centred "why
@@ -73,8 +74,8 @@ export default function GutRoutine() {
         description={GUT_ROUTINE_META.description}
       />
 
-      {/* The section switcher sits directly under the fixed main nav, then an
-          image band standing in for the reference page's hero photo. */}
+      {/* The section switcher sits directly under the fixed main nav, at the
+          same height as on every other Gut Health page. */}
       <div
         data-navtheme="light"
         className="bg-cream pt-[84px] sm:pt-[99px] lg:pt-[140px]"
@@ -82,31 +83,36 @@ export default function GutRoutine() {
         <div className="animate-fade-in delay-200">
           <SectionSubNav ariaLabel="Gut Health sections" links={GUT_HEALTH_LINKS} />
         </div>
-
-        <Container width="wide" className="pb-4 pt-2 sm:pb-6 lg:pb-8">
-          <ImagePlaceholder
-            description={GUT_ROUTINE_HERO.image}
-            src={GUT_ROUTINE_HERO.src}
-            alt={GUT_ROUTINE_HERO.alt}
-            ratio="16 / 7"
-          />
-        </Container>
       </div>
 
-      {/* Centred title and lead. */}
+      {/* Opening plate: lands inset, widens to full bleed as the reader
+          scrolls, with the title pair nested in the arch - the same hero
+          every Our Story and Gut Health page now opens with. */}
+      <Section
+        size="none"
+        bg="cream"
+        className="overflow-x-clip pt-12 pb-0 sm:pt-16 lg:pt-20"
+      >
+        <PlateHero
+          brief={GUT_ROUTINE_HERO.image}
+          src={GUT_ROUTINE_HERO.src}
+          alt={GUT_ROUTINE_HERO.alt}
+          ratio="21 / 9"
+        >
+          <PlateHeroTitle section="Gut Health" title="Gut and Routine" />
+        </PlateHero>
+      </Section>
+
+      {/* Centred lead. */}
       <Reveal>
-        <Section size="sm">
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-10 lg:pb-20"
+        >
           <Container width="content" className="text-center">
-            <h1
-              id="page-title"
-              tabIndex={-1}
-              className="mx-auto max-w-[20ch] font-serif font-normal text-forest outline-none"
-              style={DISPLAY}
-            >
-              Gut and Routine
-            </h1>
             <p
-              className="mx-auto mt-8 max-w-[58ch] font-sans text-forest/80"
+              className="mx-auto max-w-[58ch] font-sans text-forest/80"
               style={LEAD}
             >
               {GUT_ROUTINE_INTRO}

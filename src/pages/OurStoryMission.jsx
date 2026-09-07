@@ -4,10 +4,11 @@ import Container from "../components/ui/Container";
 import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
 import SectionSubNav from "../components/layout/SectionSubNav";
+import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import MissionTimeline from "../components/our-story/MissionTimeline";
 import { OUR_STORY_LINKS } from "../data/site";
 import { MISSION } from "../content/mission";
-import { BODY, H2 } from "../styles/type";
+import { BODY, H2, H2_XL } from "../styles/type";
 
 // /our-story/mission/, built to the structure of the reference "Our Mission"
 // page: a centred mission statement, a steppe image, one large pull quote, a
@@ -27,24 +28,43 @@ import { BODY, H2 } from "../styles/type";
 // the page keeps the site's measure; it is inlined here only because the image
 // slot is an ImagePlaceholder box and the body voice is sans, not the serif
 // MediaTextRow sets.
+// A chapter heading is a plain string, or an array of strings when the copy
+// wants an explicit line break between them.
+function renderHeading(heading) {
+  if (!Array.isArray(heading)) return heading;
+  return heading.map((line) => (
+    <span key={line} className="block">
+      {line}
+    </span>
+  ));
+}
+
 function ChapterRow({ heading, body, brief, src, alt, ratio, reverse }) {
   return (
-    <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
+    <div
+      className={`grid grid-cols-1 items-center gap-10 md:gap-12 lg:gap-16 ${
+        reverse
+          ? "md:grid-cols-[0.82fr_1.18fr]"
+          : "md:grid-cols-[1.18fr_0.82fr]"
+      }`}
+    >
       <div className={reverse ? "md:order-2" : undefined}>
         <ImagePlaceholder description={brief} src={src} alt={alt} ratio={ratio} />
       </div>
 
       <div className={reverse ? "md:order-1" : undefined}>
         <h2
-          className="max-w-[18ch] font-serif font-normal text-forest"
+          className={`${
+            Array.isArray(heading) ? "max-w-[22ch]" : "max-w-[18ch]"
+          } font-serif font-normal text-forest`}
           style={H2}
         >
-          {heading}
+          {renderHeading(heading)}
         </h2>
         {body.map((paragraph, index) => (
           <p
             key={paragraph.slice(0, 24)}
-            className={`max-w-[54ch] font-sans text-forest/80 ${
+            className={`max-w-[46ch] font-sans text-forest/80 ${
               index === 0 ? "mt-8" : "mt-5"
             }`}
             style={BODY}
@@ -64,20 +84,26 @@ function ChapterRow({ heading, body, brief, src, alt, ratio, reverse }) {
 function ChapterFeature({ heading, body, brief, src, alt }) {
   return (
     <div>
-      <ImagePlaceholder
-        description={brief}
-        src={src}
-        alt={alt}
-        ratio="16 / 9"
-        rounded="rounded-3xl"
-        className="shadow-[0_24px_60px_-28px_rgba(31,45,33,0.45)] ring-1 ring-forest/10"
-      />
+      {/* The closing plate runs a touch wider than the text measure below it -
+          a block wrapper with negative side margins so it grows symmetrically
+          past the content container, which a w-full element cannot do on its
+          own. */}
+      <div className="lg:-mx-8 xl:-mx-14">
+        <ImagePlaceholder
+          description={brief}
+          src={src}
+          alt={alt}
+          ratio="16 / 9"
+          rounded="rounded-3xl"
+          className="shadow-[0_24px_60px_-28px_rgba(31,45,33,0.45)] ring-1 ring-forest/10"
+        />
+      </div>
       <div className="mx-auto mt-12 max-w-[60ch] text-center lg:mt-16">
         <h2
           className="mx-auto max-w-[24ch] font-serif font-normal text-forest"
           style={H2}
         >
-          {heading}
+          {renderHeading(heading)}
         </h2>
         {body.map((paragraph, index) => (
           <p
@@ -116,49 +142,46 @@ export default function OurStoryMission() {
         </div>
       </div>
 
-      {/* Steppe image, then the mission statement */}
-      <Reveal>
-        <Section size="default" bg="cream">
-          <Container width="content">
-            <ImagePlaceholder
-              description={MISSION.hero.brief}
-              src={MISSION.hero.src}
-              alt={MISSION.hero.alt}
-              ratio={MISSION.hero.ratio}
-              rounded="rounded-3xl"
-              imgStyle={{
-                objectPosition: "50% 100%",
-                transform: "scale(1.45)",
-                transformOrigin: "50% 100%",
-              }}
-            />
-          </Container>
-          <Container width="narrow" className="mt-14 text-center lg:mt-20">
-            {MISSION.statement.map((paragraph, index) => (
-              <p
-                key={paragraph.slice(0, 24)}
-                className={`mx-auto max-w-[62ch] font-sans text-forest/80 ${
-                  index === 0 ? "" : "mt-6"
-                }`}
-                style={index === 0 ? { ...BODY, fontWeight: 500 } : BODY}
-              >
-                {paragraph}
-              </p>
-            ))}
-          </Container>
-        </Section>
-      </Reveal>
+      {/* Steppe image, the section/page title pair, then the mission
+          statement. The image is deliberately outside Reveal: it has to be
+          there, inset, the moment the page lands, because the widening is
+          driven by the reader's own scrolling rather than by an entrance.
+          The hero section carries only its top clearance - its bottom padding
+          is dropped so "Our Mission" sits just above the statement, at the
+          same heading-to-body gap as "Fast forward to today" below. */}
+      <Section
+        size="none"
+        bg="cream"
+        className="overflow-x-clip pt-12 pb-0 sm:pt-16 lg:pt-20"
+      >
+        <PlateHero
+          brief={MISSION.hero.brief}
+          src={MISSION.hero.src}
+          alt={MISSION.hero.alt}
+          ratio={MISSION.hero.ratio}
+          imgStyle={{
+            objectPosition: "50% 100%",
+            transform: "scale(1.45)",
+            transformOrigin: "50% 100%",
+          }}
+        >
+          <PlateHeroTitle section="Our Story" title={MISSION.heading} />
+        </PlateHero>
+      </Section>
 
-      {/* Pull quote */}
       <Reveal>
-        <Section size="sm" bg="sage-tint">
-          <Container width="content">
-            <blockquote
-              className="mx-auto max-w-[26ch] text-center font-serif font-normal text-forest"
-              style={H2}
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-10 lg:pb-20"
+        >
+          <Container width="wide" className="text-center">
+            <p
+              className="mx-auto max-w-[960px] font-sans text-forest/80"
+              style={BODY}
             >
-              {MISSION.quote}
-            </blockquote>
+              {MISSION.statement}
+            </p>
           </Container>
         </Section>
       </Reveal>
@@ -171,29 +194,50 @@ export default function OurStoryMission() {
         />
       </Reveal>
 
-      {/* Fast forward */}
-      <Reveal>
-        <Section size="sm" bg="cream">
-          <Container width="narrow" className="text-center">
+      {/* Fast forward. Top padding is dropped so the beat sits up in the
+          space under the era rail rather than adrift in a cream gap. The
+          reveal is tuned the same way as the chapters below, but the other
+          way round: a negative bottom rootMargin holds the animation back
+          until the block is genuinely in view, so the reader watches it play
+          instead of arriving to find it already settled. */}
+      <Reveal threshold={0.2} rootMargin="0px 0px -25% 0px">
+        <Section
+          size="sm"
+          bg="cream"
+          className="pt-0 pb-4 sm:pt-0 sm:pb-6 lg:pt-0 lg:pb-10"
+        >
+          <Container width="content" className="text-center">
             <h2
-              className="mx-auto max-w-[18ch] font-serif font-normal text-forest"
-              style={H2}
+              className="mx-auto max-w-[20ch] font-serif font-bold text-forest"
+              style={H2_XL}
             >
               {MISSION.todayHeading}
             </h2>
-            <p
-              className="mx-auto mt-8 max-w-[54ch] font-sans text-forest/80"
-              style={BODY}
+            {/* Matched to the card body copy in the "Our Story" carousel
+                above: the same --vw-based clamp, not the plain-vw BODY, so the
+                two read at an identical size across the breakpoints. */}
+            <div
+              className="mx-auto mt-10 font-sans text-forest/80"
+              style={{
+                fontSize: "clamp(1.25rem, calc(1.6 * var(--vw)), 1.55rem)",
+                lineHeight: 1.7,
+              }}
             >
-              {MISSION.todayBody}
-            </p>
+              {MISSION.todayBody.map((line) => (
+                <p key={line.slice(0, 20)} className="text-center">
+                  {line}
+                </p>
+              ))}
+            </div>
           </Container>
         </Section>
       </Reveal>
 
-      {/* Alternating chapters */}
-      <Reveal>
-        <Section size="default" bg="cream">
+      {/* Alternating chapters. Revealed early - a positive bottom rootMargin
+          plus a low threshold trip the animation as the block enters from
+          below, instead of after it has been scrolled well up the viewport. */}
+      <Reveal threshold={0.05} rootMargin="0px 0px 20% 0px">
+        <Section size="default" bg="cream" className="pt-6 sm:pt-10 lg:pt-16">
           <Container width="content">
             <div className="space-y-24 lg:space-y-36">
               {MISSION.chapters.map((chapter, index) =>

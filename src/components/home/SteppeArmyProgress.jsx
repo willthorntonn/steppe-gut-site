@@ -47,7 +47,7 @@ export default function SteppeArmyProgress() {
               </h2>
               <p
                 className="mt-5 max-w-[46ch] font-sans text-forest/75"
-                style={{ fontSize: "clamp(1.2rem, 1.6vw, 1.5rem)", lineHeight: 1.65 }}
+                style={{ fontSize: "clamp(1.25rem, 1.6vw, 1.55rem)", lineHeight: 1.65 }}
               >
                 {user
                   ? "You're one of them. Bring a friend and you both save 15%"

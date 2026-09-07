@@ -31,7 +31,7 @@ export default function OriginFeature() {
             <p
               className="line-clamp-3 mt-12 max-w-[54ch] font-sans font-medium text-forest/80"
               style={{
-                fontSize: "clamp(1.15rem, calc(1.4 * var(--vw)), 1.35rem)",
+                fontSize: "clamp(1.25rem, calc(1.6 * var(--vw)), 1.55rem)",
                 lineHeight: 1.65,
               }}
             >

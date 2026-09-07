@@ -4,10 +4,11 @@ import Section from "../components/ui/Section";
 import Container from "../components/ui/Container";
 import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
+import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
 import { GUT_HEALTH_LINKS } from "../data/site";
 import { GUT_DIET } from "../content/gutDiet";
-import { BODY, DISPLAY, H2, H3 } from "../styles/type";
+import { BODY, H2, H3 } from "../styles/type";
 
 // /gut-health/diet/, built to the structure of a reference gut-health "diet"
 // page: a centred title and short standfirst, one wide image,
@@ -111,18 +112,34 @@ export default function GutDiet() {
         </div>
       </div>
 
-      {/* Title, offset standfirst, wide image */}
+      {/* Opening plate: lands inset, widens to full bleed as the reader
+          scrolls, with the title pair nested in the arch - the same hero
+          every Our Story and Gut Health page now opens with. */}
+      <Section
+        size="none"
+        bg="cream"
+        className="overflow-x-clip pt-12 pb-0 sm:pt-16 lg:pt-20"
+      >
+        <PlateHero
+          brief={heroImage.description}
+          src={heroImage.src}
+          alt={heroImage.alt}
+          ratio="21 / 9"
+        >
+          <PlateHeroTitle section="Gut Health" title="Gut and Diet" />
+        </PlateHero>
+      </Section>
+
+      {/* Standfirst, then the offset intro. */}
       <Reveal>
-        <Section size="default" bg="cream">
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-10 lg:pb-36"
+        >
           <Container width="content">
-            <h1
-              className="mx-auto max-w-[16ch] text-center font-serif font-normal text-forest"
-              style={DISPLAY}
-            >
-              {GUT_DIET.heading}
-            </h1>
             <p
-              className="mx-auto mt-8 max-w-[54ch] text-center font-sans text-forest/80"
+              className="mx-auto max-w-[54ch] text-center font-sans text-forest/80"
               style={BODY}
             >
               {standfirst}
@@ -143,16 +160,6 @@ export default function GutDiet() {
               <p className="max-w-[42ch] font-sans text-forest/70 md:mt-24" style={BODY}>
                 {intro.aside}
               </p>
-            </div>
-
-            <div className="mt-16 lg:mt-24">
-              <ImagePlaceholder
-                description={heroImage.description}
-                src={heroImage.src}
-                alt={heroImage.alt}
-                ratio={heroImage.ratio}
-                rounded="rounded-3xl"
-              />
             </div>
           </Container>
         </Section>

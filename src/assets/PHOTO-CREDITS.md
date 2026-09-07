@@ -70,6 +70,7 @@ be traced back to its source.
 | `routine-notebook-4.webp` | Justin Morgan | https://unsplash.com/photos/Hx-4TbpsoIw |
 | `routine-notebook-5.webp` | Fiona Murray-deGraaff | https://unsplash.com/photos/91fyuCdgtsM |
 | `routine-notebook-6.webp` | Marissa Grootes | https://unsplash.com/photos/wtqe5nd5MYk |
+| `science-fuelled.webp` | Vishal Tiwari | https://unsplash.com/photos/Ecdd7nVZQXw |
 | `science-hero.webp` | Trnava University | https://unsplash.com/photos/_9xRHrMOjeg |
 | `science-weighing-dish.webp` | Alex Saks | https://unsplash.com/photos/-Tu9jm9tpLo |
 | `sleep-bed-2.webp` | Ксения Лапшина | https://unsplash.com/photos/CREKZID5kbw |

@@ -1,6 +1,6 @@
 import { useId, useState } from "react";
 import { Minus, Plus } from "lucide-react";
-import { BODY_SM } from "../../styles/type";
+import { BODY } from "../../styles/type";
 
 // 05_component_library.md §28.
 //
@@ -48,7 +48,7 @@ function AccordionItem({ item, isOpen, onToggle, headingLevel: H }) {
       >
         <p
           className="max-w-[62ch] font-sans text-forest/80"
-          style={BODY_SM}
+          style={BODY}
         >
           {item.answer}
         </p>

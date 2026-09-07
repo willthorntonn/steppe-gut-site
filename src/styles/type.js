@@ -22,7 +22,7 @@ export const DISPLAY = {
 
 /** Section heading (`<h2>`). */
 export const H2 = {
-  fontSize: "clamp(4rem, 4.6vw, 7.5rem)",
+  fontSize: "clamp(2.3rem, 4.6vw, 4.2rem)",
   lineHeight: 1.04,
   letterSpacing: "-0.04em",
   textWrap: "balance",
@@ -59,9 +59,11 @@ export const LEAD = {
   lineHeight: 1.7,
 };
 
-/** Default body copy. Set in the serif, matching the homepage. */
+/** Default body copy. Sized to match the lead/description voice (same scale as
+ *  LEAD), so every prose paragraph across the site reads at one size - the
+ *  "Fuelled by science" reference paragraph on /our-story/science-mission/. */
 export const BODY = {
-  fontSize: "clamp(1.15rem, 1.4vw, 1.35rem)",
+  fontSize: "clamp(1.25rem, 1.6vw, 1.55rem)",
   lineHeight: 1.7,
 };
 

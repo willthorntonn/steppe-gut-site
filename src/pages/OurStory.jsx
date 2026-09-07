@@ -6,11 +6,12 @@ import Button from "../components/ui/Button";
 import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
 import SectionSubNav from "../components/layout/SectionSubNav";
+import MissionBadge from "../components/our-story/MissionBadge";
 import { OUR_STORY_LINKS } from "../data/site";
 import { MISSION } from "../content/mission";
 import { SCIENCE_MISSION } from "../content/scienceMission";
 import manufacturingTransport from "../assets/story/manufacturing-transport.webp";
-import { BODY, H2, H3, LEAD } from "../styles/type";
+import { BODY, H2, H2_XL, H3, LEAD } from "../styles/type";
 
 // Our Story, rebuilt to the structure of a reference "Our Story" page:
 // centred intro, then a circular-badged hero feature, then alternating
@@ -96,27 +97,63 @@ export default function OurStory() {
         </div>
       </div>
 
+      {/* Our Story introduction: centered heading and values statement. Top
+          padding is deliberately small so "Our Story" sits just under the
+          section sub-nav, at the same height "FAQ" sits below the main nav on
+          /faq/ - not floating a section's worth of whitespace below it. */}
+      <Reveal>
+        <Section size="none" className="pb-0 -mt-4 sm:-mt-5 lg:-mt-6">
+          <Container width="content">
+            <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12 lg:mb-4">
+              <h1
+                className="font-serif font-bold tracking-[-0.02em] text-forest mb-8"
+                style={H2_XL}
+              >
+                Our Story
+              </h1>
+              {/* Split for balance: the two centred lines are near-equal in
+                  length rather than one short sentence over one long one. */}
+              <p
+                className="mx-auto max-w-[65ch] font-sans text-forest/75 lg:max-w-none"
+                style={LEAD}
+              >
+                <span className="block lg:whitespace-nowrap">
+                  We believe in universal wellbeing and happiness. Simple
+                  knowledge
+                </span>
+                <span className="block lg:whitespace-nowrap">
+                  and compassionate care create lasting impact on health and
+                  community
+                </span>
+              </p>
+            </div>
+          </Container>
+        </Section>
+      </Reveal>
+
       {/* Badged hero feature, the "Our Mission" anchor. A circular badge
           overlaps a wide rounded image, with a centred caption and one pill
           CTA beneath. The section intro sits above it rather than in the
           PageHeader, so the switcher lands at the same height as every other
           Our Story page. */}
       <Reveal>
-        <Section id="mission" size="sm">
-          <Container width="content">
-            <p
-              className="mx-auto mb-14 max-w-[62ch] text-center font-sans text-forest/75 lg:mb-20"
-              style={LEAD}
-            >
-              For eight hundred years, fermented mare's milk has been part of
-              daily life on the Mongolian steppe. We take that same ferment, dry
-              it where it is made, and bring it to you unchanged
-            </p>
+        <Section
+          id="mission"
+          size="sm"
+          className="overflow-x-clip lg:pt-6"
+        >
+          {/* Wide container (1440px), matching the rest width of the Science
+              Mission page's opening plate, so the badged hero image spans the
+              same measure. The 16/9 ratio is unchanged. */}
+          <Container width="wide">
 
             <div className="relative">
-              <span className="absolute -left-2 -top-6 z-10 flex h-28 w-28 items-center justify-center rounded-full bg-forest px-4 text-center font-sans text-[13px] font-semibold uppercase leading-tight tracking-[0.16em] text-cream sm:-left-6 lg:h-36 lg:w-36 lg:text-sm">
-                Our Mission
-              </span>
+              {/* Centred on the plate's top edge - `top-0` with a half-height
+                  lift - so the disc straddles cream and picture evenly. It is
+                  inset from the left until the gutters are wide enough for it
+                  to hang past the plate without landing under the fixed social
+                  rail, which is pinned to the viewport's left edge. */}
+              <MissionBadge className="left-[6%] top-0 -translate-y-[37%]" />
               <ImagePlaceholder
                 description={MISSION.hero.brief}
                 src={MISSION.hero.src}

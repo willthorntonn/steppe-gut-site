@@ -29,7 +29,7 @@ const PHOTO =
 
 const TITLE_SIZE = { fontSize: "clamp(1.6rem, calc(2.3 * var(--vw)), 2.2rem)" };
 const BODY_SIZE = {
-  fontSize: "clamp(1.15rem, calc(1.4 * var(--vw)), 1.35rem)",
+  fontSize: "clamp(1.25rem, calc(1.6 * var(--vw)), 1.55rem)",
   lineHeight: 1.7,
 };
 

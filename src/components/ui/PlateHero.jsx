@@ -1,22 +1,28 @@
 import { useEffect, useRef, useState } from "react";
-import Container from "../ui/Container";
-import ImagePlaceholder from "../ui/ImagePlaceholder";
+import Container from "./Container";
+import ImagePlaceholder from "./ImagePlaceholder";
 
-// The /our-story/mission/ opening plate. It lands inset - sitting inside the
-// normal page gutters as a rounded card - and then, over the first stretch of
-// scroll, widens until it is flush with both edges of the viewport and its
-// corners have squared off. The image itself never changes; only the frame
-// around it opens up.
+// The shared opening plate for the long-form section pages (Our Story and Gut
+// Health, hubs and sub-pages alike). It lands inset - sitting inside the normal
+// page gutters as a rounded card - and then, over the first stretch of scroll,
+// widens until it is flush with both edges of the viewport and its corners have
+// squared off. The image itself never changes; only the frame around it opens
+// up. An arch is cut into the bottom edge and the `children` title block nests
+// into the vault it leaves behind.
 //
 // The effect is scroll-position mapped rather than animated: progress is a
 // pure function of scrollY, so scrolling back up closes the plate again and
 // there is nothing to play or replay. That also means prefers-reduced-motion
 // needs no special case - nothing moves unless the reader moves it.
+//
+// This began life as our-story/MissionHero and is unchanged in behaviour; it
+// was lifted into ui/ so every Our Story and Gut Health page can open the same
+// way (Will's request, 2026-09-07).
 
 // Scroll distance, in px, over which the plate goes from inset to full bleed.
 const TRAVEL = 420;
 
-// Corner radius at rest. Matches the rounded-3xl the other mission plates use.
+// Corner radius at rest. Matches the rounded-3xl the other section plates use.
 const RADIUS = 24;
 
 // How far the bottom edge lifts at its centre once the plate is fully open.
@@ -41,7 +47,37 @@ const ARCH_FILL = 0.8;
 // fades out as the vault opens and takes over the job of spacing.
 const BASE_GAP = 36;
 
-export default function MissionHero({
+// The title block that sits in the vault. Section name above, page name below,
+// both in the sans and the same forest weight, set the way the checkout's
+// section titles are so the two read as one title block rather than as a
+// kicker over a display heading. Hub pages ("All") have no parent section, so
+// they pass no `section` and get the page name alone. Matches the markup Our
+// Mission established.
+export function PlateHeroTitle({ section, title }) {
+  return (
+    <div className="text-center">
+      {section && (
+        <p className="font-sans font-semibold tracking-[-0.015em] text-forest text-[clamp(1.05rem,1.6vw,1.4rem)]">
+          {section}
+        </p>
+      )}
+      {/* id/tabindex: the route-change handler (layout/RouteChange) moves focus
+          here on navigation; index.css keeps the ring off an <h1 tabindex="-1">
+          unless it is reached by keyboard. */}
+      <h1
+        id="page-title"
+        tabIndex={-1}
+        className={`font-sans font-semibold tracking-[-0.035em] text-forest text-[clamp(2.9rem,6.4vw,5.4rem)] leading-[1.02] outline-none ${
+          section ? "mt-10 lg:mt-24" : "mt-4 lg:mt-8"
+        }`}
+      >
+        {title}
+      </h1>
+    </div>
+  );
+}
+
+export default function PlateHero({
   brief,
   src,
   alt,

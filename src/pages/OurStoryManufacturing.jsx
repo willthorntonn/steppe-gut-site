@@ -4,10 +4,11 @@ import Container from "../components/ui/Container";
 import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
 import ProcessSteps from "../components/ui/ProcessSteps";
+import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
 import { OUR_STORY_LINKS } from "../data/site";
 import { MANUFACTURING } from "../content/manufacturing";
-import { BODY, DISPLAY, H2, H3, LEAD } from "../styles/type";
+import { BODY, H2, H3 } from "../styles/type";
 
 // /our-story/manufacturing/, built to the structure of the reference
 // "Manufacturing Process" page: title, offset intro, wide image, two
@@ -77,18 +78,33 @@ export default function OurStoryManufacturing() {
         </div>
       </div>
 
-      {/* Title, offset intro, wide image */}
-      <Reveal>
-        <Section size="default" bg="cream">
-          <Container width="content">
-            <h1
-              className="mx-auto max-w-[20ch] text-center font-serif font-normal text-forest"
-              style={DISPLAY}
-            >
-              {MANUFACTURING.heading}
-            </h1>
+      {/* Opening plate: lands inset, widens to full bleed as the reader
+          scrolls, with the title pair nested in the arch - the same hero
+          every Our Story and Gut Health page now opens with. */}
+      <Section
+        size="none"
+        bg="cream"
+        className="overflow-x-clip pt-12 pb-0 sm:pt-16 lg:pt-20"
+      >
+        <PlateHero
+          brief={heroImage.description}
+          src={heroImage.src}
+          alt={heroImage.alt}
+          ratio="21 / 9"
+        >
+          <PlateHeroTitle section="Our Story" title={MANUFACTURING.heading} />
+        </PlateHero>
+      </Section>
 
-            <div className="mt-12 grid gap-x-16 gap-y-10 md:mt-16 md:grid-cols-[1fr_0.85fr]">
+      {/* Offset intro. */}
+      <Reveal>
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-10 lg:pb-36"
+        >
+          <Container width="content">
+            <div className="grid gap-x-16 gap-y-10 md:grid-cols-[1fr_0.85fr]">
               <div>
                 <h2
                   className="max-w-[16ch] font-serif font-normal text-forest"
@@ -109,16 +125,6 @@ export default function OurStoryManufacturing() {
               >
                 {intro.aside}
               </p>
-            </div>
-
-            <div className="mt-16 lg:mt-24">
-              <ImagePlaceholder
-                description={heroImage.description}
-                src={heroImage.src}
-                alt={heroImage.alt}
-                ratio={heroImage.ratio}
-                rounded="rounded-3xl"
-              />
             </div>
           </Container>
         </Section>
