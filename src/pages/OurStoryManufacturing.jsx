@@ -1,20 +1,22 @@
+import { Link } from "react-router-dom";
 import PageMeta from "../components/ui/PageMeta";
 import Section from "../components/ui/Section";
 import Container from "../components/ui/Container";
 import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
-import ProcessSteps from "../components/ui/ProcessSteps";
 import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
+import ProductCard from "../components/product/ProductCard";
 import { OUR_STORY_LINKS } from "../data/site";
+import { PRODUCTS } from "../data/products";
 import { MANUFACTURING } from "../content/manufacturing";
-import { BODY, H2, H3 } from "../styles/type";
+import { BODY, H2, H2_XL, H3 } from "../styles/type";
 
 // /our-story/manufacturing/, built to the structure of the reference
 // "Manufacturing Process" page: title, offset intro, wide image, two
-// image/text blocks, a centred pull quote, a "what is measured" beat, the
-// numbered production steps, then a "who makes it" row and the shared closing
-// bookend.
+// image/text blocks, a "what is measured" beat, the numbered production
+// steps, a "who makes it" row, then a closing "discover our products" grid
+// linking back to the three product pages.
 //
 // The chrome - the section switcher sitting directly under the fixed main
 // nav, nothing above it - is identical to the Our Story hub, Our Mission and
@@ -24,8 +26,14 @@ import { BODY, H2, H3 } from "../styles/type";
 // here (Will's amendment, 2026-09-01); headings and short labels stay
 // unpunctuated. Every image is a written placeholder until the production
 // photography is shot.
+//
+// The closing product grid reuses the shared ProductCard (components/product/
+// ProductCard.jsx) rather than a bespoke layout - the same card the Products
+// grid and Cart's "You may also like" cross-sell use, per the reuse map in
+// SG-PROJECT_SPEC.md §10, so a manufacturing-trust page ends by pointing
+// straight back at the products that trust is meant to support.
 
-const { intro, heroImage, blocks, measured, steps, makers } =
+const { intro, heroImage, blocks, measured, makers } =
   MANUFACTURING;
 
 // One image/text block. Mirrors ui/MediaTextRow's grid and rhythm but uses an
@@ -104,28 +112,18 @@ export default function OurStoryManufacturing() {
           className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-10 lg:pb-36"
         >
           <Container width="content">
-            <div className="grid gap-x-16 gap-y-10 md:grid-cols-[1fr_0.85fr]">
-              <div>
-                <h2
-                  className="max-w-[16ch] font-serif font-normal text-forest"
-                  style={H2}
-                >
-                  {intro.heading}
-                </h2>
-                <p
-                  className="mt-8 max-w-[48ch] font-sans text-forest/80"
-                  style={BODY}
-                >
-                  {intro.body}
-                </p>
-              </div>
-              <p
-                className="max-w-[46ch] font-sans text-forest/70 md:mt-28"
-                style={BODY}
-              >
-                {intro.aside}
-              </p>
-            </div>
+            <h2
+              className="font-serif font-bold tracking-[-0.02em] text-forest"
+              style={H2_XL}
+            >
+              {intro.heading}
+            </h2>
+            <p
+              className="mt-8 max-w-[48ch] font-sans text-forest/80"
+              style={BODY}
+            >
+              {intro.body}
+            </p>
           </Container>
         </Section>
       </Reveal>
@@ -143,33 +141,19 @@ export default function OurStoryManufacturing() {
         </Section>
       </Reveal>
 
-      {/* Pull quote */}
-      <Reveal>
-        <Section size="sm" bg="sage-tint">
-          <Container width="content">
-            <blockquote
-              className="mx-auto max-w-[28ch] text-center font-serif font-normal text-forest"
-              style={H2}
-            >
-              {MANUFACTURING.quote}
-            </blockquote>
-          </Container>
-        </Section>
-      </Reveal>
-
       {/* What is measured */}
       <Reveal>
         <Section size="sm" bg="cream">
           <Container width="content">
-            <div className="grid gap-x-16 gap-y-8 md:grid-cols-[1fr_0.9fr]">
-              <h2
-                className="max-w-[16ch] font-serif font-normal text-forest"
-                style={H2}
-              >
-                {measured.heading}
-              </h2>
+            <h2
+              className="max-w-[16ch] font-serif font-normal text-forest"
+              style={H2}
+            >
+              {measured.heading}
+            </h2>
+            <div className="mt-8 md:max-w-[52ch]">
               <p
-                className="max-w-[52ch] font-sans text-forest/80"
+                className="font-sans text-forest/80"
                 style={BODY}
               >
                 {measured.body}
@@ -179,36 +163,89 @@ export default function OurStoryManufacturing() {
         </Section>
       </Reveal>
 
-      {/* The seven steps */}
+      {/* Who makes it. Sized to match the Composition/Fermentation
+          image/text fields on Our Science Mission: the same asymmetric
+          0.82fr/1.18fr column split, the same 10/12/16 gap step and the
+          same 46ch body measure, rather than the equal two-column
+          MediaBlock used for the two blocks above. */}
       <Reveal>
         <Section size="default" bg="cream">
           <Container width="content">
-            <h2
-              className="max-w-[18ch] font-serif font-normal text-forest"
-              style={H3}
+            <div
+              className={`grid grid-cols-1 items-center gap-10 md:gap-12 lg:gap-16 ${
+                makers.reverse
+                  ? "md:grid-cols-[0.82fr_1.18fr]"
+                  : "md:grid-cols-[1.18fr_0.82fr]"
+              }`}
             >
-              {MANUFACTURING.stepsHeading}
-            </h2>
+              <div className={makers.reverse ? "md:order-2" : undefined}>
+                <ImagePlaceholder
+                  description={makers.imageBrief}
+                  src={makers.src}
+                  alt={makers.alt}
+                  ratio={makers.ratio}
+                />
+              </div>
+              <div className={makers.reverse ? "md:order-1" : undefined}>
+                <h3
+                  className="max-w-[18ch] font-serif font-normal text-forest"
+                  style={H2}
+                >
+                  {makers.heading}
+                </h3>
+                {makers.body.map((paragraph, index) => (
+                  <p
+                    key={paragraph.slice(0, 24)}
+                    className={`max-w-[46ch] font-sans text-forest/80 ${
+                      index === 0 ? "mt-8" : "mt-5"
+                    }`}
+                    style={BODY}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </div>
           </Container>
-          <div className="mt-12 lg:mt-16">
-            <ProcessSteps steps={steps} width="content" columns={3} />
-          </div>
         </Section>
       </Reveal>
 
-      {/* Who makes it */}
+      {/* Discover our products. Closes the manufacturing trust story by
+          pointing straight back at the three products it applies to.
+          Reuses the shared ProductCard grid, the same pattern as the
+          Products page and Cart's "You may also like" cross-sell - each
+          card is itself the link through to that product's detail page.
+          The heading pair matches "Fuelled by science" on Our Science
+          Mission (H2_XL, bold serif) over "Our Range", set at the same
+          size as the "Our Story" section label above PlateHero's title
+          (PlateHeroTitle's clamp(1.05rem,1.6vw,1.4rem) sans-semibold). */}
       <Reveal>
-        <Section size="default" bg="cream">
-          <Container width="content">
-            <MediaBlock
-              heading={makers.heading}
-              body={makers.body}
-              imageBrief={makers.imageBrief}
-              src={makers.src}
-              alt={makers.alt}
-              ratio={makers.ratio}
-              reverse={makers.reverse}
-            />
+        <Section bg="cream" size="default">
+          <Container width="wide">
+            <div className="text-center">
+              <h2
+                className="font-serif font-bold tracking-[-0.02em] text-forest"
+                style={H2_XL}
+              >
+                Discover our products
+              </h2>
+              <p className="mt-4 font-sans font-semibold tracking-[-0.015em] text-sage text-[clamp(1.05rem,1.6vw,1.4rem)]">
+                Our range
+              </p>
+            </div>
+            <div className="mx-auto mt-10 grid max-w-[1100px] grid-cols-1 gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3">
+              {PRODUCTS.map((product) => (
+                <ProductCard key={product.slug} product={product} />
+              ))}
+            </div>
+            <div className="mt-10 flex justify-center lg:mt-14">
+              <Link
+                to="/products/"
+                className="inline-flex h-[50px] items-center justify-center rounded-[10px] bg-forest px-9 font-sans text-[14px] font-semibold uppercase tracking-[0.08em] text-cream transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              >
+                View all products
+              </Link>
+            </div>
           </Container>
         </Section>
       </Reveal>
