@@ -218,7 +218,11 @@ export default function GutExercise() {
 
       {/* More on gut health - hands off to the other sections. */}
       <Reveal>
-        <Section size="default" bg="cream-raised">
+        <Section
+          size="none"
+          bg="cream-raised"
+          className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-8 lg:pb-36"
+        >
           <Container width="content">
             <h2
               className="text-center font-serif font-normal text-forest"

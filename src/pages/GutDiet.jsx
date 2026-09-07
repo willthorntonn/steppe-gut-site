@@ -252,10 +252,14 @@ export default function GutDiet() {
           beat on /our-story/manufacturing/: bold serif at H2 with the same
           tight tracking, no width clamp. */}
       <Reveal rootMargin="0px 0px 20% 0px">
-        <Section size="default" bg="cream">
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-8 lg:pb-36"
+        >
           <Container width="content">
             <h2
-              className="font-serif font-bold tracking-[-0.02em] text-forest"
+              className="text-center font-serif font-bold tracking-[-0.02em] text-forest"
               style={H2}
             >
               {more.heading}

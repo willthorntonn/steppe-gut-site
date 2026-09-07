@@ -1,6 +1,6 @@
 import moodHero from "../assets/gut-health/mood-hero.webp";
 import microbiomeSpoon from "../assets/gut-health/microbiome-spoon-2.webp";
-import routineNotebook from "../assets/gut-health/routine-notebook-5.webp";
+import routineNotebook from "../assets/gut-health/routine-notebook-6.webp";
 import sleepBed from "../assets/gut-health/sleep-bed-5.webp";
 import greenPath from "../assets/gut-health/mood-green-path.webp";
 import exercisePathReadMore from "../assets/gut-health/exercise-path-4.webp";
@@ -68,8 +68,6 @@ export const GUT_MOOD_SHELVES = [
   {
     id: "outside",
     heading: "Time outside",
-    intro:
-      "Daylight and green space are two of the plainer things that lift a low mood, and neither asks much of a day",
     items: [
       {
         id: "green-walk",
@@ -103,9 +101,7 @@ export const GUT_MOOD_SHELVES = [
   },
   {
     id: "shape-of-day",
-    heading: "The shape of a day",
-    intro:
-      "The gut settles when the days around it are regular, and a steady rhythm tends to be felt in mood as well",
+    heading: "A good daily routine",
     items: [
       {
         id: "regular-wake",
@@ -140,8 +136,6 @@ export const GUT_MOOD_SHELVES = [
   {
     id: "settling-the-mind",
     heading: "Settling the mind",
-    intro:
-      "A few small practices that give a busy head somewhere plainer to sit for a while",
     items: [
       {
         id: "name-the-good",

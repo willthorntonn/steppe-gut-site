@@ -245,10 +245,13 @@ export default function GutSleep() {
 
       {/* More from Gut Health - three-up grid. */}
       <Reveal>
-        <Section size="default">
+        <Section
+          size="none"
+          className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-8 lg:pb-36"
+        >
           <Container width="content">
             <h2
-              className="text-center font-serif font-normal text-forest"
+              className="mx-auto text-center font-serif font-bold tracking-[-0.02em] text-forest"
               style={H2}
             >
               {GUT_SLEEP_MORE.heading}

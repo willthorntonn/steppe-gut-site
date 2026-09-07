@@ -44,26 +44,6 @@ const PHOTO_ZOOM =
   "motion-reduce:transition-none motion-reduce:group-hover:scale-100 " +
   "motion-reduce:group-focus-visible:scale-100";
 
-// One media/text row. Mirrors src/pages/GutHealth.jsx's FeatureRow grid and
-// spacing so the page keeps the site's rhythm, without the trailing CTA.
-function FeatureRow({ heading, body, image, src, alt, ratio }) {
-  return (
-    <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
-      <div>
-        <ImagePlaceholder description={image} src={src} alt={alt} ratio={ratio} />
-      </div>
-      <div>
-        <h2 className="max-w-[18ch] font-serif font-normal text-forest" style={H2}>
-          {heading}
-        </h2>
-        <p className="mt-8 max-w-[54ch] font-sans text-forest/80" style={BODY}>
-          {body}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export default function GutMood() {
   return (
     <>
@@ -101,51 +81,83 @@ export default function GutMood() {
         </PlateHero>
       </Section>
 
+      {/* Staggered opening block. Unlike the rest of the page this one breaks
+          out of the centred content measure and hugs the left page gutter, so
+          the intro header starts hard against the left edge and runs to about
+          five-eighths of the viewport. The feature image drops in lower-left;
+          the feature heading and body sit to its right and are centred against
+          it, so the whole thing steps down and across in a loose Z. Collapses
+          to a single column below md. */}
       <Reveal>
         <Section
           size="none"
           bg="cream"
-          className="pt-10 pb-20 sm:pt-12 sm:pb-28 lg:pt-16 lg:pb-36"
+          className="pt-20 pb-20 sm:pt-28 sm:pb-28 lg:pt-36 lg:pb-36"
         >
-          <Container width="content">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-16">
-              <h2 className="font-serif font-normal text-forest" style={H2}>
-                {GUT_MOOD_INTRO.heading}
-              </h2>
-              <p className="max-w-[54ch] font-sans text-forest/80" style={BODY}>
-                {GUT_MOOD_INTRO.body}
-              </p>
+          <div className="w-full pl-16 pr-6 sm:pl-20 sm:pr-10 lg:pl-28 lg:pr-14">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-12 md:gap-y-24">
+              <div className="md:col-span-12 md:col-start-1">
+                <h2
+                  className="font-serif font-normal text-forest md:max-w-[61.5%]"
+                  style={H2}
+                >
+                  {GUT_MOOD_INTRO.heading}
+                </h2>
+                <p
+                  className="mt-7 font-sans text-forest/80 md:max-w-[71%]"
+                  style={BODY}
+                >
+                  {GUT_MOOD_INTRO.body}
+                </p>
+              </div>
+
+              <div className="md:col-span-6 md:col-start-1">
+                <ImagePlaceholder
+                  description={GUT_MOOD_FEATURE.image}
+                  src={GUT_MOOD_FEATURE.src}
+                  alt={GUT_MOOD_FEATURE.alt}
+                  ratio={GUT_MOOD_FEATURE.ratio}
+                />
+              </div>
+
+              <div className="md:col-span-6 md:col-start-7 md:self-center">
+                <h2
+                  className="max-w-[19ch] font-serif font-normal text-forest [text-wrap:balance]"
+                  style={H2}
+                >
+                  {GUT_MOOD_FEATURE.heading}
+                </h2>
+                <p
+                  className="mt-7 max-w-[50ch] font-sans text-forest/80"
+                  style={BODY}
+                >
+                  {GUT_MOOD_FEATURE.body}
+                </p>
+              </div>
             </div>
-          </Container>
+          </div>
         </Section>
       </Reveal>
 
       <Reveal>
-        <Section size="default" bg="cream-raised">
-          <Container width="content">
-            <FeatureRow {...GUT_MOOD_FEATURE} />
-          </Container>
-        </Section>
-      </Reveal>
-
-      <Reveal>
-        <Section size="default" bg="cream">
-          <Container width="content">
+        <Section size="none" bg="cream" className="pt-0 pb-16 sm:pb-20 lg:pb-24">
+          <div className="w-full pl-16 pr-6 sm:pl-20 sm:pr-10 lg:pl-28 lg:pr-14">
             <h2 className="max-w-[22ch] font-serif font-normal text-forest" style={H2}>
               {GUT_MOOD_HABITS_INTRO.heading}
             </h2>
             <p className="mt-8 max-w-[58ch] font-sans text-forest/80" style={BODY}>
               {GUT_MOOD_HABITS_INTRO.body}
             </p>
-          </Container>
+          </div>
         </Section>
       </Reveal>
 
-      {GUT_MOOD_SHELVES.map((shelf, index) => (
+      {GUT_MOOD_SHELVES.map((shelf) => (
         <Reveal key={shelf.id}>
           <Section
-            size="default"
-            bg={index % 2 === 0 ? "cream-raised" : "cream"}
+            size="none"
+            bg="cream"
+            className="py-14 sm:py-20 lg:py-28"
           >
             <BoosterCarousel
               heading={shelf.heading}
@@ -157,10 +169,14 @@ export default function GutMood() {
       ))}
 
       <Reveal>
-        <Section size="default" bg="cream">
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-8 lg:pb-36"
+        >
           <Container width="content">
             <h2
-              className="mx-auto max-w-[16ch] text-center font-serif font-normal text-forest"
+              className="mx-auto max-w-[16ch] text-center font-serif font-bold tracking-[-0.02em] text-forest"
               style={H2}
             >
               {GUT_MOOD_READ_MORE.heading}

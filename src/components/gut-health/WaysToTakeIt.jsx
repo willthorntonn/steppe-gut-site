@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import Container from "../ui/Container";
 import ImagePlaceholder from "../ui/ImagePlaceholder";
 import { GUT_HEALTH_WAYS } from "../../content/gutHealth";
 import { BODY, H2 } from "../../styles/type";
@@ -82,58 +81,59 @@ export default function WaysToTakeIt() {
 
   return (
     <div>
-      <Container width="content">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="font-serif font-normal text-forest" style={H2}>
-              {GUT_HEALTH_WAYS.heading}
-            </h2>
-            <p
-              className="mt-6 max-w-[46ch] font-sans text-forest/80"
-              style={BODY}
-            >
-              {GUT_HEALTH_WAYS.intro}
-            </p>
-          </div>
+      <div className="mx-auto max-w-[2000px] px-5 sm:px-8 lg:px-10">
+        <h2
+          className="mx-auto max-w-[20ch] text-center font-serif font-normal text-forest"
+          style={H2}
+        >
+          {GUT_HEALTH_WAYS.heading}
+        </h2>
+        <p
+          className="mx-auto mt-6 max-w-[46ch] text-center font-sans text-forest/80"
+          style={BODY}
+        >
+          {GUT_HEALTH_WAYS.intro}
+        </p>
 
-          <div className="flex shrink-0 items-center gap-3">
-            <button
-              type="button"
-              aria-label="Previous"
-              aria-controls="ways-track"
-              onClick={() => goTo(page - 1)}
-              disabled={atStart}
-              className={arrow}
-            >
-              <ChevronLeft size={20} strokeWidth={1.75} />
-            </button>
-            <button
-              type="button"
-              aria-label="Next"
-              aria-controls="ways-track"
-              onClick={() => goTo(page + 1)}
-              disabled={atEnd}
-              className={arrow}
-            >
-              <ChevronRight size={20} strokeWidth={1.75} />
-            </button>
-          </div>
+        <div className="mt-12 flex items-center justify-end gap-3 lg:mt-16">
+          <button
+            type="button"
+            aria-label="Previous"
+            aria-controls="ways-track"
+            onClick={() => goTo(page - 1)}
+            disabled={atStart}
+            className={arrow}
+          >
+            <ChevronLeft size={20} strokeWidth={1.75} />
+          </button>
+          <button
+            type="button"
+            aria-label="Next"
+            aria-controls="ways-track"
+            onClick={() => goTo(page + 1)}
+            disabled={atEnd}
+            className={arrow}
+          >
+            <ChevronRight size={20} strokeWidth={1.75} />
+          </button>
         </div>
-      </Container>
+      </div>
 
       {/* The track clips at the content measure, not the viewport, so the row
           sits on the same column as every other section while the next card
           is still cut mid-frame - which is what signals there is more. */}
-      <div className="mx-auto mt-12 max-w-[1180px] px-6 sm:px-10 lg:mt-14 lg:px-14">
+      <div className="mx-auto mt-8 max-w-[2000px] px-5 sm:px-8 lg:mt-10 lg:px-10">
         <ul
           id="ways-track"
           ref={trackRef}
           className="no-scrollbar flex list-none snap-x snap-mandatory gap-5 overflow-x-auto overflow-y-hidden lg:gap-8 [&::-webkit-scrollbar]:hidden"
         >
-          {GUT_HEALTH_WAYS.items.map((item) => (
+          {GUT_HEALTH_WAYS.items.map((item, index) => (
             <li
               key={item.id}
-              className="w-[74%] flex-none snap-start sm:w-[44%] lg:w-[calc((100%-4rem)/3)]"
+              className={`w-[80%] flex-none snap-start sm:w-[47%] lg:w-[27%] ${
+                index % 2 === 1 ? "lg:mt-14" : ""
+              }`}
             >
               <Link
                 to={item.to}
