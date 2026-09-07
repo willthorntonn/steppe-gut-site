@@ -13,7 +13,7 @@ import { MANUFACTURING } from "../content/manufacturing";
 import { BODY, H2, H2_XL, H3 } from "../styles/type";
 
 // /our-story/manufacturing/, built to the structure of the reference
-// "Manufacturing Process" page: title, offset intro, wide image, two
+// "Manufacturing Process" page: title, centred intro, wide image, two
 // image/text blocks, a "what is measured" beat, the numbered production
 // steps, a "who makes it" row, then a closing "discover our products" grid
 // linking back to the three product pages.
@@ -104,12 +104,15 @@ export default function OurStoryManufacturing() {
         </PlateHero>
       </Section>
 
-      {/* Offset intro. */}
+      {/* Centred intro, stacked under the plate title the same way the
+          reference page runs its heading straight into a centred question
+          and a centred paragraph beneath it. Sizes are unchanged from the
+          left-aligned version (H2/BODY) - only the alignment moved. */}
       <Reveal>
         <Section
           size="none"
           bg="cream"
-          className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-10 lg:pb-36"
+          className="pt-4 pb-20 text-center sm:pt-6 sm:pb-28 lg:pt-10 lg:pb-36"
         >
           <Container width="content">
             <h2
@@ -119,7 +122,7 @@ export default function OurStoryManufacturing() {
               {intro.heading}
             </h2>
             <p
-              className="mt-8 max-w-[48ch] font-sans text-forest/80"
+              className="mx-auto mt-8 max-w-[48ch] font-sans text-forest/80"
               style={BODY}
             >
               {intro.body}
@@ -244,7 +247,7 @@ export default function OurStoryManufacturing() {
               >
                 Discover our products
               </h2>
-              <p className="mt-4 font-sans font-semibold tracking-[-0.015em] text-sage text-[clamp(1.05rem,1.6vw,1.4rem)]">
+              <p className="mt-4 font-sans font-semibold tracking-[-0.015em] text-forest text-[clamp(1.05rem,1.6vw,1.4rem)]">
                 Our range
               </p>
             </div>
