@@ -22,7 +22,7 @@ export const DISPLAY = {
 
 /** Section heading (`<h2>`). */
 export const H2 = {
-  fontSize: "clamp(3.2rem, 4.6vw, 5.2rem)",
+  fontSize: "clamp(4rem, 4.6vw, 7.5rem)",
   lineHeight: 1.04,
   letterSpacing: "-0.04em",
   textWrap: "balance",
