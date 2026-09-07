@@ -7,8 +7,8 @@ import LinkArrow from "../components/ui/LinkArrow";
 import SectionSubNav from "../components/layout/SectionSubNav";
 import WaysToTakeIt from "../components/gut-health/WaysToTakeIt";
 import { GUT_HEALTH_LINKS } from "../data/site";
-import { GUT_HEALTH_INTRO, GUT_HEALTH_ROWS } from "../content/gutHealth";
-import { BODY, DISPLAY, H2, LEAD } from "../styles/type";
+import { GUT_HEALTH_INTRO_LINES, GUT_HEALTH_ROWS } from "../content/gutHealth";
+import { BODY, H2, H2_XL, LEAD } from "../styles/type";
 
 // Gut Health - the "All" overview for the sectioned area. Layout borrowed
 // from a reference gut-health hub (centred intro, section switcher, then
@@ -84,28 +84,47 @@ export default function GutHealth() {
         </div>
       </div>
 
+      {/* Title matches /our-story/'s "Our Story" heading exactly - same
+          Section (size "none" with the small negative top margin), same
+          centred wrapper, same serif/bold/tracking/H2_XL type - so the two
+          "All" pages open at an identical height and weight. */}
       <Reveal>
-        <Section size="sm">
-          <Container width="content" className="text-center">
-            <h1
-              id="page-title"
-              tabIndex={-1}
-              className="mx-auto max-w-[16ch] font-serif font-normal text-forest outline-none"
-              style={DISPLAY}
-            >
-              Gut Health
-            </h1>
-            <p
-              className="mx-auto mt-8 max-w-[58ch] font-sans text-forest/80"
-              style={LEAD}
-            >
-              {GUT_HEALTH_INTRO}
-            </p>
+        <Section size="none" className="pb-0 -mt-4 sm:-mt-5 lg:-mt-6">
+          <Container width="content">
+            <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12 lg:mb-4">
+              <h1
+                id="page-title"
+                tabIndex={-1}
+                className="font-serif font-bold tracking-[-0.02em] text-forest outline-none mb-8"
+                style={H2_XL}
+              >
+                Gut Health
+              </h1>
+              {/* Split for balance: three near-equal centred lines, the same
+                  treatment /our-story/ gives its lead. */}
+              <p
+                className="mx-auto max-w-[58ch] font-sans text-forest/80 lg:max-w-none"
+                style={LEAD}
+              >
+                <span className="block lg:whitespace-nowrap">
+                  {GUT_HEALTH_INTRO_LINES[0]}
+                </span>
+                <span className="block lg:whitespace-nowrap">
+                  {GUT_HEALTH_INTRO_LINES[1]}
+                </span>
+                <span className="block lg:whitespace-nowrap">
+                  {GUT_HEALTH_INTRO_LINES[2]}
+                </span>
+              </p>
+            </div>
           </Container>
         </Section>
       </Reveal>
 
-      <Reveal>
+      {/* rootMargin extends the observer's viewport 20% past the real bottom
+          edge, so each main section starts revealing while it is still a fifth
+          of a screen below the fold rather than only after it has scrolled in. */}
+      <Reveal rootMargin="0px 0px 20% 0px">
         <Section size="default">
           <Container width="content">
             <div className="space-y-24 lg:space-y-36">
@@ -117,13 +136,13 @@ export default function GutHealth() {
         </Section>
       </Reveal>
 
-      <Reveal>
+      <Reveal rootMargin="0px 0px 20% 0px">
         <Section size="default" bg="cream-raised">
           <WaysToTakeIt />
         </Section>
       </Reveal>
 
-      <Reveal>
+      <Reveal rootMargin="0px 0px 20% 0px">
         <Section size="default">
           <Container width="content">
             <div className="space-y-24 lg:space-y-36">

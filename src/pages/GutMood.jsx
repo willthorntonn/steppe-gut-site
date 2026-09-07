@@ -29,6 +29,21 @@ import { Link } from "react-router-dom";
 // the product. No eyebrow/kicker labels, no terminal full stops (house
 // rules).
 
+// Hover grows the whole tile and the photo inside it pushes in a little
+// further - the site-wide enlarge-on-hover the media cards use
+// (components/our-story/MissionTimeline, components/gut-health/CardRail). The
+// grid's row gaps absorb the growth. Guarded for reduced motion.
+const FRAME_ZOOM =
+  "transition-transform duration-500 ease-out " +
+  "group-hover:scale-[1.035] group-focus-visible:scale-[1.035] " +
+  "motion-reduce:transition-none motion-reduce:group-hover:scale-100 " +
+  "motion-reduce:group-focus-visible:scale-100";
+const PHOTO_ZOOM =
+  "transition-transform duration-700 ease-out " +
+  "group-hover:scale-[1.06] group-focus-visible:scale-[1.06] " +
+  "motion-reduce:transition-none motion-reduce:group-hover:scale-100 " +
+  "motion-reduce:group-focus-visible:scale-100";
+
 // One media/text row. Mirrors src/pages/GutHealth.jsx's FeatureRow grid and
 // spacing so the page keeps the site's rhythm, without the trailing CTA.
 function FeatureRow({ heading, body, image, src, alt, ratio }) {
@@ -163,7 +178,8 @@ export default function GutMood() {
                       alt={item.alt}
                       ratio="4 / 3"
                       rounded="rounded-[20px]"
-                      className="transition-opacity group-hover:opacity-90"
+                      className={FRAME_ZOOM}
+                      imgClassName={PHOTO_ZOOM}
                     />
                     <p className="mt-5 font-sans text-base font-bold uppercase tracking-[0.14em] text-forest transition-colors group-hover:text-forest/60">
                       {item.caption}

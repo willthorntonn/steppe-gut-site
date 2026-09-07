@@ -8,7 +8,7 @@ import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
 import { GUT_HEALTH_LINKS } from "../data/site";
 import { GUT_DIET } from "../content/gutDiet";
-import { BODY, H2, H3 } from "../styles/type";
+import { BODY, H2, H2_XL, H3, LEAD } from "../styles/type";
 
 // /gut-health/diet/, built to the structure of a reference gut-health "diet"
 // page: a centred title and short standfirst, one wide image,
@@ -25,6 +25,11 @@ import { BODY, H2, H3 } from "../styles/type";
 // photography is shot.
 
 const { standfirst, intro, heroImage, blocks, fermented, foods, more } = GUT_DIET;
+
+// The two flow paragraphs run at lead size but with a more open leading than
+// LEAD's 1.7, matching the staggered "Fuelled by science" flow on
+// /our-story/science-mission/.
+const FLOW_BODY = { ...LEAD, lineHeight: 1.9 };
 
 // One image/text block. Mirrors ui/MediaTextRow's grid and rhythm but uses an
 // ImagePlaceholder box and the sans body voice, matching the alternating rows
@@ -55,10 +60,28 @@ function MediaBlock({ heading, body, imageBrief, src, alt, ratio, reverse }) {
   );
 }
 
+// Hover grows the whole tile and the photo inside it pushes in a little
+// further - the same paired scales the media cards elsewhere on the site use
+// (components/our-story/MissionTimeline, components/gut-health/CardRail). The
+// grid's row gaps absorb the growth, so the frame can grow past its layout
+// size rather than resting under it. Guarded for reduced motion.
+const FRAME_ZOOM =
+  "transition-transform duration-500 ease-out " +
+  "group-hover:scale-[1.035] group-focus-visible:scale-[1.035] " +
+  "motion-reduce:transition-none motion-reduce:group-hover:scale-100 " +
+  "motion-reduce:group-focus-visible:scale-100";
+const PHOTO_ZOOM =
+  "transition-transform duration-700 ease-out " +
+  "group-hover:scale-[1.06] group-focus-visible:scale-[1.06] " +
+  "motion-reduce:transition-none motion-reduce:group-hover:scale-100 " +
+  "motion-reduce:group-focus-visible:scale-100";
+
 // The static three-up card grid, used for "foods for the gut" and could be
 // reused elsewhere on the page. Image over a serif title over one line, each
-// card a link. No kicker label over the image, unlike the reference.
-function CardGrid({ items }) {
+// card a link. No kicker label over the image, unlike the reference. Pass
+// `zoom` to give the tiles the site-wide enlarge-on-hover effect instead of
+// the plain opacity fade.
+function CardGrid({ items, zoom = false }) {
   return (
     <ul className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
@@ -73,7 +96,8 @@ function CardGrid({ items }) {
               alt={item.alt}
               ratio="4 / 3"
               rounded="rounded-[20px]"
-              className="transition-opacity group-hover:opacity-90"
+              className={zoom ? FRAME_ZOOM : "transition-opacity group-hover:opacity-90"}
+              imgClassName={zoom ? PHOTO_ZOOM : undefined}
             />
             <h3
               className="mt-5 font-serif font-normal text-forest"
@@ -130,44 +154,61 @@ export default function GutDiet() {
         </PlateHero>
       </Section>
 
-      {/* Standfirst, then the offset intro. */}
-      <Reveal>
+      {/* Staggered two-column flow, copied from the "Fuelled by science" beat
+          on /our-story/science-mission/: a bold serif heading banner across the
+          top, a left-aligned paragraph beneath it, then a clear vertical gap
+          and a second paragraph of the same width pushed to the right edge, so
+          the two blocks step down and across like a staircase. Plain block flow
+          rather than a grid so the gap never depends on how the first paragraph
+          wraps. */}
+      {/* rootMargin extends the observer's viewport 20% past the real bottom
+          edge, so each main section starts revealing while it is still a fifth
+          of a screen below the fold rather than only after it has scrolled in. */}
+      <Reveal rootMargin="0px 0px 20% 0px">
         <Section
           size="none"
           bg="cream"
-          className="pt-4 pb-20 sm:pt-6 sm:pb-28 lg:pt-10 lg:pb-36"
+          className="pt-4 pb-4 sm:pt-6 sm:pb-6 lg:pt-10 lg:pb-8"
         >
           <Container width="content">
             <p
-              className="mx-auto max-w-[54ch] text-center font-sans text-forest/80"
+              className="mx-auto max-w-[72ch] text-center font-sans text-forest/80 [text-wrap:balance]"
               style={BODY}
             >
               {standfirst}
             </p>
 
-            <div className="mt-14 grid gap-x-16 gap-y-10 md:mt-20 md:grid-cols-[1fr_0.85fr]">
-              <div>
-                <h2
-                  className="max-w-[16ch] font-serif font-normal text-forest"
-                  style={H2}
-                >
-                  {intro.heading}
-                </h2>
-                <p className="mt-8 max-w-[48ch] font-sans text-forest/80" style={BODY}>
-                  {intro.body}
-                </p>
-              </div>
-              <p className="max-w-[42ch] font-sans text-forest/70 md:mt-24" style={BODY}>
-                {intro.aside}
-              </p>
-            </div>
+            <h2
+              className="mt-16 font-serif font-bold tracking-[-0.02em] text-forest md:mt-20 lg:mt-24"
+              style={H2_XL}
+            >
+              {intro.heading}
+            </h2>
+            <p
+              className="mt-10 max-w-[44ch] font-sans text-forest/80"
+              style={FLOW_BODY}
+            >
+              {intro.body}
+            </p>
+            <p
+              className="mt-12 max-w-[44ch] font-sans text-forest/80 md:ml-auto lg:mt-16"
+              style={FLOW_BODY}
+            >
+              {intro.aside}
+            </p>
           </Container>
         </Section>
       </Reveal>
 
-      {/* Two image/text blocks, then the text-only fermented foods coda */}
-      <Reveal>
-        <Section size="default" bg="cream">
+      {/* Two image/text blocks, then the text-only fermented foods coda.
+          Top padding trimmed so this block pulls up into the open space left
+          by the staggered "Starts in the gut" flow above it. */}
+      <Reveal rootMargin="0px 0px 20% 0px">
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-8 pb-20 sm:pt-10 sm:pb-28 lg:pt-12 lg:pb-36"
+        >
           <Container width="content">
             <div className="space-y-24 lg:space-y-36">
               {blocks.map((block) => (
@@ -191,7 +232,7 @@ export default function GutDiet() {
       </Reveal>
 
       {/* Foods for the gut - static three-up grid */}
-      <Reveal>
+      <Reveal rootMargin="0px 0px 20% 0px">
         <Section size="default" bg="cream-raised">
           <Container width="content">
             <h2 className="max-w-[18ch] font-serif font-normal text-forest" style={H2}>
@@ -207,15 +248,20 @@ export default function GutDiet() {
         </Section>
       </Reveal>
 
-      {/* More from Gut Health */}
-      <Reveal>
+      {/* More from Gut Health. Heading matches the "How is Steppe Gut made?"
+          beat on /our-story/manufacturing/: bold serif at H2 with the same
+          tight tracking, no width clamp. */}
+      <Reveal rootMargin="0px 0px 20% 0px">
         <Section size="default" bg="cream">
           <Container width="content">
-            <h2 className="max-w-[18ch] font-serif font-normal text-forest" style={H2}>
+            <h2
+              className="font-serif font-bold tracking-[-0.02em] text-forest"
+              style={H2}
+            >
               {more.heading}
             </h2>
             <div className="mt-14 lg:mt-20">
-              <CardGrid items={more.items} />
+              <CardGrid items={more.items} zoom />
             </div>
           </Container>
         </Section>

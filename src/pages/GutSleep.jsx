@@ -39,6 +39,21 @@ import { BODY, H2 } from "../styles/type";
 // stops, melatonin and the body clock described in general terms with no
 // outcome promised.
 
+// Hover grows the whole tile and the photo inside it pushes in a little
+// further - the site-wide enlarge-on-hover the media cards use
+// (components/our-story/MissionTimeline, components/gut-health/CardRail). The
+// grid's row gaps absorb the growth. Guarded for reduced motion.
+const FRAME_ZOOM =
+  "transition-transform duration-500 ease-out " +
+  "group-hover:scale-[1.035] group-focus-visible:scale-[1.035] " +
+  "motion-reduce:transition-none motion-reduce:group-hover:scale-100 " +
+  "motion-reduce:group-focus-visible:scale-100";
+const PHOTO_ZOOM =
+  "transition-transform duration-700 ease-out " +
+  "group-hover:scale-[1.06] group-focus-visible:scale-[1.06] " +
+  "motion-reduce:transition-none motion-reduce:group-hover:scale-100 " +
+  "motion-reduce:group-focus-visible:scale-100";
+
 // One alternating media/text row. Mirrors ui/MediaTextRow's grid and spacing
 // so the page keeps the site's rhythm; it exists as a local copy only because
 // the image slot here is an ImagePlaceholder grey box and the body is an
@@ -251,7 +266,8 @@ export default function GutSleep() {
                       alt={item.alt}
                       ratio="4 / 3"
                       rounded="rounded-[20px]"
-                      className="transition-opacity group-hover:opacity-90"
+                      className={FRAME_ZOOM}
+                      imgClassName={PHOTO_ZOOM}
                     />
                     <h3 className="mt-5 font-serif text-[1.5rem] font-normal leading-[1.15] tracking-[-0.02em] text-forest">
                       {item.title}

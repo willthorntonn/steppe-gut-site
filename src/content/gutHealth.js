@@ -25,8 +25,13 @@ import waysEvening from "../assets/gut-health/ways-evening.webp";
 // registration is not stated as issued. Every image is a written placeholder
 // until the photography is shot.
 
-export const GUT_HEALTH_INTRO =
-  "We treat the gut as the starting point rather than an afterthought. Everything we make sits around one old, living ferment and the ordinary daily habits that go with it. This page is how the two fit together";
+// Rendered as three near-equal centred lines under the page title, matching
+// the split lead on /our-story/. Keep each line close in length.
+export const GUT_HEALTH_INTRO_LINES = [
+  "We treat the gut as the starting point rather than an afterthought.",
+  "Everything we make sits around one old, living ferment and the ordinary",
+  "daily habits that go with it. This page is how the two fit together",
+];
 
 // The alternating rows, in the order they appear down the page. `reverse`
 // puts the image on the right; the DOM order stays image then text at every
@@ -42,10 +47,15 @@ export const GUT_HEALTH_ROWS = [
     alt: "Overhead spread of fresh fruit in a bowl",
     ratio: "4 / 5",
     // The source frame sits the bowl low and right of centre with a wide
-    // white marble border; nudge it back to centre and scale in only a
-    // little, so the whole bowl reads with a thin margin either side.
+    // white marble border; nudge it back to centre and scale in, so the whole
+    // bowl reads with a thin margin either side. The source is 640x800 and the
+    // frame is 4/5, so object-cover leaves no crop slack of its own - the
+    // scale has to open up more than the nudge shifts, or the photo pulls off
+    // the top and right edges and shows its own square corners inside the
+    // rounded frame. At this nudge that means scale >= 1.12; 1.14 keeps a
+    // margin at every breakpoint.
     imgStyle: {
-      transform: "scale(1.04) translate(-5%, 4%)",
+      transform: "scale(1.14) translate(-5%, 4%)",
       transformOrigin: "50% 50%",
     },
     reverse: true,

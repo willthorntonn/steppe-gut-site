@@ -34,10 +34,10 @@ export const GUT_DIET = {
     "A healthy gut and a healthy plate are the same project. A wide, mostly plant diet gives the microbes you carry plenty to work with, and a daily ferment is one small part of that, never a stand-in for the rest of the meal",
 
   intro: {
-    heading: "Does a good diet start in the gut",
+    heading: "Starts in the gut",
     body: "The gut runs on what reaches it. Fibre from plants, a little ferment, water through the day, meals at roughly regular times. None of it is complicated, and no single food carries the whole load. This page sets out where Steppe Gut fits inside an ordinary week of eating",
     aside:
-      "Steppe Gut is one fermented food among many. It goes into water, yoghurt or a smoothie, alongside the vegetables, grains and pulses that do most of the work",
+      "Steppe Gut is one fermented food among many, and not the centre of the plate. It stirs into water, yoghurt or a smoothie in the morning, and sits alongside the vegetables, grains and pulses that carry most of the work across an ordinary week",
   },
 
   heroImage: {
