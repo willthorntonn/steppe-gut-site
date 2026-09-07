@@ -6,6 +6,17 @@ import { useAuth } from "../../auth/AuthProvider";
 import { fileToAvatarDataUrl, MAX_AVATAR_BYTES } from "../../auth/avatar";
 import defaultAvatar from "../../grey-avatar-icon-user-avatar-photo-icon-social-media-user-icon-vector.jpg";
 
+// Edit Profile, opened from the header account menu. Frontend only, like the
+// rest of the account area - name, photo and email are written into
+// AuthProvider and persisted to localStorage, and nothing is sent anywhere.
+//
+// The email change is the part to be careful about, because it is built to
+// look like a real verification and is not one. Changing the address moves
+// the dialog to a 6-digit code step; no code is ever generated or mailed, any
+// six digits are accepted, and "Resend code" sends nothing. The step exists
+// so the flow is in place for when there is a service behind it - at that
+// point the code is issued server-side and handleVerifySubmit checks it
+// rather than counting the digits.
 const MAX_FILE_BYTES = MAX_AVATAR_BYTES;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -175,6 +186,10 @@ export default function EditProfileModal({ open, onClose }) {
 
   const handleVerifySubmit = (event) => {
     event.preventDefault();
+    // Fakes a result. There is no code to compare against, so the length
+    // check is the whole of "verification" and any six digits pass. A real
+    // implementation checks the code server-side and needs a wrong-code error
+    // path, which cannot exist while nothing issues a code.
     if (code.length !== 6) {
       setError("Enter the 6-digit code");
       codeFieldRef.current?.querySelector("input")?.focus();
@@ -321,6 +336,8 @@ export default function EditProfileModal({ open, onClose }) {
             )}
           </div>
 
+          {/* Fakes a result. Nothing is resent - this only flips the
+              confirmation line on, because there is no mailer to call. */}
           <button
             type="button"
             onClick={() => {

@@ -2,9 +2,16 @@ import { useId, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 // Password input with a show/hide toggle. Shared by Account Settings (change
-// password) and the sign-up page. Inlined rather than built on ui/Field
-// because it needs a trailing button; the box classes are kept in step with
-// Field.jsx by hand.
+// password) and the onboarding modal (components/auth/AuthModal, which is
+// where sign-up lives now that pages/SignIn is gone). Inlined rather than
+// built on ui/Field because it needs a trailing button; the box classes are
+// kept in step with Field.jsx by hand.
+//
+// Worth knowing before trusting this field: neither caller does anything with
+// what you type. No password is stored, checked or transmitted anywhere in
+// the app - AuthProvider.changePassword is a no-op and register() drops the
+// password on the floor. This is a real, accessible input in front of nothing,
+// so treat any value that reaches it as discarded rather than held.
 export default function PasswordField({
   label,
   value,

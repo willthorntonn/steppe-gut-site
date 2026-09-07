@@ -8,6 +8,27 @@ import Toggle from "../components/account/Toggle";
 import PasswordField from "../components/account/PasswordField";
 import { useAuth } from "../auth/AuthProvider";
 
+// Account Settings. Frontend only - there is no account backend and nothing
+// on this page reaches a server. Every section fakes something different, so
+// the specifics matter more than a blanket "demo" label:
+//
+//   Password       changePassword() ignores both arguments and returns true
+//                  (see AuthProvider). The current password is never checked
+//                  because no password is stored anywhere, and "Password
+//                  updated." is shown unconditionally. Any three filled-in
+//                  fields pass.
+//   Notifications  Toggles persist, but only to localStorage. No preference
+//                  is registered with any mailing system.
+//   Addresses      Add / edit / remove / set-default all persist to
+//                  localStorage. Nothing is stored against a customer, and
+//                  the checkout does not read them back.
+//   Recruit        The referral code is derived from the account locally and
+//                  registered with nothing, so the link tracks no one and
+//                  redeems nowhere.
+//
+// When a real account API exists each handler below becomes a request and the
+// success states stop being unconditional. The markup does not change.
+//
 // Account Settings, re-skinned to sit in the same visual family as the
 // individual product page (components/product/FybelleLayout) and the checkout
 // (pages/Checkout): a cream page, a left-hand column of stacked sections
@@ -81,6 +102,11 @@ function PasswordSection() {
       setError("The new password and confirmation don't match");
       return;
     }
+    // Fakes a result. changePassword() is a no-op returning true, so the
+    // three checks above are the only thing standing between any input and a
+    // success message - "Current password" is collected and thrown away. Once
+    // there is an API this call becomes a request and `done` waits on it,
+    // with a wrong-current-password error path that cannot exist today.
     changePassword(values.current, values.next);
     setValues({ current: "", next: "", confirm: "" });
     setError("");
@@ -154,6 +180,9 @@ const NOTIFICATION_ROWS = [
   },
 ];
 
+// Persists to localStorage only. Flipping a row here subscribes you to
+// nothing and unsubscribes you from nothing - there is no mailing system on
+// the other end of setNotification.
 function NotificationsSection() {
   const { user, setNotification } = useAuth();
   return (
@@ -243,6 +272,10 @@ function AddressForm({ initial, onCancel, onSave }) {
   );
 }
 
+// Persists to localStorage only, and only for this browser. The description
+// below says these are "addresses you can pick from at checkout", which is
+// the intent rather than the current behaviour: the checkout does not read
+// them back yet. Wiring that up is a checkout change, not a change here.
 function AddressesSection() {
   const { user, addAddress, updateAddress, removeAddress, setDefaultAddress } =
     useAuth();

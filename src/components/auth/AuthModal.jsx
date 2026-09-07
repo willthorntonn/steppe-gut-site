@@ -206,6 +206,11 @@ export default function AuthModal() {
       setErrors(next);
       return;
     }
+    // Fakes a result. There are no credentials to check, so any well-formed
+    // email and any non-empty password get in - and signIn() restores the
+    // seeded demo account, which means the email just typed is discarded and
+    // the visitor lands as Anzhelika whoever they said they were. No
+    // wrong-password state exists because nothing can be wrong.
     signIn();
     navigate("/account/orders/");
     closeAuthModal();

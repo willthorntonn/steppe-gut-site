@@ -40,6 +40,19 @@ function formatDate(iso) {
 // Line items resolved against products.js, plus the same promo maths the cart
 // runs. Kept out of the component so an order with an unknown slug (e.g. a
 // discontinued SKU) simply drops that row rather than crashing the page.
+//
+// A stand-in on top of a stand-in, and deliberately left that way for now.
+// DEMO_UNIT_PRICE is a placeholder for a price that was never set, and here
+// it is being used to value orders that were supposedly charged months ago -
+// so a past total silently re-prices itself whenever that constant moves,
+// which is not how an order history behaves. Every line also values at the
+// same figure regardless of SKU, so a bag, a box and a bottle all cost the
+// same in this view.
+//
+// The fix is data, not arithmetic: when real prices land in products.js, each
+// order in data/orders.js records the amounts it was actually charged and
+// this function reads those instead of recomputing. Until there are real
+// prices to record there is nothing truthful to write down, so it stays.
 function resolveOrder(order) {
   const lines = order.items
     .map((item) => ({ product: PRODUCT_BY_SLUG[item.slug], qty: item.qty }))
