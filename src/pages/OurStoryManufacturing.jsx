@@ -114,7 +114,7 @@ export default function OurStoryManufacturing() {
           <Container width="content">
             <h2
               className="font-serif font-bold tracking-[-0.02em] text-forest"
-              style={H2_XL}
+              style={H2}
             >
               {intro.heading}
             </h2>
@@ -141,16 +141,22 @@ export default function OurStoryManufacturing() {
         </Section>
       </Reveal>
 
-      {/* What is measured. Mirrors MediaBlock's grid-cols-2 split with an
-          empty (hidden on mobile) first column, so the heading and body
-          land in the same second-column position as "It starts with the
-          milk" above - the first block's text, since that block isn't
-          reversed and sits in column two, not the image in column one. */}
+      {/* What is measured. Same grid-cols-2 split as MediaBlock, so the
+          heading and body land in the same second-column position as "It
+          starts with the milk" above, with a batch-testing photograph in
+          the first column in place of that block's milk image. */}
       <Reveal>
         <Section size="sm" bg="cream">
           <Container width="content">
-            <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
-              <div className="hidden md:block" aria-hidden="true" />
+            <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
+              <div>
+                <ImagePlaceholder
+                  description={measured.imageBrief}
+                  src={measured.src}
+                  alt={measured.alt}
+                  ratio={measured.ratio}
+                />
+              </div>
               <div>
                 <h2
                   className="max-w-[16ch] font-serif font-normal text-forest"
