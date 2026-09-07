@@ -67,7 +67,7 @@ export function PlateHeroTitle({ section, title }) {
       <h1
         id="page-title"
         tabIndex={-1}
-        className={`font-sans font-semibold tracking-[-0.035em] text-forest text-[clamp(2.9rem,6.4vw,5.4rem)] leading-[1.02] outline-none ${
+        className={`font-sans font-semibold tracking-[-0.035em] text-forest text-[clamp(2.9rem,6.4vw,5.4rem)] leading-[1.1] outline-none ${
           section ? "mt-10 lg:mt-24" : "mt-4 lg:mt-8"
         }`}
       >
