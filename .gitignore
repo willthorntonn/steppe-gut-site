@@ -4,3 +4,9 @@ dist
 *.local
 .vercel
 asset-src/
+
+# Scratch files - working images and throwaway scripts that are not part of
+# the site. They stay on disk, they just do not belong in the history.
+/scratchpad_pav.jpg
+/scripts-fetch-tmp.mjs
+/src/subpages/fruit bowl.png
