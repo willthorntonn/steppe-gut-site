@@ -21,7 +21,7 @@ import {
   GUT_SLEEP_QUOTE,
   GUT_SLEEP_MORE,
 } from "../content/gutSleep";
-import { BODY, H2, LEAD } from "../styles/type";
+import { BODY, H2 } from "../styles/type";
 
 // /gut-health/sleep/ - "Gut and Sleep". Structure lifted from a reference
 // gut-health section page: an image band and centred title, a centred "why
@@ -116,7 +116,7 @@ export default function GutSleep() {
           <Container width="content" className="text-center">
             <p
               className="mx-auto max-w-[58ch] font-sans text-forest/80"
-              style={LEAD}
+              style={BODY}
             >
               {GUT_SLEEP_INTRO}
             </p>

@@ -7,7 +7,7 @@ import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
 import BoosterCarousel from "../components/gut-health/BoosterCarousel";
 import { GUT_HEALTH_LINKS } from "../data/site";
-import { BODY, H2, LEAD } from "../styles/type";
+import { BODY, H2 } from "../styles/type";
 import {
   GUT_MOOD_FEATURE,
   GUT_MOOD_HABITS_INTRO,
@@ -97,7 +97,7 @@ export default function GutMood() {
               <h2 className="font-serif font-normal text-forest" style={H2}>
                 {GUT_MOOD_INTRO.heading}
               </h2>
-              <p className="max-w-[54ch] font-sans text-forest/80" style={LEAD}>
+              <p className="max-w-[54ch] font-sans text-forest/80" style={BODY}>
                 {GUT_MOOD_INTRO.body}
               </p>
             </div>

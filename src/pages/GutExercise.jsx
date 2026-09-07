@@ -21,7 +21,7 @@ import {
   GUT_EXERCISE_TIPS,
   GUT_EXERCISE_MORE,
 } from "../content/gutExercise";
-import { BODY, BODY_SM, H2, LEAD } from "../styles/type";
+import { BODY, BODY_SM, H2 } from "../styles/type";
 
 // /gut-health/exercise/ - "Gut and Exercise". Structure lifted from a
 // reference gut-health section page: an image band and centred title, a
@@ -128,7 +128,7 @@ export default function GutExercise() {
           <Container width="content" className="text-center">
             <p
               className="mx-auto max-w-[58ch] font-sans text-forest/80"
-              style={LEAD}
+              style={BODY}
             >
               {GUT_EXERCISE_INTRO}
             </p>

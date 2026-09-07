@@ -19,7 +19,7 @@ import {
   GUT_ROUTINE_QUOTE,
   GUT_ROUTINE_MORE,
 } from "../content/gutRoutine";
-import { BODY, H2, LEAD } from "../styles/type";
+import { BODY, H2 } from "../styles/type";
 
 // /gut-health/routine/ - "Gut and Routine". Structure lifted from a reference
 // gut-health section page: an image band and centred title, a centred "why
@@ -113,7 +113,7 @@ export default function GutRoutine() {
           <Container width="content" className="text-center">
             <p
               className="mx-auto max-w-[58ch] font-sans text-forest/80"
-              style={LEAD}
+              style={BODY}
             >
               {GUT_ROUTINE_INTRO}
             </p>
