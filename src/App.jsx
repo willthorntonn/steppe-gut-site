@@ -31,6 +31,8 @@ const Checkout = lazy(() => import("./pages/Checkout"));
 const Confirmation = lazy(() => import("./pages/Confirmation"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Cookies = lazy(() => import("./pages/Cookies"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
 const Sitemap = lazy(() => import("./pages/Sitemap"));
 const AccountOrders = lazy(() => import("./pages/AccountOrders"));
 const AccountSettings = lazy(() => import("./pages/AccountSettings"));
@@ -115,6 +117,8 @@ export default function App() {
               <Route path="/checkout/confirmation/" element={<Confirmation />} />
               <Route path="/contact/" element={<Contact />} />
               <Route path="/cookies/" element={<Editorial><Cookies /></Editorial>} />
+              <Route path="/privacy/" element={<Editorial><Privacy /></Editorial>} />
+              <Route path="/terms/" element={<Editorial><Terms /></Editorial>} />
               <Route path="/sitemap/" element={<Editorial><Sitemap /></Editorial>} />
 
               {/* Account area. Real accounts, served by the API in server/
@@ -133,6 +137,8 @@ export default function App() {
               <Route path="/social" element={<Navigate to="/social/" replace />} />
               <Route path="/contact" element={<Navigate to="/contact/" replace />} />
               <Route path="/cookies" element={<Navigate to="/cookies/" replace />} />
+              <Route path="/privacy" element={<Navigate to="/privacy/" replace />} />
+              <Route path="/terms" element={<Navigate to="/terms/" replace />} />
               <Route path="/sitemap" element={<Navigate to="/sitemap/" replace />} />
               <Route path="/sign-in" element={<Navigate to="/sign-in/" replace />} />
               <Route path="/signin" element={<Navigate to="/sign-in/" replace />} />
