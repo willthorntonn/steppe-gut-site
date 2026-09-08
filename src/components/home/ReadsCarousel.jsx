@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { READS } from "../../content/home";
+import { H2_XL } from "../../styles/type";
 import Placeholder from "../ui/Placeholder";
 
 // Closing beat: a centred section title, paged arrows on the right, and a row
@@ -78,8 +79,8 @@ export default function ReadsCarousel() {
     <section id={READS.id} data-navtheme="light" className="scroll-mt-28 bg-cream">
       <div className="pb-24 pt-3 sm:pb-28 lg:pb-36 lg:pt-5">
         <h2
-          className="mx-auto max-w-[16ch] px-5 text-center font-serif font-normal leading-[1.04] tracking-[-0.04em] text-forest sm:px-8 lg:px-10"
-          style={{ fontSize: "clamp(2.45rem, 5.2vw, 4.9rem)", textWrap: "balance" }}
+          className="mx-auto max-w-[24ch] px-5 text-center font-serif font-bold tracking-[-0.02em] text-forest sm:px-8 lg:px-10"
+          style={H2_XL}
         >
           {READS.title}
         </h2>

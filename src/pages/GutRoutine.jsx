@@ -6,6 +6,7 @@ import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
 import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
+import BoosterCarousel from "../components/gut-health/BoosterCarousel";
 import { GUT_HEALTH_LINKS } from "../data/site";
 import {
   GUT_ROUTINE_META,
@@ -13,20 +14,23 @@ import {
   GUT_ROUTINE_INTRO,
   GUT_ROUTINE_WHY,
   GUT_ROUTINE_LEAD_ROW,
-  GUT_ROUTINE_TRAVEL_INTRO,
-  GUT_ROUTINE_TRAVEL_BLOCKS,
+  GUT_ROUTINE_TRAVEL,
   GUT_ROUTINE_ROWS,
-  GUT_ROUTINE_QUOTE,
   GUT_ROUTINE_MORE,
 } from "../content/gutRoutine";
-import { BODY, H2 } from "../styles/type";
+import { BODY, H2, H2_XL, LEAD } from "../styles/type";
+
+// The two flow paragraphs run at lead size but with a more open leading than
+// LEAD's 1.7, matching the staggered intro on /gut-health/diet/ and the
+// "Fuelled by science" flow on /our-story/science-mission/.
+const FLOW_BODY = { ...LEAD, lineHeight: 1.9 };
 
 // /gut-health/routine/ - "Gut and Routine". Structure lifted from a reference
 // gut-health section page: an image band and centred title, a centred "why
 // routine matters" block, one alternating media/text row, a "routine that
 // travels" section with two short text blocks
-// under it, two more media/text rows, a centred pull quote, a "more from Gut
-// Health" grid, then the shared closing bookend.
+// under it, two more media/text rows, a "more from Gut Health" grid, then the
+// shared closing bookend.
 //
 // Chrome (nav, footer, section switcher) is the site's own and sits at the
 // same height as on every other Gut Health page, so the switcher does not jump
@@ -118,39 +122,47 @@ export default function GutRoutine() {
         </PlateHero>
       </Section>
 
-      {/* Centred lead. */}
-      <Reveal>
+      {/* Staggered two-column flow, matching the intro on /gut-health/diet/ and
+          the "Fuelled by science" beat on /our-story/science-mission/: a bold
+          serif heading banner across the top, a left-aligned paragraph beneath
+          it, then a clear vertical gap and a second paragraph of the same width
+          pushed to the right edge, so the two blocks step down and across like
+          a staircase. Plain block flow rather than a grid so the gap never
+          depends on how the first paragraph wraps. */}
+      {/* rootMargin extends the observer's viewport 20% past the real bottom
+          edge, so the section starts revealing while it is still a fifth of a
+          screen below the fold rather than only after it has scrolled in. */}
+      <Reveal rootMargin="0px 0px 20% 0px">
         <Section
           size="none"
           bg="cream"
-          className="pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-10 lg:pb-20"
+          className="pt-4 pb-4 sm:pt-6 sm:pb-6 lg:pt-10 lg:pb-8"
         >
-          <Container width="content" className="text-center">
+          <Container width="content">
             <p
-              className="mx-auto max-w-[58ch] font-sans text-forest/80"
+              className="mx-auto max-w-[72ch] text-center font-sans text-forest/80 [text-wrap:balance]"
               style={BODY}
             >
               {GUT_ROUTINE_INTRO}
             </p>
-          </Container>
-        </Section>
-      </Reveal>
 
-      {/* Why routine matters - centred, in place of the reference standfirst. */}
-      <Reveal>
-        <Section size="default">
-          <Container width="content" className="text-center">
             <h2
-              className="mx-auto max-w-[20ch] font-serif font-normal text-forest"
-              style={H2}
+              className="mt-16 font-serif font-bold tracking-[-0.02em] text-forest md:mt-20 lg:mt-24"
+              style={H2_XL}
             >
               {GUT_ROUTINE_WHY.heading}
             </h2>
             <p
-              className="mx-auto mt-8 max-w-[62ch] font-sans text-forest/80"
-              style={BODY}
+              className="mt-10 max-w-[44ch] font-sans text-forest/80"
+              style={FLOW_BODY}
             >
               {GUT_ROUTINE_WHY.body}
+            </p>
+            <p
+              className="mt-12 max-w-[44ch] font-sans text-forest/80 md:ml-auto lg:mt-16"
+              style={FLOW_BODY}
+            >
+              {GUT_ROUTINE_WHY.aside}
             </p>
           </Container>
         </Section>
@@ -165,39 +177,21 @@ export default function GutRoutine() {
         </Section>
       </Reveal>
 
-      {/* A routine that travels - heading and intro, then two short text
-          blocks stacked under it. */}
+      {/* A routine that travels - the same expandable BoosterCarousel the
+          /gut-health/exercise/ "Make Fitness Fun" shelf uses: a centred
+          heading and intro over a paged rail of cards that open into a detail
+          panel. */}
       <Reveal>
-        <Section size="default">
-          <Container width="content">
-            <div className="max-w-[46ch]">
-              <h2 className="font-serif font-normal text-forest" style={H2}>
-                {GUT_ROUTINE_TRAVEL_INTRO.heading}
-              </h2>
-              <p className="mt-8 font-sans text-forest/80" style={BODY}>
-                {GUT_ROUTINE_TRAVEL_INTRO.body}
-              </p>
-            </div>
-
-            <div className="mt-16 grid gap-x-16 gap-y-12 md:mt-20 md:grid-cols-2">
-              {GUT_ROUTINE_TRAVEL_BLOCKS.map((block) => (
-                <div key={block.heading}>
-                  <h3
-                    className="max-w-[22ch] font-serif font-normal text-forest"
-                    style={H2}
-                  >
-                    {block.heading}
-                  </h3>
-                  <p
-                    className="mt-6 max-w-[52ch] font-sans text-forest/80"
-                    style={BODY}
-                  >
-                    {block.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Container>
+        <Section
+          size="none"
+          className="pt-8 pb-14 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-28"
+        >
+          <BoosterCarousel
+            heading={GUT_ROUTINE_TRAVEL.heading}
+            items={GUT_ROUTINE_TRAVEL.items}
+            overlayCaption
+            expandable
+          />
         </Section>
       </Reveal>
 
@@ -210,20 +204,6 @@ export default function GutRoutine() {
                 <MediaBlock key={row.heading} {...row} />
               ))}
             </div>
-          </Container>
-        </Section>
-      </Reveal>
-
-      {/* Centred pull quote. */}
-      <Reveal>
-        <Section size="sm" bg="sage-tint">
-          <Container width="content">
-            <blockquote
-              className="mx-auto max-w-[30ch] text-center font-serif font-normal text-forest"
-              style={H2}
-            >
-              {GUT_ROUTINE_QUOTE}
-            </blockquote>
           </Container>
         </Section>
       </Reveal>
@@ -257,10 +237,9 @@ export default function GutRoutine() {
                       className={FRAME_ZOOM}
                       imgClassName={PHOTO_ZOOM}
                     />
-                    <h3 className="mt-5 font-serif text-[1.5rem] font-normal leading-[1.15] tracking-[-0.02em] text-forest">
+                    <p className="mt-5 font-sans text-base font-bold uppercase tracking-[0.14em] text-forest transition-colors group-hover:text-forest/60">
                       {item.title}
-                    </h3>
-                    <p className="mt-2 font-sans text-forest/70">{item.note}</p>
+                    </p>
                   </Link>
                 </li>
               ))}

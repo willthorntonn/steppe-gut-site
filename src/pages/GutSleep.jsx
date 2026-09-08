@@ -6,7 +6,7 @@ import Reveal from "../components/ui/Reveal";
 import ImagePlaceholder from "../components/ui/ImagePlaceholder";
 import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
-import CardRail from "../components/gut-health/CardRail";
+import BoosterCarousel from "../components/gut-health/BoosterCarousel";
 import { GUT_HEALTH_LINKS } from "../data/site";
 import {
   GUT_SLEEP_META,
@@ -14,21 +14,18 @@ import {
   GUT_SLEEP_INTRO,
   GUT_SLEEP_WHY,
   GUT_SLEEP_LEAD_ROW,
-  GUT_SLEEP_WINDOW_INTRO,
-  GUT_SLEEP_WINDOW_BLOCKS,
   GUT_SLEEP_HABITS,
   GUT_SLEEP_ROWS,
-  GUT_SLEEP_QUOTE,
   GUT_SLEEP_MORE,
 } from "../content/gutSleep";
 import { BODY, H2 } from "../styles/type";
 
 // /gut-health/sleep/ - "Gut and Sleep". Structure lifted from a reference
-// gut-health section page: an image band and centred title, a centred "why
-// sleep matters" block, one alternating media/text row, a two-block section
-// on the sleep signal and night length, a paged rail of bedtime habits, two
-// more media/text rows on short nights and catching up, a centred pull quote,
-// a "more from Gut Health" grid, then the shared closing bookend.
+// gut-health section page: an image band and centred title, a "why sleep
+// matters" media/text row, one more alternating media/text row, a paged "habits that
+// set up the night" carousel (the sleep signal and its length lead, then five
+// bedtime fixed points), two more media/text rows on short nights and catching
+// up, a "more from Gut Health" grid, then the shared closing bookend.
 //
 // Chrome (nav, footer, section switcher) is the site's own and sits at the
 // same height as on every other Gut Health page, so the switcher does not
@@ -139,22 +136,12 @@ export default function GutSleep() {
         </Section>
       </Reveal>
 
-      {/* Why sleep matters - centred, in place of the reference standfirst. */}
+      {/* Why sleep matters - a media/text row (text left, image right), in
+          place of the reference standfirst. */}
       <Reveal>
         <Section size="default">
-          <Container width="content" className="text-center">
-            <h2
-              className="mx-auto max-w-[20ch] font-serif font-normal text-forest"
-              style={H2}
-            >
-              {GUT_SLEEP_WHY.heading}
-            </h2>
-            <p
-              className="mx-auto mt-8 max-w-[62ch] font-sans text-forest/80"
-              style={BODY}
-            >
-              {GUT_SLEEP_WHY.body}
-            </p>
+          <Container width="content">
+            <MediaBlock {...GUT_SLEEP_WHY} />
           </Container>
         </Section>
       </Reveal>
@@ -168,50 +155,19 @@ export default function GutSleep() {
         </Section>
       </Reveal>
 
-      {/* What sets the night - heading and intro, then two short text blocks
-          stacked under it. */}
+      {/* Habits that set up the night - the same BoosterCarousel the
+          /gut-health/mood/ habit shelves use. The two things that set a night
+          (the sleep signal, its length) lead as caption cards, then the five
+          bedtime fixed points. */}
       <Reveal>
-        <Section size="default" bg="cream-raised">
-          <Container width="content">
-            <div className="max-w-[46ch]">
-              <h2 className="font-serif font-normal text-forest" style={H2}>
-                {GUT_SLEEP_WINDOW_INTRO.heading}
-              </h2>
-              <p className="mt-8 font-sans text-forest/80" style={BODY}>
-                {GUT_SLEEP_WINDOW_INTRO.body}
-              </p>
-            </div>
-
-            <div className="mt-16 grid gap-x-16 gap-y-12 md:mt-20 md:grid-cols-2">
-              {GUT_SLEEP_WINDOW_BLOCKS.map((block) => (
-                <div key={block.heading}>
-                  <h3
-                    className="max-w-[22ch] font-serif font-normal text-forest"
-                    style={H2}
-                  >
-                    {block.heading}
-                  </h3>
-                  <p
-                    className="mt-6 max-w-[52ch] font-sans text-forest/80"
-                    style={BODY}
-                  >
-                    {block.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Container>
-        </Section>
-      </Reveal>
-
-      {/* The bedtime-habits rail. */}
-      <Reveal>
-        <Section size="default">
-          <CardRail
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-8 pb-14 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-28"
+        >
+          <BoosterCarousel
             heading={GUT_SLEEP_HABITS.heading}
-            intro={GUT_SLEEP_HABITS.intro}
             items={GUT_SLEEP_HABITS.items}
-            trackId="gut-sleep-habits"
           />
         </Section>
       </Reveal>
@@ -225,20 +181,6 @@ export default function GutSleep() {
                 <MediaBlock key={row.heading} {...row} />
               ))}
             </div>
-          </Container>
-        </Section>
-      </Reveal>
-
-      {/* Centred pull quote. */}
-      <Reveal>
-        <Section size="sm" bg="sage-tint">
-          <Container width="content">
-            <blockquote
-              className="mx-auto max-w-[30ch] text-center font-serif font-normal text-forest"
-              style={H2}
-            >
-              {GUT_SLEEP_QUOTE}
-            </blockquote>
           </Container>
         </Section>
       </Reveal>
@@ -272,10 +214,9 @@ export default function GutSleep() {
                       className={FRAME_ZOOM}
                       imgClassName={PHOTO_ZOOM}
                     />
-                    <h3 className="mt-5 font-serif text-[1.5rem] font-normal leading-[1.15] tracking-[-0.02em] text-forest">
+                    <p className="mt-5 font-sans text-base font-bold uppercase tracking-[0.14em] text-forest transition-colors group-hover:text-forest/60">
                       {item.title}
-                    </h3>
-                    <p className="mt-2 font-sans text-forest/70">{item.note}</p>
+                    </p>
                   </Link>
                 </li>
               ))}

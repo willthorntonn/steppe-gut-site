@@ -157,7 +157,7 @@ export default function GutMood() {
           <Section
             size="none"
             bg="cream"
-            className="py-14 sm:py-20 lg:py-28"
+            className="pt-8 pb-14 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-28"
           >
             <BoosterCarousel
               heading={shelf.heading}

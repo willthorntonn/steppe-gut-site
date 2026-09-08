@@ -7,12 +7,11 @@ import ImagePlaceholder from "../components/ui/ImagePlaceholder";
 import LinkArrow from "../components/ui/LinkArrow";
 import PlateHero, { PlateHeroTitle } from "../components/ui/PlateHero";
 import SectionSubNav from "../components/layout/SectionSubNav";
-import MovementCarousel from "../components/gut-health/MovementCarousel";
+import BoosterCarousel from "../components/gut-health/BoosterCarousel";
 import { GUT_HEALTH_LINKS } from "../data/site";
 import {
   GUT_EXERCISE_META,
   GUT_EXERCISE_HERO,
-  GUT_EXERCISE_INTRO,
   GUT_EXERCISE_WHY,
   GUT_EXERCISE_LEAD_ROW,
   GUT_EXERCISE_LEAD_NOTE,
@@ -76,9 +75,9 @@ function FeatureRow({ heading, body, cta, tip, image, src, alt, ratio, reverse }
         {tip && (
           <p
             className="mt-8 max-w-[54ch] border-l-2 border-gold/60 pl-5 font-sans text-forest/70"
-            style={BODY_SM}
+            style={BODY}
           >
-            <span className="font-semibold text-forest">Tip </span>
+            <span className="font-semibold text-forest">Tip: </span>
             {tip}
           </p>
         )}
@@ -134,75 +133,117 @@ export default function GutExercise() {
         </PlateHero>
       </Section>
 
+      {/* Staggered opening block, lifted straight from /gut-health/mood/: it
+          breaks out of the centred content measure and hugs the left page
+          gutter, so the why-heading starts hard against the left edge and runs
+          to about five-eighths of the viewport. The lead image drops in
+          lower-left; its heading and body sit to the right, centred against it,
+          so the whole thing steps down and across in a loose Z. Collapses to a
+          single column below md. */}
       <Reveal>
         <Section
           size="none"
           bg="cream"
-          className="pt-4 pb-12 sm:pt-6 sm:pb-16 lg:pt-10 lg:pb-20"
+          className="pt-20 pb-20 sm:pt-28 sm:pb-28 lg:pt-36 lg:pb-36"
         >
-          <Container width="content" className="text-center">
-            <p
-              className="mx-auto max-w-[58ch] font-sans text-forest/80"
-              style={BODY}
-            >
-              {GUT_EXERCISE_INTRO}
+          <div className="w-full pl-16 pr-6 sm:pl-20 sm:pr-10 lg:pl-28 lg:pr-14">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-12 md:gap-y-24">
+              <div className="md:col-span-12 md:col-start-1">
+                <h2
+                  className="font-serif font-normal text-forest md:max-w-[61.5%]"
+                  style={H2}
+                >
+                  {GUT_EXERCISE_WHY.heading}
+                </h2>
+                <p
+                  className="mt-7 font-sans text-forest/80 md:max-w-[71%]"
+                  style={BODY}
+                >
+                  {GUT_EXERCISE_WHY.body}
+                </p>
+              </div>
+
+              <div className="md:col-span-6 md:col-start-1">
+                <ImagePlaceholder
+                  description={GUT_EXERCISE_LEAD_ROW.image}
+                  src={GUT_EXERCISE_LEAD_ROW.src}
+                  alt={GUT_EXERCISE_LEAD_ROW.alt}
+                  ratio={GUT_EXERCISE_LEAD_ROW.ratio}
+                />
+              </div>
+
+              <div className="md:col-span-6 md:col-start-7 md:self-center">
+                <h2
+                  className="max-w-[19ch] font-serif font-normal text-forest [text-wrap:balance]"
+                  style={H2}
+                >
+                  {GUT_EXERCISE_LEAD_ROW.heading}
+                </h2>
+                <p
+                  className="mt-7 max-w-[50ch] font-sans text-forest/80"
+                  style={BODY}
+                >
+                  {GUT_EXERCISE_LEAD_ROW.body}
+                </p>
+                {GUT_EXERCISE_LEAD_ROW.cta && (
+                  <LinkArrow to={GUT_EXERCISE_LEAD_ROW.cta.to} className="mt-10">
+                    {GUT_EXERCISE_LEAD_ROW.cta.label}
+                  </LinkArrow>
+                )}
+              </div>
+            </div>
+          </div>
+        </Section>
+      </Reveal>
+
+      <Reveal>
+        <Section size="none" bg="cream" className="pt-0 pb-16 sm:pb-20 lg:pb-24">
+          <div className="w-full pl-16 pr-6 sm:pl-20 sm:pr-10 lg:pl-28 lg:pr-14">
+            <h2 className="max-w-[22ch] font-serif font-normal text-forest" style={H2}>
+              {GUT_EXERCISE_LEAD_NOTE.heading}
+            </h2>
+            <p className="mt-8 max-w-[58ch] font-sans text-forest/80" style={BODY}>
+              {GUT_EXERCISE_LEAD_NOTE.body}
             </p>
-          </Container>
+          </div>
         </Section>
       </Reveal>
 
-      {/* Why it's here, the lead media/text row, and the short follow-on note. */}
+      {/* The "make fitness fun" card shelf - the same BoosterCarousel the
+          /gut-health/mood/ habit shelves use. */}
       <Reveal>
-        <Section size="default">
-          <Container width="content">
-            <div className="max-w-[46ch]">
-              <h2 className="font-serif font-normal text-forest" style={H2}>
-                {GUT_EXERCISE_WHY.heading}
-              </h2>
-              <p
-                className="mt-8 font-sans text-forest/80"
-                style={BODY}
-              >
-                {GUT_EXERCISE_WHY.body}
-              </p>
-            </div>
-
-            <div className="mt-20 lg:mt-28">
-              <FeatureRow {...GUT_EXERCISE_LEAD_ROW} />
-            </div>
-
-            <div className="mt-20 max-w-[42ch] lg:mt-28">
-              <h2 className="font-serif font-normal text-forest" style={H2}>
-                {GUT_EXERCISE_LEAD_NOTE.heading}
-              </h2>
-              <p className="mt-8 font-sans text-forest/80" style={BODY}>
-                {GUT_EXERCISE_LEAD_NOTE.body}
-              </p>
-            </div>
-          </Container>
-        </Section>
-      </Reveal>
-
-      {/* The "keep it enjoyable" carousel. */}
-      <Reveal>
-        <Section size="default" bg="cream-raised">
-          <MovementCarousel
+        <Section
+          size="none"
+          bg="cream"
+          className="pt-8 pb-14 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-28"
+        >
+          <BoosterCarousel
             heading={GUT_EXERCISE_WAYS.heading}
-            intro={GUT_EXERCISE_WAYS.intro}
             items={GUT_EXERCISE_WAYS.items}
+            overlayCaption
+            expandable
           />
         </Section>
       </Reveal>
 
-      {/* Three tip rows, each with a short callout. */}
+      {/* Three tip rows, each with a short callout. Breaks out of the centred
+          content measure and hugs the left page gutter, the same wider
+          treatment the staggered opening block and the /gut-health/mood/
+          sections use, so the media/text rows run close to both edges. */}
       <Reveal>
         <Section size="default">
-          <Container width="content">
-            <div className="max-w-[42ch]">
-              <h2 className="font-serif font-normal text-forest" style={H2}>
+          <div className="w-full pl-16 pr-6 sm:pl-20 sm:pr-10 lg:pl-28 lg:pr-14">
+            <div>
+              <h2
+                className="font-serif font-normal text-forest md:max-w-[61.5%]"
+                style={H2}
+              >
                 {GUT_EXERCISE_TIPS_INTRO.heading}
               </h2>
-              <p className="mt-8 font-sans text-forest/80" style={BODY}>
+              <p
+                className="mt-7 font-sans text-forest/80 md:max-w-[71%]"
+                style={BODY}
+              >
                 {GUT_EXERCISE_TIPS_INTRO.body}
               </p>
             </div>
@@ -212,7 +253,7 @@ export default function GutExercise() {
                 <FeatureRow key={row.id} {...row} />
               ))}
             </div>
-          </Container>
+          </div>
         </Section>
       </Reveal>
 
@@ -247,10 +288,9 @@ export default function GutExercise() {
                       className={FRAME_ZOOM}
                       imgClassName={PHOTO_ZOOM}
                     />
-                    <h3 className="mt-5 font-serif text-[1.5rem] font-normal leading-[1.15] tracking-[-0.02em] text-forest">
+                    <p className="mt-5 font-sans text-base font-bold uppercase tracking-[0.14em] text-forest transition-colors group-hover:text-forest/60">
                       {item.title}
-                    </h3>
-                    <p className="mt-2 font-sans text-forest/70">{item.note}</p>
+                    </p>
                   </Link>
                 </li>
               ))}

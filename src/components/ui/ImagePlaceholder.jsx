@@ -13,11 +13,12 @@ export default function ImagePlaceholder({
   imgClassName = "",
   imgStyle,
   style,
+  children,
 }) {
   if (src) {
     return (
       <div
-        className={`w-full overflow-hidden ${rounded} ${className}`}
+        className={`relative w-full overflow-hidden ${rounded} ${className}`}
         style={{ aspectRatio: ratio, ...style }}
       >
         <img
@@ -26,6 +27,7 @@ export default function ImagePlaceholder({
           className={`h-full w-full object-cover ${imgClassName}`}
           style={imgStyle}
         />
+        {children}
       </div>
     );
   }

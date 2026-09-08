@@ -81,7 +81,7 @@ const PHOTO_ZOOM =
 // card a link. No kicker label over the image, unlike the reference. Pass
 // `zoom` to give the tiles the site-wide enlarge-on-hover effect instead of
 // the plain opacity fade.
-function CardGrid({ items, zoom = false }) {
+function CardGrid({ items, zoom = false, caption = false }) {
   return (
     <ul className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
@@ -99,16 +99,24 @@ function CardGrid({ items, zoom = false }) {
               className={zoom ? FRAME_ZOOM : "transition-opacity group-hover:opacity-90"}
               imgClassName={zoom ? PHOTO_ZOOM : undefined}
             />
-            <h3
-              className="mt-5 font-serif font-normal text-forest"
-              style={H3}
-            >
-              {item.title}
-            </h3>
-            {item.note && (
-              <p className="mt-2 max-w-[38ch] font-sans text-forest/70" style={BODY}>
-                {item.note}
+            {caption ? (
+              <p className="mt-5 font-sans text-base font-bold uppercase tracking-[0.14em] text-forest transition-colors group-hover:text-forest/60">
+                {item.title}
               </p>
+            ) : (
+              <>
+                <h3
+                  className="mt-5 font-serif font-normal text-forest"
+                  style={H3}
+                >
+                  {item.title}
+                </h3>
+                {item.note && (
+                  <p className="mt-2 max-w-[38ch] font-sans text-forest/70" style={BODY}>
+                    {item.note}
+                  </p>
+                )}
+              </>
             )}
           </Link>
         </li>
@@ -265,7 +273,7 @@ export default function GutDiet() {
               {more.heading}
             </h2>
             <div className="mt-14 lg:mt-20">
-              <CardGrid items={more.items} zoom />
+              <CardGrid items={more.items} zoom caption />
             </div>
           </Container>
         </Section>

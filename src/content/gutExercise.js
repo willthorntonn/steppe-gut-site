@@ -5,7 +5,7 @@ import sleepBed from "../assets/gut-health/sleep-bed-4.webp";
 import vegetablesGrains from "../assets/gut-health/diet-vegetables-grains-2.webp";
 import warmupCourt from "../assets/gut-health/exercise-warmup-court.webp";
 import squatBench from "../assets/gut-health/exercise-squat-bench.webp";
-import boardwalk from "../assets/gut-health/exercise-boardwalk.webp";
+import cardioWalk from "../subpages/venti-views-H9xlJ23Vx8U-unsplash.jpg";
 import woodland from "../assets/gut-health/exercise-woodland.webp";
 import swimmer from "../assets/gut-health/exercise-swimmer.webp";
 import friendsCourt from "../assets/gut-health/exercise-friends-court.webp";
@@ -69,55 +69,49 @@ export const GUT_EXERCISE_LEAD_NOTE = {
   body: "A brisk walk in the park or a game you enjoy still counts. If the activity is one you look forward to, you are far more likely to stay with it week after week and keep movement a normal part of the day",
 };
 
-// The paged carousel - the reference page's "make it fun" rail, rebuilt as a
-// row of portrait cards. Each card carries a plain label, a title and one
-// line.
+// The paged card shelf - the reference page's "make it fun" rail, rebuilt on
+// the same BoosterCarousel the /gut-health/mood/ shelves use. Each card
+// carries a one-line caption, a written image brief and a `body` paragraph
+// shown in the card's detail panel once it is opened; they are not links.
 export const GUT_EXERCISE_WAYS = {
-  heading: "Ways people keep it enjoyable",
-  intro:
-    "None of these need equipment or a plan. Each one is a way people we have spoken to fit movement into a day without it feeling like a chore",
+  heading: "Make Fitness Fun",
   items: [
     {
       id: "outdoors",
-      label: "Outdoors",
-      title: "A walk somewhere green",
-      note: "Woods, a park, a towpath",
+      caption: "10,000 Steps",
+      body: "A daily step count is an easy thing to build a walk around. Break it across the day if that suits you better, a lap at lunch, a longer way home, a turn around the block after dinner, and treat the number as a rough guide rather than a rule",
       image: "a person walking a green woodland path in dappled afternoon light",
       src: woodland,
       alt: "A person walking a green woodland path",
     },
     {
       id: "water",
-      label: "In the water",
-      title: "An easy swim",
-      note: "Lengths at a talking pace",
+      caption: "Take a swim",
+      body: "Swimming asks something of the whole body while keeping the load off your joints. Set an easy pace you can hold for a while, rest at the wall whenever you need to, and count lengths only if it keeps you going",
       image: "an unhurried swimmer crossing a calm outdoor pool, seen from the side",
       src: swimmer,
       alt: "An unhurried swimmer crossing a calm outdoor pool",
     },
     {
       id: "together",
-      label: "With others",
-      title: "A game with friends",
-      note: "Anything that keeps you moving",
+      caption: "Fun with friends",
+      body: "Arranging to move with other people makes it far easier to show up. A regular game, a walking catch-up, a class you go to together, the company does as much of the work as the activity",
       image: "three friends mid-game on a grass court, laughing, low evening sun",
       src: friendsCourt,
       alt: "Three friends playing a relaxed game on a grass court",
     },
     {
       id: "on-foot",
-      label: "On foot",
-      title: "Stairs over the lift",
-      note: "A small choice, made often",
+      caption: "Take the stairs",
+      body: "Choosing the stairs over the lift is a small decision you can make several times a day. Take them at a steady pace, use the handrail, and stop a floor early while you are still building it up",
       image: "a plain concrete apartment stairwell lit from a long skylight overhead",
       src: stairwell,
       alt: "A plain concrete stairwell lit by a skylight overhead",
     },
     {
       id: "at-home",
-      label: "At home",
-      title: "A few minutes of stretching",
-      note: "Morning or before bed",
+      caption: "Stretching",
+      body: "A few minutes of slow stretching needs no kit and very little space. Move gently to the first point of resistance, hold it while you breathe, and keep well short of anything that hurts",
       image: "someone stretching slowly on a rug by a window in early light",
       src: stretchRug,
       alt: "A person stretching slowly on a rug by a window",
@@ -129,14 +123,14 @@ export const GUT_EXERCISE_WAYS = {
 // under the body. `reverse` puts the image on the right; DOM order stays
 // image then text at every width.
 export const GUT_EXERCISE_TIPS_INTRO = {
-  heading: "A few simple ways to move through the day",
+  heading: "Top Fitness Tips by us",
   body: "Three easy places to start. Take them at your own pace, build up slowly, and stop if anything hurts",
 };
 
 export const GUT_EXERCISE_TIPS = [
   {
     id: "warm-up",
-    heading: "Warm up first",
+    heading: "Warm up",
     body: "Begin with a few minutes of easy movement. Gentle stretches, then slow versions of whatever you are about to do. This gives your muscles and your mind a chance to catch up before anything more",
     tip: "Try a slow walk on the spot, some shoulder rolls and a few easy lunges",
     image:
@@ -148,7 +142,7 @@ export const GUT_EXERCISE_TIPS = [
   },
   {
     id: "strength",
-    heading: "Build a little strength",
+    heading: "Build Your Strength",
     body: "Working against some resistance, whether that is light weights, a band or your own bodyweight, helps keep everyday movement easy. Carrying the shopping, standing up from a low chair, climbing stairs",
     tip: "Set aside ten to fifteen minutes and keep every movement slow and controlled",
     image: "someone doing a steady bodyweight squat beside a park bench, unhurried",
@@ -159,12 +153,12 @@ export const GUT_EXERCISE_TIPS = [
   },
   {
     id: "cardio",
-    heading: "Keep some gentle cardio",
+    heading: "Don't forget about cardio",
     body: "Anything that lifts your breathing and your heart rate a little counts. Brisk walking, cycling, an easy swim. It does not need to be hard to be worth doing",
     tip: "Add a ten to fifteen minute brisk walk to your day and build it up over weeks",
     image:
       "a person walking briskly along a wooden boardwalk by the water at an easy pace",
-    src: boardwalk,
+    src: cardioWalk,
     alt: "A person walking briskly along a boardwalk by the water",
     ratio: "4 / 5",
     reverse: false,

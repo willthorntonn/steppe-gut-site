@@ -5,19 +5,22 @@ import familyMeal from "../assets/gut-health/sleep-cleared-plate.webp";
 import singleLamp from "../assets/gut-health/sleep-single-lamp.webp";
 import curtainsDrawn from "../assets/gut-health/sleep-curtains-drawn.webp";
 import alarmClock from "../assets/gut-health/sleep-wind-up-clock.webp";
+import bedsideLampWarm from "../assets/gut-health/routine-bedside-lamp.webp";
+import bedTurnedDown from "../assets/gut-health/sleep-bed-2.webp";
 import routineNotebook from "../assets/gut-health/routine-notebook-6.webp";
 import moodMorningCup from "../assets/gut-health/mood-kitchen-table-4.webp";
 import exercisePath from "../assets/gut-health/exercise-path-6.webp";
 import sleepBed from "../assets/gut-health/sleep-bed.webp";
 import curtainsOpen from "../assets/gut-health/sleep-late-morning-light.webp";
+import sleepWhyRest from "../assets/gut-health/sleep-why-rest.webp";
 
 // Copy for /gut-health/sleep/ ("Gut and Sleep" in the Gut Health nav).
 // Structure lifted from a reference gut-health "sleep" page: an image band
 // and centred title, a centred "why sleep matters" block, one media/text row
-// on looking after the gut overnight, a two-block "overnight window" section
-// (the sleep hormone, how much sleep), a paged rail of bedtime habits, two
-// media/text rows on short nights and catching up, a centred pull quote, a
-// "more from Gut Health" grid, then the shared closing bookend.
+// on looking after the gut overnight, a paged "habits that set up the night"
+// carousel (the sleep signal and its length lead, then five bedtime fixed
+// points), two media/text rows on short nights and catching up, a "more from
+// Gut Health" grid, then the shared closing bookend.
 //
 // House rules (PUNCTUATION_RULE.md, WRITING_STYLE.md): no terminal full stop
 // on any string here. Internal sentence stops inside a multi-sentence block
@@ -48,12 +51,22 @@ export const GUT_SLEEP_HERO = {
 export const GUT_SLEEP_INTRO =
   "Sleep and digestion run on the same roughly twenty-four hour clock, and they read the same cues: morning light, the timing of meals, a steady hour for bed. Keep the nights regular and the gut has a quieter, more predictable stretch to do its overnight work in. A daily ferment is one small fixed point in that day, never the thing holding the rhythm together";
 
-// Centred block, in place of the reference page's "why is sleep important"
-// standfirst. Kept general: the body clock and the gut are described, no
-// benefit is promised to the reader.
+// A media/text row, in place of the reference page's "why is sleep important"
+// standfirst - text left, image right, matching GUT_SLEEP_LEAD_ROW's shape.
+// Kept general: the body clock and the gut are described, no benefit is
+// promised to the reader.
 export const GUT_SLEEP_WHY = {
   heading: "Why sleep matters for the gut",
-  body: "A broken night does more than leave you tired. The digestive system keeps its own daily rhythm, and that rhythm is tied closely to the sleep and wake cycle. The muscle waves that move food along, the timing of hunger, and the mix of microbes in the gut all shift across the day and settle overnight. Disrupt sleep often enough, or push it around by several hours, and that overnight settling has less room to happen",
+  body: [
+    "A broken night does more than leave you tired. The digestive system keeps its own daily rhythm, and that rhythm is tied closely to the sleep and wake cycle",
+    "The muscle waves that move food along, the timing of hunger, and the mix of microbes in the gut all shift across the day and settle overnight. Disrupt sleep often enough, or push it around by several hours, and that overnight settling has less room to happen",
+  ],
+  image:
+    "a bright cream bedroom in full daylight, angled sunlight falling across a plain warm wall above white bedding and a low bedside table",
+  src: sleepWhyRest,
+  alt: "A bright cream bedroom with angled daylight across the wall above white bedding",
+  ratio: "4 / 5",
+  reverse: true,
 };
 
 // The lead media/text row, matching the reference page's "it's important to
@@ -72,77 +85,69 @@ export const GUT_SLEEP_LEAD_ROW = {
   reverse: false,
 };
 
-// The "overnight window" section, matching the reference page's stacked
-// "melatonin for sleep" and "how much sleep do adults need" blocks: a heading
-// and short intro, then two stacked text blocks under it.
-export const GUT_SLEEP_WINDOW_INTRO = {
-  heading: "What sets the night",
-  body: "Two things shape how much the gut gets out of a night: the signal that starts sleep, and how long the night runs. Both take their cues from a regular day rather than from anything you do at bedtime alone",
-};
-
-export const GUT_SLEEP_WINDOW_BLOCKS = [
-  {
-    heading: "The sleep signal",
-    body: "Melatonin is the hormone that rises in the evening as the light drops and tells the body the night has started. It is not only made in the brain; the gut wall carries a large share of the body's melatonin too, which is part of why the digestive system tracks the sleep cycle so closely. Dim indoor light in the last hour before bed, and a dark room, let that evening rise happen on time",
-  },
-  {
-    heading: "How long a night runs",
-    body: "Most adults do best on somewhere between seven and nine hours, kept to a similar window from one night to the next. What the number is matters less than holding it roughly steady. A consistent wake time is the easier end to fix, since it also sets the following evening",
-  },
-];
-
-// The paged rail of bedtime habits, matching the reference page's "how to get
-// better quality sleep at bedtime" carousel. Cards carry a title and one
-// line, no kicker label, each handing off to the section it belongs with.
+// The paged shelf that folds the old "what sets the night" block into the
+// bedtime-habits carousel: the two things that set a night (the sleep signal,
+// its length) run first as short caption cards, then the five small fixed
+// points around bedtime. Built on the same BoosterCarousel the
+// /gut-health/mood/ shelves use - image and a one-line caption, not links.
 export const GUT_SLEEP_HABITS = {
   heading: "Habits that set up the night",
-  intro:
-    "Five small fixed points around bedtime, each one easy to keep through an ordinary week and none of them a rule",
   items: [
     {
+      id: "sleep-signal",
+      caption: "The sleep signal",
+      image:
+        "a low warm bedside lamp in a dim room, the last light before sleep, dark window behind",
+      src: bedsideLampWarm,
+      alt: "A low warm bedside lamp lit in a dim room before sleep",
+    },
+    {
+      id: "night-length",
+      caption: "How long a night runs",
+      image:
+        "a bed turned down in a quiet dark room, ready for a full night, faint light at the curtain edge",
+      src: bedTurnedDown,
+      alt: "A bed turned down in a quiet dark room",
+    },
+    {
       id: "light-early",
-      title: "Light early",
-      note: "A few minutes outside soon after waking to set the day's clock",
-      to: "/gut-health/routine/",
+      caption: "Light early",
       image:
         "a person standing at an open doorway in low morning sun, cup in hand, long shadow across the floor",
       src: doorwayMorning,
+      alt: "A person at an open doorway in low morning sun with a cup in hand",
     },
     {
       id: "finish-eating-earlier",
-      title: "Finish eating earlier",
-      note: "The last proper meal a couple of hours before bed rather than right before it",
-      to: "/gut-health/diet/",
+      caption: "Finish eating earlier",
       image:
         "a family sharing an early evening meal at a wooden table, bowls and chopsticks, warm indoor light",
       src: familyMeal,
+      alt: "A family sharing an early evening meal at a wooden table",
     },
     {
       id: "dim-the-evening",
-      title: "Dim the evening",
-      note: "Lower light and screens down in the last hour so the sleep signal rises on time",
-      to: "/gut-health/routine/",
+      caption: "Dim the evening",
       image:
         "a living room lit only by a single low lamp, a book face down on a blanket, dark window behind",
       src: singleLamp,
+      alt: "A living room lit only by a single low lamp with a book face down on a blanket",
     },
     {
       id: "cool-dark-room",
-      title: "A cool dark room",
-      note: "Curtains drawn and the room a little cooler than the rest of the home",
-      to: "/gut-health/sleep/",
+      caption: "A cool dark room",
       image:
         "a tidy bedroom with heavy curtains fully drawn, bed turned down, faint light at the curtain edge",
       src: curtainsDrawn,
+      alt: "A tidy bedroom with heavy curtains fully drawn and the bed turned down",
     },
     {
       id: "steady-wake-time",
-      title: "A steady wake time",
-      note: "Getting up within the same hour each day, including at the weekend",
-      to: "/gut-health/routine/",
+      caption: "A steady wake time",
       image:
         "a twin-bell alarm clock and a small plant on a bedside table beside a made bed, daylight, no people",
       src: alarmClock,
+      alt: "A twin-bell alarm clock and a small plant on a bedside table beside a made bed",
     },
   ],
 };
@@ -160,7 +165,7 @@ export const GUT_SLEEP_ROWS = [
     src: sleepBed,
     alt: "An unmade bed beside a window in the grey light before sunrise",
     ratio: "4 / 5",
-    reverse: false,
+    reverse: true,
   },
   {
     heading: "Catching up is not the same",
@@ -173,12 +178,9 @@ export const GUT_SLEEP_ROWS = [
     src: curtainsOpen,
     alt: "A person opening sheer curtains to bright daylight, seen from behind",
     ratio: "4 / 5",
-    reverse: true,
+    reverse: false,
   },
 ];
-
-export const GUT_SLEEP_QUOTE =
-  "The gut does its steadiest work on a night that looks like the one before it, and most of what good sleep gives it is that sameness";
 
 export const GUT_SLEEP_MORE = {
   heading: "More from Gut Health",
