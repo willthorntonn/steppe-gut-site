@@ -230,7 +230,7 @@ export default function GutExercise() {
           content measure and hugs the left page gutter, the same wider
           treatment the staggered opening block and the /gut-health/mood/
           sections use, so the media/text rows run close to both edges. */}
-      <Reveal>
+      <Reveal threshold={0.05}>
         <Section size="default">
           <div className="w-full pl-16 pr-6 sm:pl-20 sm:pr-10 lg:pl-28 lg:pr-14">
             <div>

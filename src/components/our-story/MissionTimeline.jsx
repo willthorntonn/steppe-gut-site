@@ -109,8 +109,9 @@ export default function MissionTimeline({ heading, items }) {
 
   return (
     <section
+      id="mission-timeline"
       data-navtheme="light"
-      className="scroll-mt-28 bg-cream pt-8 pb-14 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20"
+      className="scroll-mt-[140px] bg-cream pt-8 pb-14 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20"
     >
       <div className="mx-auto max-w-[2000px] px-5 sm:px-8 lg:px-10">
         <div className="flex items-center justify-end gap-3">

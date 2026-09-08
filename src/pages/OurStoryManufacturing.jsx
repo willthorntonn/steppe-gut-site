@@ -39,9 +39,12 @@ const { intro, heroImage, blocks, measured, makers } =
 // One image/text block. Mirrors ui/MediaTextRow's grid and rhythm but uses an
 // ImagePlaceholder box and the sans body voice, matching the inline rows on
 // Our Mission and Our Science Mission.
-function MediaBlock({ heading, body, imageBrief, src, alt, ratio, reverse }) {
+function MediaBlock({ id, heading, body, imageBrief, src, alt, ratio, reverse }) {
   return (
-    <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
+    <div
+      id={id}
+      className="scroll-mt-[140px] grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16 lg:gap-24"
+    >
       <div className={reverse ? "md:order-2" : undefined}>
         <ImagePlaceholder description={imageBrief} src={src} alt={alt} ratio={ratio} />
       </div>
@@ -110,9 +113,10 @@ export default function OurStoryManufacturing() {
           left-aligned version (H2/BODY) - only the alignment moved. */}
       <Reveal>
         <Section
+          id="made"
           size="none"
           bg="cream"
-          className="pt-4 pb-6 text-center sm:pt-6 sm:pb-8 lg:pt-10 lg:pb-10"
+          className="scroll-mt-[260px] pt-4 pb-6 text-center sm:pt-6 sm:pb-8 lg:pt-10 lg:pb-10"
         >
           <Container width="content">
             <h2
@@ -236,9 +240,11 @@ export default function OurStoryManufacturing() {
           The heading pair matches "Fuelled by science" on Our Science
           Mission (H2_XL, bold serif) over "Our Range", set at the same
           size as the "Our Story" section label above PlateHero's title
-          (PlateHeroTitle's clamp(1.05rem,1.6vw,1.4rem) sans-semibold). */}
+          (PlateHeroTitle's clamp(1.05rem,1.6vw,1.4rem) sans-semibold).
+          Top padding is dropped so it sits close under "Named, not
+          implied" rather than adrift in a full section gap. */}
       <Reveal>
-        <Section bg="cream" size="default">
+        <Section bg="cream" size="default" className="pt-0 sm:pt-0 lg:pt-0">
           <Container width="wide">
             <div className="text-center">
               <h2

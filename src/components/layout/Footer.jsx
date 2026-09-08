@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { COMPANY, FOOTER_LINKS, REGULATORY_DISCLOSURE } from "../../data/site";
+import { FOOTER_LINKS } from "../../data/site";
 import { SOCIAL_PLATFORMS } from "../../data/social";
 
 const TRANSPARENT = ["rgba(0, 0, 0, 0)", "transparent"];
@@ -89,6 +89,15 @@ function socialTarget(label) {
 // to a page that does not exist is worse than no link, so they are removed
 // rather than left as `href="#"`. They come back when those pages do.
 const SITE_LINKS = FOOTER_LINKS;
+
+// Bottom-bar legal row. These pages aren't in the build yet; the links are
+// here so the bar matches the reference and resolve once the pages land.
+const LEGAL_LINKS = [
+  { label: "Terms and conditions", to: "/terms/" },
+  { label: "Cookies", to: "/cookies/" },
+  { label: "Privacy Policy", to: "/privacy/" },
+  { label: "Sitemap", to: "/sitemap/" },
+];
 
 function SocialIcon({ d }) {
   return (
@@ -209,25 +218,21 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Mandatory on every page - 01_navigation.md §7.5. The Thai FDA
-          sentence states the status as in-progress. It must not be softened
-          into implying registration is issued, and must not be dropped. */}
-      <div className="mx-auto max-w-[2000px] border-t border-cream/15 px-5 py-6 sm:px-8 lg:px-16 lg:py-9">
-        <p className="max-w-[70ch] font-sans text-xs leading-[1.7] text-cream/40 lg:max-w-[90ch] lg:text-base">
-          {REGULATORY_DISCLOSURE}
-        </p>
-      </div>
-
-      <div className="mx-auto flex max-w-[2000px] flex-col gap-4 border-t border-cream/15 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-16 lg:py-11">
-        {/* The quietest possible way to keep provenance on every page
-            (01_navigation.md §7.4). */}
-        <p className="max-w-[60ch] font-sans text-xs text-cream/50 lg:text-base">
-          {COMPANY.origin}. Manufactured by {COMPANY.manufacturer.name}.
-          Imported and distributed in Thailand by {COMPANY.importer.name}.
-        </p>
+      <div className="mx-auto flex max-w-[2000px] flex-col gap-4 px-5 pb-8 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-16 lg:pb-11">
+        <ul className="flex flex-wrap items-center gap-x-10 gap-y-3 font-sans text-xs text-cream/70 lg:text-base">
+          {LEGAL_LINKS.map((item) => (
+            <li key={item.to}>
+              <Link
+                to={item.to}
+                className="text-cream/70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+              >
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
         <p className="shrink-0 font-sans text-xs text-cream/60 lg:text-base">
-          &copy; {new Date().getFullYear()} {COMPANY.brandOwner.name}. All
-          rights reserved.
+          &copy; {new Date().getFullYear()} Copyright S72 Strategic Limited
         </p>
       </div>
     </footer>

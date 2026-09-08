@@ -47,7 +47,7 @@ export const GUT_EXERCISE_INTRO =
 // The opening "why is this here" block - a left-aligned heading and a short
 // paragraph, before any imagery.
 export const GUT_EXERCISE_WHY = {
-  heading: "Why movement sits on this page",
+  heading: "Why movement is important",
   body: "Regular gentle movement is part of an ordinary healthy routine, and it tends to go hand in hand with steady digestion. You do not need a training plan or a gym membership for it to count. Picture the day you already have, and look for the parts of it that keep you upright and moving",
 };
 

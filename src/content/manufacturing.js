@@ -54,6 +54,7 @@ export const MANUFACTURING = {
       reverse: false,
     },
     {
+      id: "fermentation",
       heading: "What the fermentation does",
       body: [
         "Strained milk goes into a wooden churn that already carries a living culture from earlier batches. Nothing is inoculated from a packet. Over about four days it is stirred by hand many times a day, by whoever is nearby, and the vessel is kept out of direct sun rather than held at a set temperature.",

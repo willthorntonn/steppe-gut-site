@@ -139,8 +139,6 @@ export const GUT_HEALTH_ROWS = [
 // hands off to the sub-section it belongs with.
 export const GUT_HEALTH_WAYS = {
   heading: "Ways people take it",
-  intro:
-    "The powder dissolves in cold or warm liquid, so it slots into a day wherever there is already a glass or a bowl",
   items: [
     {
       id: "morning",

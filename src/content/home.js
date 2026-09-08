@@ -49,7 +49,7 @@ export const PROCESS = {
       // to keep out of copy that has to survive translation into Thai).
       title: "Milked by hand, in season",
       body: "Steppe mares graze wild grassland all year They are milked by hand, outdoors, in a short season once a year",
-      href: "/our-story/#sourcing",
+      href: "/our-story/mission/#mission-timeline",
       cta: "Learn more",
       plate: {
         ratio: "16 / 9",
@@ -64,7 +64,7 @@ export const PROCESS = {
       step: "02",
       title: "Time does the work",
       body: "Fresh milk goes into a vessel that already holds a living culture Hours of hand-stirring follow Fermentation breaks down lactose and protein",
-      href: "/our-story/#fermentation",
+      href: "/our-story/manufacturing/#fermentation",
       cta: "Learn more",
       plate: {
         ratio: "16 / 9",
@@ -79,7 +79,7 @@ export const PROCESS = {
       step: "03",
       title: "Steppe Gut Balance",
       body: "Rich in Vitamin D to support immunity & muscle + bone health",
-      href: "/gut-health/#nutrition",
+      href: "/our-story/manufacturing/#made",
       cta: "Learn more",
       plate: {
         ratio: "16 / 9",

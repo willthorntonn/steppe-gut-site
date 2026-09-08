@@ -137,7 +137,7 @@ export default function GutHealth() {
       </Reveal>
 
       <Reveal rootMargin="0px 0px 20% 0px">
-        <Section size="default" bg="cream-raised">
+        <Section size="default" bg="cream">
           <WaysToTakeIt />
         </Section>
       </Reveal>

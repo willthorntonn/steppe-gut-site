@@ -51,7 +51,7 @@ export default function Buy() {
       </div>
 
       <Reveal>
-        <Section bg="white" size="default">
+        <Section bg="white" size="default" className="pt-10 sm:pt-14 lg:pt-20">
           <Container>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {PRODUCTS.map((product) => (
