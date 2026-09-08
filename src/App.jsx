@@ -30,6 +30,8 @@ const Social = lazy(() => import("./pages/Social"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const Confirmation = lazy(() => import("./pages/Confirmation"));
 const Contact = lazy(() => import("./pages/Contact"));
+const Cookies = lazy(() => import("./pages/Cookies"));
+const Sitemap = lazy(() => import("./pages/Sitemap"));
 const AccountOrders = lazy(() => import("./pages/AccountOrders"));
 const AccountSettings = lazy(() => import("./pages/AccountSettings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -112,6 +114,8 @@ export default function App() {
               <Route path="/cart/" element={<Cart />} />
               <Route path="/checkout/confirmation/" element={<Confirmation />} />
               <Route path="/contact/" element={<Contact />} />
+              <Route path="/cookies/" element={<Editorial><Cookies /></Editorial>} />
+              <Route path="/sitemap/" element={<Editorial><Sitemap /></Editorial>} />
 
               {/* Account area. Real accounts, served by the API in server/
                   (see src/auth/AuthProvider.jsx and src/api/client.js) - the
@@ -128,6 +132,8 @@ export default function App() {
               <Route path="/products" element={<Navigate to="/products/" replace />} />
               <Route path="/social" element={<Navigate to="/social/" replace />} />
               <Route path="/contact" element={<Navigate to="/contact/" replace />} />
+              <Route path="/cookies" element={<Navigate to="/cookies/" replace />} />
+              <Route path="/sitemap" element={<Navigate to="/sitemap/" replace />} />
               <Route path="/sign-in" element={<Navigate to="/sign-in/" replace />} />
               <Route path="/signin" element={<Navigate to="/sign-in/" replace />} />
               <Route path="/cart" element={<Navigate to="/cart/" replace />} />
