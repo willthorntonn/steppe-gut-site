@@ -1,0 +1,10 @@
+# Build outputs - Vercel builds these itself. The webpack caches under .next
+# and .next-dev contain single files over the 100 MB upload limit, which fails
+# `vercel deploy` outright.
+.next
+.next-dev
+dist
+
+# Raw source assets (68 MB of pre-export originals). Nothing under src/ or the
+# Next config reads these; the shipped copies live in public/.
+asset-src
