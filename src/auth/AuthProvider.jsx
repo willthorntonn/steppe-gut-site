@@ -6,37 +6,39 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
-import { api } from "../api/client";
+import { api, currentUser } from "../api/client";
+import { supabaseBrowser } from "../lib/supabase/client";
 
-// Account/session state, backed by the account API in `server/`.
+// Account/session state, backed by Supabase Auth.
 //
-// This used to be a localStorage demo: a seeded account, a sign-in that
-// checked nothing, a changePassword that returned true. None of that is true
-// any more. What is true now:
+// What is true here:
 //
-//   - An account is a row on the server with a scrypt-hashed password. There
-//     is nothing to seed and nothing signed in until someone registers.
-//   - The session is an HttpOnly cookie. This file never sees a token, which
-//     is why `signedIn` is decided by asking the server on boot rather than by
-//     reading a flag out of storage.
-//   - Every mutator below is a request. They are async and they can fail, so
-//     each one either returns the updated account or throws an ApiError with
-//     a message (and sometimes a `field`) meant to be shown on the form.
-//   - Nothing about the account is cached in localStorage, so the same
-//     account looks the same in any browser that signs in.
+//   - An account is a row in Supabase Auth. Someone can arrive with an email
+//     address and a password, or with Google - both end up at the same
+//     account record and the same profile row, so the rest of the app never
+//     has to care which way they came in.
+//   - The session is a cookie Supabase manages and refreshes. This file never
+//     handles a token, which is why `signedIn` is decided by asking rather
+//     than by reading a flag out of storage.
+//   - `onAuthStateChange` is what keeps this in step. Signing in on another
+//     tab, a token refresh, or coming back from Google all arrive through it,
+//     so no screen is left showing a session that has ended.
+//   - Every mutator below can fail. Each one either returns the updated
+//     account or throws an ApiError with a message (and sometimes a `field`)
+//     meant to be shown on the form.
 //
-// The email address is still the account's public identity, but it is no
-// longer the key to anything: orders and addresses hang off the account's
-// server-side id, so changing an email keeps the history attached.
+// The email address is the account's public identity, but it is not the key to
+// anything: orders and addresses hang off the account's id, so changing an
+// email keeps the history attached.
 
 const AuthContext = createContext(null);
 
-// The keys the previous, browser-only version wrote. Nothing reads them now,
-// and one of them holds a name, an email address and a home address, so they
-// are cleared once on boot rather than left behind in everyone's browser.
-// Safe to delete this and its call a few releases after the switch.
+// The keys the old browser-only version wrote. Nothing reads them now, and one
+// of them holds a name, an email address and a home address, so they are
+// cleared once on boot rather than left behind in everyone's browser.
 const LEGACY_KEYS = ["steppe-gut.account.v1", "steppe-gut.orders.v1"];
 
 function forgetLegacyStorage() {
@@ -49,35 +51,38 @@ function forgetLegacyStorage() {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  // "loading" until the boot session check answers. Account pages wait on
-  // this rather than flashing their signed-out state at someone who is in.
+  // "loading" until the boot session check answers. Account pages wait on this
+  // rather than flashing their signed-out state at someone who is in.
   const [status, setStatus] = useState("loading");
-  // The API could not be reached at all. Distinct from being signed out: it
-  // means "we don't know", and it is worth saying so on screen.
+  // The backend could not be reached at all. Distinct from being signed out:
+  // it means "we don't know", and it is worth saying so on screen.
   const [offline, setOffline] = useState(false);
 
-  // Onboarding / sign-in is a centred modal that any control can open - the
-  // home page's "Become a Steppe Soldier" button, the header's "Sign in", the
-  // signed-out account pages. `null` = closed; "create" / "signin" = open on
-  // that tab. The modal itself (components/auth/AuthModal) is rendered once,
-  // from Layout.
+  // Onboarding / sign-in is a centred modal any control can open - the home
+  // page's "Become a Steppe Soldier" button, the header's "Sign in", the
+  // signed-out account pages. `null` = closed.
   const [authModal, setAuthModal] = useState(null);
-  const openAuthModal = useCallback(
-    (mode = "create") => setAuthModal(mode === "signin" ? "signin" : "create"),
-    []
-  );
-  const closeAuthModal = useCallback(() => setAuthModal(null), []);
+  // A failure that happened away from the form: coming back from Google
+  // refused, mostly. Shown above the button when the modal opens.
+  const [authModalError, setAuthModalError] = useState("");
+
+  const openAuthModal = useCallback((mode = "create", message = "") => {
+    setAuthModalError(message);
+    setAuthModal(mode === "signin" ? "signin" : "create");
+  }, []);
+  const closeAuthModal = useCallback(() => {
+    setAuthModal(null);
+    setAuthModalError("");
+  }, []);
 
   const refresh = useCallback(async () => {
     try {
-      const data = await api.session();
-      setUser(data?.user ?? null);
+      setUser(await currentUser());
       setOffline(false);
     } catch {
       // Any failure here means the session could not be decided, which is not
-      // the same as being signed out - a proxy in front of a stopped API
-      // answers 500 as readily as the fetch fails outright, so every failure
-      // counts. The pages say "can't be reached" rather than "sign in".
+      // the same as being signed out. The pages say "can't be reached" rather
+      // than "sign in".
       setUser(null);
       setOffline(true);
     } finally {
@@ -85,22 +90,55 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  // Guards against a slow refresh landing after a newer one and putting the
+  // previous account back on screen.
+  const generation = useRef(0);
+
   useEffect(() => {
     forgetLegacyStorage();
     refresh();
+
+    // Signing in on another tab, a token refresh, and the return from Google
+    // all arrive here.
+    const { data } = supabaseBrowser().auth.onAuthStateChange((event, session) => {
+      const mine = ++generation.current;
+      if (!session) {
+        setUser(null);
+        setStatus("ready");
+        return;
+      }
+      // TOKEN_REFRESHED changes nothing the app displays, so it is not worth
+      // a round trip for the profile and the address book.
+      if (event === "TOKEN_REFRESHED" && user) return;
+      currentUser()
+        .then((next) => {
+          if (generation.current !== mine) return;
+          setUser(next);
+          setOffline(false);
+        })
+        .catch(() => {
+          if (generation.current !== mine) return;
+          setOffline(true);
+        })
+        .finally(() => {
+          if (generation.current === mine) setStatus("ready");
+        });
+    });
+
+    return () => data.subscription.unsubscribe();
+    // `user` is read inside the listener only to skip needless work on a token
+    // refresh; re-subscribing whenever it changes would drop events.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
   const register = useCallback(async (profile) => {
-    const data = await api.register({
-      name: profile.name,
-      email: profile.email,
-      password: profile.password,
-      avatar: profile.avatar ?? null,
-      promotions: Boolean(profile.promotions),
-    });
+    const data = await api.register(profile);
     setUser(data.user);
     setOffline(false);
-    return data.user;
+    // `confirmationRequired` is true when Supabase is set to confirm email
+    // addresses: the account exists, the link is in the inbox, and nobody is
+    // signed in yet. The modal says so rather than pretending otherwise.
+    return data;
   }, []);
 
   const signIn = useCallback(async (email, password) => {
@@ -110,11 +148,12 @@ export function AuthProvider({ children }) {
     return data.user;
   }, []);
 
+  /** Leaves the site for Google and comes back to /auth/callback/. */
+  const signInWithGoogle = useCallback((next) => api.signInWithGoogle(next), []);
+
   const signOut = useCallback(async () => {
     // Cleared here first so the header and the account pages react at once;
-    // the request that ends the session server-side follows. A failure leaves
-    // the cookie alive but the screen signed out, and the next boot corrects
-    // itself, which is the right way round for a control someone just pressed.
+    // the request that ends the session follows.
     setUser(null);
     try {
       await api.logout();
@@ -124,8 +163,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const updateProfile = useCallback(async (patch) => {
-    // Name and avatar only. Email has its own path (below) because changing
-    // it means confirming a code the server issued.
+    // Name and avatar only. Email has its own path below, because changing it
+    // means confirming a link sent to the new address.
     const data = await api.updateProfile({
       ...(patch.name !== undefined ? { name: patch.name } : null),
       ...(patch.avatar !== undefined ? { avatar: patch.avatar } : null),
@@ -135,19 +174,15 @@ export function AuthProvider({ children }) {
   }, []);
 
   /**
-   * Starts an email change. The server issues and holds the six-digit code.
-   *
-   * It also returns it, because nothing can post it to an inbox yet - there is
-   * no transactional email in this build. `code` disappears from the response
-   * the day that exists (server/routes/auth.js, SG_ECHO_EMAIL_CODES).
+   * Starts an email change. Supabase sends a confirmation link to the new
+   * address and the change lands when it is followed - so unlike the old
+   * six-digit code, there is nothing for this app to confirm afterwards.
    */
-  const requestEmailChange = useCallback((email) => api.requestEmailCode(email), []);
+  const requestEmailChange = useCallback((email) => api.requestEmailChange(email), []);
 
-  const confirmEmailChange = useCallback(async (code) => {
-    const data = await api.confirmEmailCode(code);
-    setUser(data.user);
-    return data.user;
-  }, []);
+  /** Sends a reset link. Says nothing about whether the address has an
+   * account, so this form cannot be used to find out which ones do. */
+  const requestPasswordReset = useCallback((email) => api.requestPasswordReset(email), []);
 
   const setNotification = useCallback(async (key, value) => {
     const data = await api.setNotification(key, value);
@@ -180,9 +215,9 @@ export function AuthProvider({ children }) {
   }, []);
 
   /**
-   * Changes the password. The current one is verified server-side, so this
-   * throws when it is wrong - the old version returned true unconditionally.
-   * Succeeding also ends every other session on the account.
+   * Changes the password. The current one is checked first and a wrong one is
+   * refused - Supabase on its own would not ask for it, which would let anyone
+   * who found an unlocked laptop take the account.
    */
   const changePassword = useCallback(
     (current, next) => api.changePassword(current, next),
@@ -198,15 +233,17 @@ export function AuthProvider({ children }) {
       signedIn: Boolean(user),
       authModalOpen: authModal !== null,
       authModalMode: authModal,
+      authModalError,
       openAuthModal,
       closeAuthModal,
       refresh,
       register,
       signIn,
+      signInWithGoogle,
       signOut,
       updateProfile,
       requestEmailChange,
-      confirmEmailChange,
+      requestPasswordReset,
       setNotification,
       addAddress,
       updateAddress,
@@ -219,15 +256,17 @@ export function AuthProvider({ children }) {
       status,
       offline,
       authModal,
+      authModalError,
       openAuthModal,
       closeAuthModal,
       refresh,
       register,
       signIn,
+      signInWithGoogle,
       signOut,
       updateProfile,
       requestEmailChange,
-      confirmEmailChange,
+      requestPasswordReset,
       setNotification,
       addAddress,
       updateAddress,

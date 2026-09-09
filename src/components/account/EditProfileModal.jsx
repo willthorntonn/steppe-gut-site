@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Loader2, Upload } from "lucide-react";
 import Modal from "../ui/Modal";
 import Field from "../ui/Field";
@@ -8,75 +8,18 @@ import { useAuth } from "../../auth/AuthProvider";
 import { fileToAvatarDataUrl, MAX_AVATAR_BYTES } from "../../auth/avatar";
 import defaultAvatar from "../../grey-avatar-icon-user-avatar-photo-icon-social-media-user-icon-vector.jpg";
 
-// Edit Profile, opened from the header account menu. Name, photo and email
-// are saved to the account on the server (src/api/client -> server/), so a
-// change made here is the same change on any device that signs in.
+// Edit Profile, opened from the header account menu. Name, photo and email are
+// saved against the account, so a change made here is the same change on any
+// device that signs in.
 //
-// The email change is a real verification now. Changing the address asks the
-// server for a code; it issues one, holds its hash with an expiry and an
-// attempt count, and refuses anything else. The one thing still missing is a
-// way to deliver it, because transactional email is a separate piece of work
-// - so the code is displayed in the dialog rather than mailed, and says so.
-// When a mailer exists, stop returning the code (SG_ECHO_EMAIL_CODES in
-// server/routes/auth.js) and delete the panel that shows it.
+// The email change is confirmed by Supabase now, which means a link to the new
+// address rather than the six-digit code this dialog used to show on screen -
+// that existed only because nothing in the old build could send mail. The name
+// and the photo need no confirming and are saved either way; the address
+// changes when the link is followed, and until then the account keeps the one
+// it has.
 const MAX_FILE_BYTES = MAX_AVATAR_BYTES;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Segmented 6-digit entry: one real (invisible) input sitting on top of six
-// display boxes. A filled box shows its digit; an empty box shows a grey 0;
-// the box the cursor is in shows a blinking caret while the input has focus.
-function CodeInput({ id, value, onChange, error, describedById }) {
-  const [focused, setFocused] = useState(false);
-  const activeIndex = Math.min(value.length, 5);
-
-  return (
-    <div className="relative">
-      <input
-        id={id}
-        name="code"
-        type="text"
-        inputMode="numeric"
-        autoComplete="one-time-code"
-        maxLength={6}
-        value={value}
-        onChange={onChange}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={describedById}
-        className="absolute inset-0 h-full w-full cursor-text opacity-0"
-      />
-      <div className="flex gap-2 sm:gap-3" aria-hidden="true">
-        {Array.from({ length: 6 }).map((_, i) => {
-          const char = value[i];
-          const isActive = focused && i === activeIndex && value.length < 6;
-          return (
-            <div
-              key={i}
-              className={[
-                "flex h-16 flex-1 items-center justify-center rounded-xl border bg-[#FFFDF9] font-sans text-[26px] font-semibold transition-colors",
-                error
-                  ? "border-[#8C3A2B]"
-                  : isActive
-                    ? "border-forest ring-2 ring-gold/40"
-                    : "border-forest/20",
-                char ? "text-forest" : "text-forest/25",
-              ].join(" ")}
-            >
-              {isActive ? (
-                <span className="h-6 w-px animate-pulse bg-forest" />
-              ) : char ? (
-                char
-              ) : (
-                "0"
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
 
 const CANCEL_BTN =
   "inline-flex h-12 items-center justify-center rounded-full px-6 font-sans text-[15px] font-semibold text-forest transition-colors hover:bg-forest/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold";
@@ -84,24 +27,18 @@ const PRIMARY_BTN =
   "inline-flex h-12 items-center justify-center rounded-full bg-forest px-7 font-sans text-[15px] font-semibold text-cream transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50";
 
 export default function EditProfileModal({ open, onClose }) {
-  const { user, updateProfile, requestEmailChange, confirmEmailChange } = useAuth();
+  const { user, updateProfile, requestEmailChange } = useAuth();
   const fileInputRef = useRef(null);
   const nameFieldRef = useRef(null);
   const emailFieldRef = useRef(null);
-  const codeFieldRef = useRef(null);
 
-  const codeId = useId();
-
-  const [step, setStep] = useState("profile"); // "profile" | "verify"
+  const [step, setStep] = useState("profile"); // "profile" | "sent"
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
   const [avatar, setAvatar] = useState(user?.avatar ?? null);
-  const [code, setCode] = useState("");
+  // Set when the confirmation link has been sent again, so the step can say
+  // so rather than looking like the button did nothing.
   const [resent, setResent] = useState(false);
-  // The code the server issued. It is on screen because there is no mail
-  // transport in this build to carry it to an inbox - see the note beside it
-  // in the verify step, and SG_ECHO_EMAIL_CODES in server/routes/auth.js.
-  const [issuedCode, setIssuedCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -115,9 +52,7 @@ export default function EditProfileModal({ open, onClose }) {
     setName(user?.name ?? "");
     setEmail(user?.email ?? "");
     setAvatar(user?.avatar ?? null);
-    setCode("");
     setResent(false);
-    setIssuedCode("");
     setError("");
     setBusy(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -186,12 +121,13 @@ export default function EditProfileModal({ open, onClose }) {
         onClose();
         return;
       }
-      // The email is changing, so the server issues a code and holds it.
-      const started = await requestEmailChange(email.trim());
-      setIssuedCode(started?.code ?? "");
-      setCode("");
+      // The email is changing, so Supabase sends a confirmation link to the
+      // new address. Following it is what completes the change - there is
+      // nothing left for this dialog to check, which is why the step below
+      // says what happens next rather than asking for a code.
+      await requestEmailChange(email.trim());
       setResent(false);
-      setStep("verify");
+      setStep("sent");
     } catch (failure) {
       setError(failure.message ?? "That could not be saved, try again");
     } finally {
@@ -199,36 +135,14 @@ export default function EditProfileModal({ open, onClose }) {
     }
   };
 
-  const handleVerifySubmit = async (event) => {
-    event.preventDefault();
-    if (code.length !== 6) {
-      setError("Enter the 6-digit code");
-      codeFieldRef.current?.querySelector("input")?.focus();
-      return;
-    }
-    // Checked against the code the server issued, which expires and counts
-    // wrong attempts. A wrong code is now a real error path.
-    setBusy(true);
-    try {
-      await confirmEmailChange(code);
-      onClose();
-    } catch (failure) {
-      setError(failure.message ?? "That code could not be checked");
-      codeFieldRef.current?.querySelector("input")?.focus();
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const resendCode = async () => {
+  const resendLink = async () => {
     setBusy(true);
     setError("");
     try {
-      const started = await requestEmailChange(email.trim());
-      setIssuedCode(started?.code ?? "");
+      await requestEmailChange(email.trim());
       setResent(true);
     } catch (failure) {
-      setError(failure.message ?? "That code could not be sent again");
+      setError(failure.message ?? "That link could not be sent again");
     } finally {
       setBusy(false);
     }
@@ -236,16 +150,14 @@ export default function EditProfileModal({ open, onClose }) {
 
   const backToProfile = () => {
     setStep("profile");
-    setCode("");
-    setIssuedCode("");
     setError("");
     setResent(false);
   };
 
-  const title = step === "verify" ? "Confirm your email" : "Edit profile";
+  const title = step === "sent" ? "Confirm your email" : "Edit profile";
   const description =
-    step === "verify"
-      ? `Confirm ${email.trim()} with the 6-digit code below`
+    step === "sent"
+      ? `Your name and photo are saved. The address itself changes once you follow the link sent to ${email.trim()}`
       : "Update the name, photo and email shown on your account";
 
   return (
@@ -319,7 +231,7 @@ export default function EditProfileModal({ open, onClose }) {
               onChange={(event) => setEmail(event.target.value)}
               help={
                 emailChanged
-                  ? "A 6-digit code confirms this address before it changes"
+                  ? "A link sent to this address confirms it before it changes"
                   : undefined
               }
             />
@@ -341,63 +253,29 @@ export default function EditProfileModal({ open, onClose }) {
           </div>
         </form>
       ) : (
-        <form noValidate onSubmit={handleVerifySubmit}>
-          <div ref={codeFieldRef}>
-            <label
-              htmlFor={codeId}
-              className="font-sans text-sm font-semibold text-forest"
-            >
-              6-digit code
-            </label>
-            <div className="mt-2">
-              <CodeInput
-                id={codeId}
-                value={code}
-                onChange={(event) => {
-                  setResent(false);
-                  setError("");
-                  setCode(event.target.value.replace(/\D/g, "").slice(0, 6));
-                }}
-                error={error}
-                describedById={error ? `${codeId}-error` : undefined}
-              />
-            </div>
-            {error && (
-              <p
-                id={`${codeId}-error`}
-                className="mt-2 font-sans text-[13px] text-[#8C3A2B]"
-              >
-                {error}
-              </p>
-            )}
-          </div>
+        <div>
+          <p className="font-sans text-[15px] leading-relaxed text-forest/75">
+            Until the link is followed, your account keeps its current address,
+            so nothing is lost if the message goes astray
+          </p>
 
-          {/* The code is real and the server checks it. What does not exist
-              yet is anything to carry it to an inbox, so it is shown here
-              instead of being emailed - the one honest way to run a genuine
-              verification step without a mail service. */}
-          {issuedCode && (
-            <div className="mt-4 rounded-[10px] border border-forest/15 bg-[#FFFDF9] p-4">
-              <p className="font-sans text-[13px] leading-relaxed text-forest/70">
-                No email is sent yet, so your code is shown here
-              </p>
-              <p className="mt-1 font-mono text-[18px] tracking-[0.3em] text-forest">
-                {issuedCode}
-              </p>
-            </div>
+          {error && (
+            <p role="alert" className="mt-4 font-sans text-[13px] text-[#8C3A2B]">
+              {error}
+            </p>
           )}
 
           <button
             type="button"
-            onClick={resendCode}
+            onClick={resendLink}
             disabled={busy}
-            className="mt-3 font-sans text-[13px] font-semibold text-forest underline underline-offset-2 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50"
+            className="mt-4 font-sans text-[13px] font-semibold text-forest underline underline-offset-2 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50"
           >
-            Get a new code
+            Send the link again
           </button>
           {resent && (
-            <p className="mt-2 font-sans text-[13px] text-forest/55">
-              A new code was issued, the one above is the one that works
+            <p role="status" className="mt-2 font-sans text-[13px] text-forest/55">
+              Sent again, the newest link is the one that works
             </p>
           )}
 
@@ -405,11 +283,11 @@ export default function EditProfileModal({ open, onClose }) {
             <button type="button" onClick={backToProfile} className={CANCEL_BTN}>
               Back
             </button>
-            <button type="submit" disabled={busy} className={PRIMARY_BTN}>
-              {busy ? "Checking" : "Verify & save"}
+            <button type="button" onClick={onClose} className={PRIMARY_BTN}>
+              Done
             </button>
           </div>
-        </form>
+        </div>
       )}
     </Modal>
   );

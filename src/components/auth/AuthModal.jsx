@@ -18,25 +18,60 @@ import defaultAvatar from "../../grey-avatar-icon-user-avatar-photo-icon-social-
 // the visitor is on. Open state lives in AuthProvider (authModalOpen /
 // authModalMode); this component is mounted once, by Layout.
 //
-// Both tabs are real requests to the account API now. "create" registers an
-// account and is refused when the email is already taken; "signin" is checked
-// against a stored scrypt hash and is refused when the password is wrong.
-// There is no sample account to fall into any more.
+// Both tabs are real requests to Supabase Auth. "create" registers an account
+// and is refused when the email is already taken; "signin" is checked against
+// the stored password and is refused when it is wrong. There is no sample
+// account to fall into any more.
+//
+// Either tab can also hand off to Google instead, which leaves the site and
+// comes back to /auth/callback/ - so nothing after that call runs, and the
+// button stays in its busy state until the page navigates away.
 //
 // A successful "create" doesn't navigate away - it swaps this modal to a
 // confirmation view (the animated forest checkmark, formerly its own
-// pages/Welcome route) right where the visitor already is. The checkmark
+// pages/Welcome route) right where the visitor already is. What that view says
+// depends on whether Supabase is set to confirm email addresses: with
+// confirmation on, nobody is signed in yet and it says to check the inbox. The
+// checkmark
 // animation lives in index.css (.check-ring / .check-tick / .check-halo) and
 // collapses to a static drawn tick under prefers-reduced-motion.
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Where to land once a sign-in finishes. The modal opens over whatever page
+// the visitor was reading, so the honest destination is that same page - not a
+// fixed jump to the order history. `/sign-in/` and `/auth/*` only exist to
+// bounce people onward, so returning to one of them would loop; those fall
+// back to the account area instead.
+function returnDestination() {
+  if (typeof window === "undefined") return "/account/orders/";
+  const { pathname, search } = window.location;
+  if (pathname === "/sign-in/" || pathname.startsWith("/auth/")) {
+    return "/account/orders/";
+  }
+  return pathname + search;
+}
+
 const PRIMARY_BTN =
   "inline-flex h-[52px] w-full items-center justify-center rounded-[12px] bg-forest px-7 font-sans text-[15px] font-bold uppercase tracking-[0.08em] text-cream transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold";
 const OUTLINE_BTN =
   "inline-flex h-11 items-center gap-2 rounded-full border border-forest px-4 font-sans text-sm font-semibold text-forest transition-colors hover:bg-forest hover:text-cream focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50";
+const GOOGLE_BTN =
+  "inline-flex h-[52px] w-full items-center justify-center gap-3 rounded-[12px] border border-forest/25 bg-white px-7 font-sans text-[15px] font-semibold text-forest transition-colors hover:bg-forest/[0.04] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-60";
 const LINK_BTN =
   "font-semibold text-forest underline underline-offset-2 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold";
+
+/** Google's mark, at the size their brand terms ask for beside a label. */
+function GoogleMark() {
+  return (
+    <svg viewBox="0 0 18 18" className="h-[18px] w-[18px]" aria-hidden="true">
+      <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62Z" />
+      <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18Z" />
+      <path fill="#FBBC05" d="M3.97 10.72a5.41 5.41 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33Z" />
+      <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58Z" />
+    </svg>
+  );
+}
 
 // ── Photo picker ───────────────────────────────────────────────────────
 // Canvas-downscaled to a small square data URL before it is held in state,
@@ -128,17 +163,25 @@ export default function AuthModal() {
   const {
     authModalOpen,
     authModalMode,
+    authModalError,
     closeAuthModal,
     user,
     register,
     signIn,
+    signInWithGoogle,
+    requestPasswordReset,
   } = useAuth();
   const router = useRouter();
 
   const [mode, setMode] = useState("create"); // "create" | "signin"
-  // Set true by handleCreate() on a successful register(); flips this modal
-  // from the sign-up form to the welcome confirmation view.
-  const [justRegistered, setJustRegistered] = useState(false);
+  // Set by handleCreate() on a successful register(); flips this modal from
+  // the sign-up form to the welcome confirmation view. "confirm" means the
+  // account exists but its email address has to be confirmed first, so nobody
+  // is signed in yet.
+  const [justRegistered, setJustRegistered] = useState(null); // null|"in"|"confirm"
+  // Set once a reset link has been sent, so the sign-in tab can say so rather
+  // than leaving the visitor wondering whether it went.
+  const [resetSent, setResetSent] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [values, setValues] = useState({
     name: "",
@@ -160,14 +203,18 @@ export default function AuthModal() {
   useEffect(() => {
     if (!authModalOpen) return;
     setMode(authModalMode === "signin" ? "signin" : "create");
-    setJustRegistered(false);
+    setJustRegistered(null);
+    setResetSent(false);
     setAvatar(null);
     setValues({ name: "", email: "", password: "", confirm: "" });
     setPromotions(false);
     setErrors({});
     setBusy(false);
-    setFormError("");
-  }, [authModalOpen, authModalMode]);
+    // A refusal that happened away from this form - a Google sign-in the
+    // visitor cancelled, an expired email link - arrives on the provider and
+    // is shown above the button like any other.
+    setFormError(authModalError ?? "");
+  }, [authModalOpen, authModalMode, authModalError]);
 
   const set = (key) => (event) => {
     setValues((v) => ({ ...v, [key]: event.target.value }));
@@ -203,14 +250,14 @@ export default function AuthModal() {
     setBusy(true);
     setFormError("");
     try {
-      await register({
+      const result = await register({
         name: values.name,
         email: values.email,
         password: values.password,
         avatar,
         promotions,
       });
-      setJustRegistered(true);
+      setJustRegistered(result?.confirmationRequired ? "confirm" : "in");
     } catch (error) {
       showFailure(error);
     } finally {
@@ -222,12 +269,48 @@ export default function AuthModal() {
   // the visitor is already signed in and stays on the page behind. "Start
   // Shopping" also sends them to the catalogue.
   const closeWelcome = () => {
-    setJustRegistered(false);
+    setJustRegistered(null);
     closeAuthModal();
   };
   const startShopping = () => {
     closeWelcome();
     router.push("/products/");
+  };
+
+  // Hands off to Google. The page navigates away, so `busy` is never cleared
+  // on success - the button stays busy until the browser leaves, which is the
+  // honest thing for it to show.
+  const handleGoogle = async () => {
+    setBusy(true);
+    setFormError("");
+    try {
+      await signInWithGoogle(returnDestination());
+    } catch (error) {
+      showFailure(error);
+      setBusy(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!EMAIL_RE.test(values.email.trim())) {
+      setErrors((e) => ({
+        ...e,
+        email: "Enter your email address first, and we'll send a reset link",
+      }));
+      return;
+    }
+    setBusy(true);
+    setFormError("");
+    try {
+      await requestPasswordReset(values.email);
+      // Said the same way whether or not that address has an account, so this
+      // cannot be used to find out which addresses do.
+      setResetSent(true);
+    } catch (error) {
+      showFailure(error);
+    } finally {
+      setBusy(false);
+    }
   };
 
   const handleSignIn = async (event) => {
@@ -246,7 +329,7 @@ export default function AuthModal() {
     setFormError("");
     try {
       await signIn(values.email, values.password);
-      router.push("/account/orders/");
+      router.push(returnDestination());
       closeAuthModal();
     } catch (error) {
       showFailure(error);
@@ -265,11 +348,17 @@ export default function AuthModal() {
       <Modal
         open={authModalOpen}
         onClose={closeWelcome}
-        title="Welcome to Steppe Gut"
+        title={
+          justRegistered === "confirm"
+            ? "Confirm your email address"
+            : "Welcome to Steppe Gut"
+        }
         description={
-          user
-            ? `You're a Steppe Soldier now, ${user.name.split(" ")[0]}. Your orders, addresses and email preferences all live in one account`
-            : "You're a Steppe Soldier now. Your orders, addresses and email preferences all live in one account"
+          justRegistered === "confirm"
+            ? `We've sent a link to ${values.email.trim()}. Follow it and you're a Steppe Soldier, with your orders, addresses and email preferences all in one account`
+            : user
+              ? `You're a Steppe Soldier now, ${user.name.split(" ")[0]}. Your orders, addresses and email preferences all live in one account`
+              : "You're a Steppe Soldier now. Your orders, addresses and email preferences all live in one account"
         }
         maxWidth="max-w-[560px]"
       >
@@ -283,7 +372,11 @@ export default function AuthModal() {
               viewBox="0 0 96 96"
               className="check-ring relative h-24 w-24"
               role="img"
-              aria-label="Account created"
+              aria-label={
+                justRegistered === "confirm"
+                  ? "Confirmation email sent"
+                  : "Account created"
+              }
             >
               <circle cx="48" cy="48" r="44" className="fill-forest" />
               <path
@@ -297,13 +390,19 @@ export default function AuthModal() {
             </svg>
           </div>
 
-          <button
-            type="button"
-            onClick={startShopping}
-            className={`${PRIMARY_BTN} mt-8`}
-          >
-            Start Shopping
-          </button>
+          {justRegistered === "confirm" ? (
+            <button type="button" onClick={closeWelcome} className={`${PRIMARY_BTN} mt-8`}>
+              Got it
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={startShopping}
+              className={`${PRIMARY_BTN} mt-8`}
+            >
+              Start Shopping
+            </button>
+          )}
         </div>
       </Modal>
     );
@@ -342,7 +441,22 @@ export default function AuthModal() {
           </button>
         </div>
       ) : creating ? (
-        <form noValidate onSubmit={handleCreate} className="space-y-6">
+        <>
+          <button
+            type="button"
+            onClick={handleGoogle}
+            disabled={busy}
+            className={GOOGLE_BTN}
+          >
+            <GoogleMark />
+            Continue with Google
+          </button>
+          <div className="my-6 flex items-center gap-4" aria-hidden="true">
+            <span className="h-px flex-1 bg-forest/15" />
+            <span className="font-sans text-[13px] text-forest/50">or</span>
+            <span className="h-px flex-1 bg-forest/15" />
+          </div>
+          <form noValidate onSubmit={handleCreate} className="space-y-6">
           <PhotoPicker avatar={avatar} onChange={setAvatar} />
 
           <Field
@@ -423,9 +537,25 @@ export default function AuthModal() {
               </button>
             </p>
           </div>
-        </form>
+          </form>
+        </>
       ) : (
-        <form noValidate onSubmit={handleSignIn} className="space-y-6">
+        <>
+          <button
+            type="button"
+            onClick={handleGoogle}
+            disabled={busy}
+            className={GOOGLE_BTN}
+          >
+            <GoogleMark />
+            Continue with Google
+          </button>
+          <div className="my-6 flex items-center gap-4" aria-hidden="true">
+            <span className="h-px flex-1 bg-forest/15" />
+            <span className="font-sans text-[13px] text-forest/50">or</span>
+            <span className="h-px flex-1 bg-forest/15" />
+          </div>
+          <form noValidate onSubmit={handleSignIn} className="space-y-6">
           <Field
             label="Email"
             name="email"
@@ -456,6 +586,22 @@ export default function AuthModal() {
             <button type="submit" disabled={busy} className={`${PRIMARY_BTN} disabled:opacity-60`}>
               {busy ? "Signing you in" : "Sign in"}
             </button>
+            {resetSent ? (
+              <p role="status" className="mt-4 font-sans text-[14px] text-forest/70">
+                If that address has an account, a reset link is on its way to it
+              </p>
+            ) : (
+              <p className="mt-4 font-sans text-[14px] text-forest/70">
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  disabled={busy}
+                  className={LINK_BTN}
+                >
+                  Forgotten your password?
+                </button>
+              </p>
+            )}
             <p className="mt-4 font-sans text-[14px] text-forest/70">
               New here?{" "}
               <button
@@ -470,7 +616,8 @@ export default function AuthModal() {
               </button>
             </p>
           </div>
-        </form>
+          </form>
+        </>
       )}
     </Modal>
   );

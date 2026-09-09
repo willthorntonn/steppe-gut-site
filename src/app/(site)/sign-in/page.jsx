@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import SignInRedirect from "./SignInRedirect";
 import { buildMetadata } from "../../../lib/seo";
 
@@ -11,5 +12,11 @@ export const metadata = buildMetadata({
 });
 
 export default function SignInPage() {
-  return <SignInRedirect />;
+  // SignInRedirect reads ?error= off the query string, which needs a
+  // Suspense boundary for this route to prerender.
+  return (
+    <Suspense fallback={null}>
+      <SignInRedirect />
+    </Suspense>
+  );
 }
