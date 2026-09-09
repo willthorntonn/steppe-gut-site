@@ -16,5 +16,7 @@ asset-src/
 server/data/*.json
 server/data/*.corrupt-*
 
-# Next.js build output
+# Next.js build output. `.next` is the production build, `.next-dev` is the
+# dev server's own copy - see the distDir note in next.config.mjs.
 .next
+.next-dev

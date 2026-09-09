@@ -1,3 +1,5 @@
+import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Every page URL on the site is slash-canonical (see the route map that
@@ -47,4 +49,14 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+// `next dev` and `next build` write incompatible things under the same name:
+// dev emits unhashed chunks (layout.css, page.js), a production build emits
+// hashed ones. Sharing one directory means a `npm run build` deletes the
+// chunks the running dev server is still handing out URLs for, and every page
+// loads as unstyled HTML until the server is restarted. Giving dev its own
+// directory is what stops the two from ever meeting; `next build` and
+// `next start` keep .next, which is what Vercel expects.
+export default (phase) => ({
+  ...nextConfig,
+  distDir: phase === PHASE_DEVELOPMENT_SERVER ? ".next-dev" : ".next",
+});
