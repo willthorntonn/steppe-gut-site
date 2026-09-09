@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "./Container";
 import LinkArrow from "./LinkArrow";
 import Picture from "./Picture";

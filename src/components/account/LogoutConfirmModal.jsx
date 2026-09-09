@@ -1,4 +1,6 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+
+import { useRouter } from "next/navigation";
 import Modal from "../ui/Modal";
 import { useAuth } from "../../auth/AuthProvider";
 
@@ -7,12 +9,12 @@ import { useAuth } from "../../auth/AuthProvider";
 // homepage; cancelling just closes.
 export default function LogoutConfirmModal({ open, onClose }) {
   const { signOut } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleConfirm = () => {
     signOut();
     onClose();
-    navigate("/");
+    router.push("/");
   };
 
   return (

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
 import ImagePlaceholder from "./ImagePlaceholder";

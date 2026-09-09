@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { SOCIAL_PLATFORMS } from "../../data/social";
 import {
   FACEBOOK_PATH,
@@ -69,7 +71,7 @@ export default function SocialRail() {
         ) : (
           <Link
             key={cell.label}
-            to="/social/"
+            href="/social/"
             aria-label={`${cell.label}, our accounts are not open yet`}
             className={cls}
           >

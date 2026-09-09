@@ -1,3 +1,5 @@
+"use client";
+
 import heroBgBokeh from "../../hero-bg-bokeh.png";
 import Hero from "./Hero";
 import { HeroStageMobile, HeroStageDesktop } from "./HeroStage";

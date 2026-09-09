@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { ChevronDown, ShoppingBag, Tag } from "lucide-react";
 import SummaryLine from "./SummaryLine";

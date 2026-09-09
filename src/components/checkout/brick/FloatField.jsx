@@ -1,3 +1,5 @@
+"use client";
+
 import { useId } from "react";
 
 // Shopify-checkout-style field: a 1px #DEDEDE box with a 12px radius, whose

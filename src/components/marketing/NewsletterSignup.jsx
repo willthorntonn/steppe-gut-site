@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import Section from "../ui/Section";
 import Container from "../ui/Container";

@@ -1,3 +1,5 @@
+"use client";
+
 // Standard simplified brand marks used for outbound "follow us" links (the
 // common open-source icon set every major footer draws from) - not a
 // reproduction of Steppe Gut's own identity, so they carry none of the

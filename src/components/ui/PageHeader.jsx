@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "./Container";
 import { DISPLAY, LEAD } from "../../styles/type";
 

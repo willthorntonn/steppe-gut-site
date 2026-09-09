@@ -1,3 +1,5 @@
+"use client";
+
 import { useId } from "react";
 
 // 03_design_system.md §13.

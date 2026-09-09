@@ -1,3 +1,5 @@
+"use client";
+
 // ---------------------------------------------------------------------------
 // Two section layouts extracted from
 // https://drinkag1.com/products/greens-powder-pouch - read out of the live DOM

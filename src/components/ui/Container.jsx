@@ -1,3 +1,5 @@
+"use client";
+
 // Horizontal measure + page gutters. Widths follow the existing homepage
 // (max-w-[2000px] with px-6 / sm:px-10 / lg:px-14), not the blueprint's
 // 1280px container - see the note in src/styles/type.js.

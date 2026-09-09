@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import {
   ArrowLeft,
   ChevronRight,
@@ -218,8 +221,15 @@ export default function Navbar() {
   const [theme, setTheme] = useState("dark");
   const { count } = useCart();
   const { user, openAuthModal } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
+  // Route matching for the active-link marks below. React Router's NavLink
+  // matched against the slash-canonical `to` values in data/site.js; the
+  // pathname is normalised to a trailing slash here so those comparisons
+  // read the same whether or not the router reports the slash.
+  const current = pathname.endsWith("/") ? pathname : `${pathname}/`;
+  const isActiveExact = (to) => current === to;
+  const isActivePrefix = (to) => current === to || current.startsWith(to);
 
   // Account menu modals. Opening either one first closes the dropdown, so the
   // dialog is never layered over a still-open menu card.
@@ -234,7 +244,7 @@ export default function Navbar() {
   const megaWrapRef = useRef(null);
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
 
-  useEffect(() => setMegaOpen(false), [location.pathname]);
+  useEffect(() => setMegaOpen(false), [pathname]);
 
   // Text-list dropdowns for the sectioned areas (Our Story, Gut Health).
   // Only one is open at a time; holds the parent link's label or null. Same
@@ -242,7 +252,7 @@ export default function Navbar() {
   const [openSection, setOpenSection] = useState(null);
   const sectionWrapRef = useRef(null);
   const [sectionParallax, setSectionParallax] = useState({ x: 0, y: 0 });
-  useEffect(() => setOpenSection(null), [location.pathname]);
+  useEffect(() => setOpenSection(null), [pathname]);
 
   // Account dropdown - same hover-open / hover-bridge / mouse parallax / close-
   // on-route-change contract as the Products mega-menu above.
@@ -253,7 +263,7 @@ export default function Navbar() {
   const navRef = useRef(null);
   const [accountParallax, setAccountParallax] = useState({ x: 0, y: 0 });
 
-  useEffect(() => setAccountOpen(false), [location.pathname]);
+  useEffect(() => setAccountOpen(false), [pathname]);
 
   // The count itself updates the instant Add to Cart is pressed. The badge
   // only *pops* when a flying product image actually lands here, so the two
@@ -361,7 +371,7 @@ export default function Navbar() {
     };
     // Re-sampled on navigation: a new route replaces every [data-navtheme]
     // node, so the theme measured for the previous page is stale.
-  }, [location.pathname]);
+  }, [pathname]);
 
   // The menu is a full-screen overlay, so the page behind it must not scroll,
   // and Escape must close it (01_navigation.md §4).
@@ -390,13 +400,13 @@ export default function Navbar() {
 
   // Close on navigation, so tapping a link in the overlay doesn't leave it
   // open over the new page.
-  useEffect(() => setMenuOpen(false), [location.pathname]);
+  useEffect(() => setMenuOpen(false), [pathname]);
   // The drawer always reopens on its root list - a section left open from a
   // previous visit is not where anyone expects to land.
   useEffect(() => {
     if (!menuOpen) setMenuSection(null);
   }, [menuOpen]);
-  useEffect(() => setSearchOpen(false), [location.pathname]);
+  useEffect(() => setSearchOpen(false), [pathname]);
 
   // Global shortcuts to open search: Cmd/Ctrl+K anywhere, or "/" when the
   // visitor is not already typing in a field.
@@ -528,7 +538,7 @@ export default function Navbar() {
       className="fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-2 px-3 py-3 sm:px-4 lg:px-5 lg:py-4"
     >
       <Link
-        to="/"
+        href="/"
         aria-label="Steppe Gut home"
         className={`animate-slide-left delay-200 relative z-40 flex shrink-0 items-center gap-2 whitespace-nowrap px-3 py-[6px] font-serif text-[37.5px] font-semibold tracking-[-0.05em] ${ink} ${pillCls} 1395:gap-2.5 1395:px-4 1395:py-[7px] 1395:text-[56px]`}
         style={pillStyle}
@@ -569,28 +579,25 @@ export default function Navbar() {
           const hasMenu = Array.isArray(link.menu);
           const sectionOpen = hasMenu && openSection === link.label;
 
+          // No `end` on the old NavLink, so a section's sub-pages keep the
+          // parent lit: a prefix match.
+          const isActive = isActivePrefix(link.to);
           const navItem = (
-            <NavLink
-              to={link.to}
-              className={({ isActive }) =>
-                `group relative whitespace-nowrap py-1 font-sans text-[13px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold 1395:text-[22px]`
-              }
+            <Link
+              href={link.to}
+              className="group relative whitespace-nowrap py-1 font-sans text-[13px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold 1395:text-[22px]"
             >
-              {({ isActive }) => (
-                <>
-                  {link.label}
-                  <span
-                    aria-hidden="true"
-                    className={`pointer-events-none absolute inset-x-0 -bottom-0.5 mx-auto h-0.5 origin-center scale-x-0 bg-gold transition-transform duration-150 ease-out ${
-                      isActive || (isProducts && megaOpen) || sectionOpen
-                        ? "scale-x-100"
-                        : "group-hover:scale-x-100"
-                    }`}
-                    style={{ width: underlineWidth || undefined }}
-                  />
-                </>
-              )}
-            </NavLink>
+              {link.label}
+              <span
+                aria-hidden="true"
+                className={`pointer-events-none absolute inset-x-0 -bottom-0.5 mx-auto h-0.5 origin-center scale-x-0 bg-gold transition-transform duration-150 ease-out ${
+                  isActive || (isProducts && megaOpen) || sectionOpen
+                    ? "scale-x-100"
+                    : "group-hover:scale-x-100"
+                }`}
+                style={{ width: underlineWidth || undefined }}
+              />
+            </Link>
           );
 
           if (hasMenu) {
@@ -619,7 +626,7 @@ export default function Navbar() {
                       {link.menu.map((item) => (
                         <li key={item.to}>
                           <Link
-                            to={item.to}
+                            href={item.to}
                             className="group/row flex items-center rounded-2xl px-3 py-2"
                           >
                             <span className="font-sans text-[15px] font-semibold text-forest transition-colors group-hover/row:text-gold">
@@ -666,7 +673,7 @@ export default function Navbar() {
                       return (
                         <li key={slug}>
                           <Link
-                            to={`/products/${slug}/`}
+                            href={`/products/${slug}/`}
                             className="group/row flex items-center gap-3 rounded-2xl px-3 py-2"
                           >
                             <span className="flex h-11 w-11 shrink-0 items-center justify-center p-0.25">
@@ -707,7 +714,7 @@ export default function Navbar() {
         />
 
         <Link
-          to="/cart/"
+          href="/cart/"
           // The landing target for flyToCart(). Read by attribute rather than
           // by ref so nothing outside the header needs to import the nav.
           {...{ [CART_TARGET_ATTR]: "" }}
@@ -737,7 +744,7 @@ export default function Navbar() {
         <button
           type="button"
           aria-label="Go back"
-          onClick={() => navigate(-1)}
+          onClick={() => router.back()}
           className={`hidden h-11 w-11 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold sm:flex ${iconInk}`}
         >
           <CornerUpLeft strokeWidth={1.5} className="h-6 w-6 1395:h-[37px] 1395:w-[37px]" />
@@ -817,7 +824,7 @@ export default function Navbar() {
                     {ACCOUNT_LINKS.map(({ label, icon: Icon, to }) => (
                       <Link
                         key={to}
-                        to={to}
+                        href={to}
                         className="group/row flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left"
                       >
                         <Icon
@@ -915,18 +922,15 @@ export default function Navbar() {
               <div className="mt-8 flex flex-col items-start">
                 {openSectionRow.items.map((item) =>
                   item.to ? (
-                    <NavLink
+                    <Link
                       key={item.to}
-                      to={item.to}
-                      end
-                      className={({ isActive }) =>
-                        `py-3.5 text-left font-sans text-[21px] text-forest focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold ${
-                          isActive ? "font-semibold text-gold" : ""
-                        }`
-                      }
+                      href={item.to}
+                      className={`py-3.5 text-left font-sans text-[21px] text-forest focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold ${
+                        isActiveExact(item.to) ? "font-semibold text-gold" : ""
+                      }`}
                     >
                       {item.label}
-                    </NavLink>
+                    </Link>
                   ) : (
                     // Edit Profile and Log out open modals rather than
                     // navigating, so they are buttons sitting in the same
@@ -966,17 +970,15 @@ export default function Navbar() {
                       <ChevronRight size={28} strokeWidth={2.5} className="shrink-0" />
                     </button>
                   ) : (
-                    <NavLink
+                    <Link
                       key={row.to}
-                      to={row.to}
-                      className={({ isActive }) =>
-                        `py-4 font-sans text-[30px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold ${
-                          isActive ? "text-gold" : "text-forest"
-                        }`
-                      }
+                      href={row.to}
+                      className={`py-4 font-sans text-[30px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold ${
+                        isActivePrefix(row.to) ? "text-gold" : "text-forest"
+                      }`}
                     >
                       {row.label}
-                    </NavLink>
+                    </Link>
                   ),
                 )}
               </div>
@@ -1007,7 +1009,7 @@ export default function Navbar() {
                   ) : (
                     <Link
                       key={cell.label}
-                      to="/social/"
+                      href="/social/"
                       aria-label={`${cell.label}, our accounts are not open yet`}
                       className={cls}
                     >

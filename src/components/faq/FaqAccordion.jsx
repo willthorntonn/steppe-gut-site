@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useId, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // The FAQ accordion. Its visual treatment and behaviour are lifted straight
 // from the individual product pages' accordion (the "How to Use" /
@@ -40,7 +43,7 @@ function renderInline(text, keyPrefix) {
     nodes.push(
       <Link
         key={`${keyPrefix}-${match.index}`}
-        to={match[2]}
+        href={match[2]}
         className="text-forest underline underline-offset-[3px] hover:text-forest/70"
       >
         {match[1]}
@@ -141,8 +144,18 @@ export default function FaqAccordion({
   allowMultiple = false,
   className = "",
 }) {
-  const { hash } = useLocation();
+  const pathname = usePathname();
   const [open, setOpen] = useState([]);
+
+  // Next has no reactive hash: read it off window.location once the route
+  // has mounted, and again whenever a same-page anchor changes it.
+  const [hash, setHash] = useState("");
+  useEffect(() => {
+    const sync = () => setHash(window.location.hash);
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, [pathname]);
 
   // A #question-id in the URL opens that item and scrolls to it, so FAQ
   // links from elsewhere on the site land on an answer that is already open.

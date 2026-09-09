@@ -1,3 +1,5 @@
+"use client";
+
 import { FlaskConical, MapPin, RotateCcw, Truck } from "lucide-react";
 import { CAPTION } from "../../styles/type";
 

@@ -5,12 +5,13 @@
 // session is an HttpOnly cookie the browser holds and this file can't read -
 // so every call sends credentials and the server decides who is asking.
 //
-// In development Vite proxies /api to the Node service (see vite.config.js),
-// which keeps both on one origin. Point VITE_API_URL at another origin only
-// if the API is deployed apart from the site, and add that origin to the
-// server's SG_ALLOWED_ORIGINS when you do.
+// The API is served in-process by Next (src/app/api/[...path]/route.js
+// wraps server/app.js), so the site and the API are one origin. Point
+// NEXT_PUBLIC_API_URL at another origin only if the API is deployed apart
+// from the site, and add that origin to the server's SG_ALLOWED_ORIGINS when
+// you do.
 
-const BASE = (import.meta.env?.VITE_API_URL ?? "/api").replace(/\/$/, "");
+const BASE = (process.env.NEXT_PUBLIC_API_URL ?? "/api").replace(/\/$/, "");
 
 /** A failed request, in a shape the forms can render. */
 export class ApiError extends Error {
@@ -32,7 +33,11 @@ export class ApiError extends Error {
 async function request(method, path, body) {
   let response;
   try {
-    response = await fetch(`${BASE}${path}`, {
+    // Every URL ends in a slash: next.config.mjs sets trailingSlash, which
+    // 308-redirects a slash-less /api/* path too, and a redirect turns a
+    // POST body into a GET. server/app.js drops the empty trailing segment,
+    // so /api/session/ resolves the same as /api/session.
+    response = await fetch(`${BASE}${path}/`, {
       method,
       // Same-origin in normal use; explicit so a split deployment still sends
       // the session cookie.

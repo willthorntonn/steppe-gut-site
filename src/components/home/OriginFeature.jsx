@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
 import { ORIGIN } from "../../content/home";
 import Placeholder from "../ui/Placeholder";

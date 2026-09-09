@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 
 function useInView(options) {
@@ -44,9 +46,14 @@ export default function Reveal({
   rootMargin,
 }) {
   const [ref, inView] = useInView({ threshold, rootMargin });
-  const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
+  // Read after mount rather than at render time: this component is server-
+  // rendered now and there is no window on the server. false until then.
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    setReducedMotion(
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }, []);
 
   const baseStyle = (index = 0) => ({
     transitionDelay: `${delay + index * stagger}ms`,

@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "../ui/Container";
 import { BODY_SM, CAPTION, H4 } from "../../styles/type";
 import { COMPANY } from "../../data/site";

@@ -1,6 +1,8 @@
+"use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { READS } from "../../content/home";
 import { H2_XL } from "../../styles/type";
 import Placeholder from "../ui/Placeholder";
@@ -131,7 +133,7 @@ export default function ReadsCarousel() {
                     link - the caption underneath is plain text. */}
                 <div className="text-center">
                   <Link
-                    to={item.href}
+                    href={item.href}
                     className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
                   >
                     <Placeholder

@@ -1,3 +1,5 @@
+"use client";
+
 // A neutral stand-in for photography that has not been shot or chosen yet.
 // Deliberately plainer than ui/Placeholder.jsx (which renders a full
 // art-direction brief inside a hatched frame): this is just a grey box

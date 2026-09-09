@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { PROCESS } from "../../content/home";
 import Placeholder from "../ui/Placeholder";
 
@@ -45,7 +47,7 @@ export default function ProcessRow() {
           {PROCESS.items.map((item, index) => (
             <Link
               key={item.id}
-              to={item.href}
+              href={item.href}
               className={`group relative block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold ${
                 index === 1 ? RAISED : ""
               }`}

@@ -1,3 +1,5 @@
+"use client";
+
 import { Minus, Plus, Tag } from "lucide-react";
 import Picture from "../ui/Picture";
 import { formatTHB } from "../../checkout/pricing";

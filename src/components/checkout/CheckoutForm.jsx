@@ -1,5 +1,8 @@
+"use client";
+
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
+import { writeConfirmation } from "../../checkout/confirmationState";
 import { Lock } from "lucide-react";
 import Field from "../ui/Field";
 import Button from "../ui/Button";
@@ -10,7 +13,7 @@ import { BODY_SM, CAPTION, H4 } from "../../styles/type";
 //
 // ── NOTHING HERE IS TRANSMITTED OR STORED. ────────────────────────────────
 // The <form> has no action, no method, and its onSubmit calls
-// preventDefault() and then router navigate(). There is no fetch, no
+// preventDefault() and then router.push(). There is no fetch, no
 // analytics call, and no write to localStorage or sessionStorage. Values live
 // in component state for the life of the page and are gone on reload.
 //
@@ -139,7 +142,7 @@ function SubHeading({ children }) {
 }
 
 export default function CheckoutForm({ canOrder }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { clear } = useCart();
   const [values, setValues] = useState(EMPTY);
   const [errors, setErrors] = useState({});
@@ -179,7 +182,8 @@ export default function CheckoutForm({ canOrder }) {
 
     const reference = orderReference();
     clear();
-    navigate("/checkout/confirmation/", { state: { order: reference } });
+    writeConfirmation({ order: reference });
+    router.push("/checkout/confirmation/");
   }
 
   // Only surfaced once a submit has been attempted, so the page never opens

@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { usePathname, useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { highlightParts, runSearch } from "../../search/runSearch";
 
@@ -16,7 +18,8 @@ const MIN_CHARS = 3;
 const MAX_RESULTS = 8;
 
 export default function SearchMenu({ open, onOpen, onClose }) {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const pathname = usePathname();
   const wrapRef = useRef(null);
   const inputRef = useRef(null);
   const listRef = useRef(null);
@@ -101,7 +104,20 @@ export default function SearchMenu({ open, onOpen, onClose }) {
   const selectResult = (result) => {
     if (!result) return;
     onClose();
-    navigate(`${result.path}${result.hash}`);
+    // A result on the page you are already on: the router would treat the
+    // push as a hash-only change and fire nothing RouteChange can hear.
+    // Setting location.hash fires hashchange, which it listens for; a
+    // page-top result just goes to the top, as the old router did.
+    const current = pathname.endsWith("/") ? pathname : `${pathname}/`;
+    if (result.path === current) {
+      if (result.hash) {
+        window.location.hash = result.hash;
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
+      return;
+    }
+    router.push(`${result.path}${result.hash}`);
   };
 
   const onInputKeyDown = (event) => {

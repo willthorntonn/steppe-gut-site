@@ -1,3 +1,5 @@
+"use client";
+
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useCart } from "../../cart/CartProvider";
 import { flyToCart } from "../../cart/flyToCart";
@@ -608,7 +610,12 @@ export default function FybelleLayout({ product }) {
                       </span>
                     )}
                     <span className="sg-fyb__timer-unit">
-                      <strong>{part.value}</strong>
+                      {/* Server-rendered now, so the seconds the server saw
+                          and the seconds the browser sees differ by the
+                          transfer time. The interval above corrects it a
+                          beat later; this stops React reporting the
+                          difference as a hydration mismatch. */}
+                      <strong suppressHydrationWarning>{part.value}</strong>
                       <span>{part.unit}</span>
                     </span>
                   </Fragment>

@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { useCountUp, useInView } from "../../hooks/useCountUp";
 import { useAuth } from "../../auth/AuthProvider";
 
@@ -60,7 +62,7 @@ export default function SteppeArmyProgress() {
                 so the button turns into the referral prompt and points at the
                 recruit section of their account. */}
             {user ? (
-              <Link to="/account/settings/#recruit" className={CTA_CLASS}>
+              <Link href="/account/settings/#recruit" className={CTA_CLASS}>
                 Recruit a friend for 15% off
               </Link>
             ) : (

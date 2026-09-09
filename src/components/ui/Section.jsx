@@ -1,3 +1,5 @@
+"use client";
+
 // Owns vertical rhythm. No page section sets its own top padding -
 // 05_component_library.md §1, and the reason the homepage's sections already
 // line up with each other.

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useId, useRef, useState } from "react";
 import { Loader2, Upload } from "lucide-react";
 import Modal from "../ui/Modal";

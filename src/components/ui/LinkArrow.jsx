@@ -1,5 +1,7 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 // The inline "read more" link, lifted from the homepage's OriginFeature so
 // every page uses one treatment: leading arrow that nudges right on hover,
@@ -36,7 +38,7 @@ export default function LinkArrow({
 
   if (to) {
     return (
-      <Link to={to} className={cls} {...props}>
+      <Link href={to} className={cls} {...props}>
         {inner}
       </Link>
     );

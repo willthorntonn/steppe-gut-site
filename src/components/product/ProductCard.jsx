@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import Picture from "../ui/Picture";
 import Placeholder from "../ui/Placeholder";
 import { MARKETING_PRICE_BY_SLUG, REVIEWS_BY_SLUG } from "../../data/products";
@@ -41,7 +43,7 @@ export default function ProductCard({ product, className = "" }) {
 
   return (
     <Link
-      to={`/products/${product.slug}/`}
+      href={`/products/${product.slug}/`}
       className={`group relative flex h-full flex-col rounded-2xl bg-[#FFFDF9] p-4 transition-colors duration-500 ease-out hover:bg-white focus-visible:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold sm:p-5 ${className}`}
     >
       {/* The white panel, behind everything. */}

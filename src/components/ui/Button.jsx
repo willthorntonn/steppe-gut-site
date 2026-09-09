@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 
 // Shared CTA button. Variant map (not cva) mirrors every bg/hover pair
 // already in use across the site - the first three are a pure extraction,
@@ -54,7 +56,7 @@ export default function Button({
   // with a click handler (05_component_library.md §4).
   if (to) {
     return (
-      <Link to={to} className={cls} style={style} {...props}>
+      <Link href={to} className={cls} style={style} {...props}>
         {children}
       </Link>
     );

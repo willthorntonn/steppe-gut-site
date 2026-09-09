@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import { PRODUCTS } from "../../data/products";
 
 // Phase 2 secondary nav: sits directly under the fixed header on every
@@ -25,7 +27,7 @@ export default function ProductSubNav({ activeSlug }) {
         return (
           <Link
             key={product.slug}
-            to={`/products/${product.slug}/`}
+            href={`/products/${product.slug}/`}
             aria-current={isActive ? "page" : undefined}
             className={`whitespace-nowrap font-sans font-semibold tracking-[-0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold ${
               isActive ? "text-gold" : "text-forest hover:text-gold"

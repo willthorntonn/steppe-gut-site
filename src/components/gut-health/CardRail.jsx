@@ -1,6 +1,8 @@
+"use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Container from "../ui/Container";
 import ImagePlaceholder from "../ui/ImagePlaceholder";
 import { BODY, H2 } from "../../styles/type";
@@ -140,7 +142,7 @@ export default function CardRail({ heading, intro, items, trackId, ratio = "3 / 
               className="w-[74%] flex-none snap-start sm:w-[44%] lg:w-[calc((100%-4rem)/3)]"
             >
               <Link
-                to={item.to}
+                href={item.to}
                 className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
               >
                 <ImagePlaceholder

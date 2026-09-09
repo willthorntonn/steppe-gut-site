@@ -1,3 +1,5 @@
+"use client";
+
 import { useId } from "react";
 
 // Switch for the Account Settings notification rows. A real <button

@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
 import Container from "../ui/Container";
 import Picture from "../ui/Picture";
 import { BODY_SM, H3 } from "../../styles/type";
@@ -11,7 +13,7 @@ export default function CrossSellPair({ products }) {
         {products.map((product) => (
           <li key={product.slug} className="flex-1">
             <Link
-              to={`/products/${product.slug}/`}
+              href={`/products/${product.slug}/`}
               className="flex h-full min-h-[200px] items-center justify-between gap-6 overflow-hidden rounded-2xl border border-forest/12 bg-[#FFFDF9] p-7 transition-colors hover:border-forest/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
             >
               <div className="min-w-0">

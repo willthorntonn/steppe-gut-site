@@ -1,3 +1,5 @@
+"use client";
+
 // AVIF-first responsive image: <source type="image/avif"> over a WebP <img>
 // fallback. Explicit width/height keep layout stable before the file loads;
 // everything on the homepage below the hero is lazy by default.

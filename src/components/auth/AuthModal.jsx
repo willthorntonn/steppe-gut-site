@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { Loader2, Upload } from "lucide-react";
 import Modal from "../ui/Modal";
 import Field from "../ui/Field";
@@ -131,7 +133,7 @@ export default function AuthModal() {
     register,
     signIn,
   } = useAuth();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [mode, setMode] = useState("create"); // "create" | "signin"
   // Set true by handleCreate() on a successful register(); flips this modal
@@ -225,7 +227,7 @@ export default function AuthModal() {
   };
   const startShopping = () => {
     closeWelcome();
-    navigate("/products/");
+    router.push("/products/");
   };
 
   const handleSignIn = async (event) => {
@@ -244,7 +246,7 @@ export default function AuthModal() {
     setFormError("");
     try {
       await signIn(values.email, values.password);
-      navigate("/account/orders/");
+      router.push("/account/orders/");
       closeAuthModal();
     } catch (error) {
       showFailure(error);
@@ -332,7 +334,7 @@ export default function AuthModal() {
             type="button"
             onClick={() => {
               closeAuthModal();
-              navigate("/account/settings/");
+              router.push("/account/settings/");
             }}
             className={PRIMARY_BTN}
           >

@@ -1,3 +1,5 @@
+"use client";
+
 import { useId, useState } from "react";
 
 // The "Contact us" form that sits on /buy/ and is the whole of /contact/.

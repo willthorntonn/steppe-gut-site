@@ -1,3 +1,5 @@
+"use client";
+
 import { FlaskConical, MapPin, Milk, MinusCircle } from "lucide-react";
 import Container from "../ui/Container";
 import { BODY_SM } from "../../styles/type";

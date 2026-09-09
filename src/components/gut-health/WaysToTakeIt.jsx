@@ -1,6 +1,8 @@
+"use client";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import ImagePlaceholder from "../ui/ImagePlaceholder";
 import { GUT_HEALTH_WAYS } from "../../content/gutHealth";
 import { H2_XL } from "../../styles/type";
@@ -116,7 +118,7 @@ export default function WaysToTakeIt() {
               }`}
             >
               <Link
-                to={item.to}
+                href={item.to}
                 className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
               >
                 <ImagePlaceholder

@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 // Route-change behaviour, per 01_navigation.md §10: scroll resets to the top
 // and focus moves to the page's <h1> (which carries tabindex="-1"), so a
@@ -24,7 +26,20 @@ import { useLocation } from "react-router-dom";
 //
 // Nothing is rendered.
 export default function RouteChange() {
-  const { pathname, hash, key } = useLocation();
+  const pathname = usePathname();
+  // Next has no reactive hash. A cross-page anchor arrives with the new
+  // pathname and the hash already in the URL, so it is read off
+  // window.location below. A same-page anchor (the search overlay landing on
+  // the page you are already on) sets location.hash, which fires hashchange;
+  // the counter re-runs the effect even when the same hash is chosen twice,
+  // which is what the old location `key` did.
+  const [anchor, setAnchor] = useState(0);
+  useEffect(() => {
+    const onHashChange = () => setAnchor((n) => n + 1);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
   // Skipped on first paint: a fresh page load already starts at the top (or
   // the browser restores the anchor itself), and moving focus before the
   // visitor has done anything would put a focus ring on the hero for no
@@ -38,6 +53,7 @@ export default function RouteChange() {
     }
 
     const timers = [];
+    const hash = window.location.hash;
 
     if (hash) {
       const id = decodeURIComponent(hash.slice(1));
@@ -84,9 +100,9 @@ export default function RouteChange() {
       }, 0)
     );
     return () => timers.forEach(clearTimeout);
-    // `hash` and `key` are in the deps so following a second anchor on the
-    // page you are already on still re-triggers the scroll.
-  }, [pathname, hash, key]);
+    // `anchor` is in the deps so following a second anchor on the page you
+    // are already on still re-triggers the scroll.
+  }, [pathname, anchor]);
 
   return null;
 }

@@ -15,3 +15,6 @@ asset-src/
 # it belongs on the machine that runs the server, never in the history.
 server/data/*.json
 server/data/*.corrupt-*
+
+# Next.js build output
+.next

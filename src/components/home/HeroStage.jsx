@@ -1,3 +1,5 @@
+"use client";
+
 import heroStageRock from "../../hero-stage-rock.png";
 import heroProductBox from "../../hero-product-box-graded.png";
 

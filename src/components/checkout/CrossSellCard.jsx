@@ -1,3 +1,5 @@
+"use client";
+
 import Picture from "../ui/Picture";
 import { formatTHB } from "../../checkout/pricing";
 

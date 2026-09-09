@@ -1,3 +1,5 @@
+"use client";
+
 // Marks where real photography belongs. Renders the shot as a written brief
 // inside a bordered frame rather than filling the slot with a stand-in, so
 // each frame can be handed to a photographer or picture editor as-is.

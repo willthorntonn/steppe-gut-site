@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "./Container";
 import { BODY_SM, CAPTION } from "../../styles/type";
 

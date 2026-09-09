@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "./Container";
 import { BODY, H3 } from "../../styles/type";
 

@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FOOTER_LINKS } from "../../data/site";
 import { SOCIAL_PLATFORMS } from "../../data/social";
 
@@ -24,7 +27,7 @@ function findPageEndBackground() {
 }
 
 function usePageEndBackground() {
-  const location = useLocation();
+  const pathname = usePathname();
   const [bg, setBg] = useState(null);
 
   useEffect(() => {
@@ -42,7 +45,7 @@ function usePageEndBackground() {
     const observer = new MutationObserver(update);
     observer.observe(main, { childList: true, subtree: true });
     return () => observer.disconnect();
-  }, [location.pathname]);
+  }, [pathname]);
 
   return bg;
 }
@@ -113,7 +116,7 @@ function LinkList({ items }) {
       {items.map((item) => (
         <li key={item.to}>
           <Link
-            to={item.to}
+            href={item.to}
             className="font-sans text-lg font-bold text-cream/90 transition-colors hover:text-gold focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold lg:text-2xl"
           >
             {item.label}
@@ -179,7 +182,7 @@ export default function Footer() {
                   ) : (
                     <Link
                       key={cell.label}
-                      to="/social/"
+                      href="/social/"
                       aria-label={`${cell.label} - our accounts are not open yet`}
                       className={cls}
                     >
@@ -203,7 +206,7 @@ export default function Footer() {
             information about Steppe Gut?
           </p>
           <Link
-            to="/contact/"
+            href="/contact/"
             className="mt-9 inline-flex h-12 items-center justify-center rounded-2xl border border-cream px-8 font-sans text-[21px] font-bold tracking-[-0.02em] text-cream transition-colors hover:bg-cream hover:text-forest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold lg:mt-12 lg:h-16 lg:px-11 lg:text-[26px]"
           >
             Contact Us
@@ -223,7 +226,7 @@ export default function Footer() {
           {LEGAL_LINKS.map((item) => (
             <li key={item.to}>
               <Link
-                to={item.to}
+                href={item.to}
                 className="text-cream/70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
               >
                 {item.label}

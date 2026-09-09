@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import ImagePlaceholder from "../ui/ImagePlaceholder";

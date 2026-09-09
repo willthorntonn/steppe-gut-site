@@ -1,3 +1,5 @@
+"use client";
+
 // Payment-brand marks for the checkout replica.
 //
 // Drawn as small inline SVGs rather than shipped as image files: the official

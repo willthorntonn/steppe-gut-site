@@ -1,3 +1,5 @@
+"use client";
+
 import { useId, useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { BODY } from "../../styles/type";

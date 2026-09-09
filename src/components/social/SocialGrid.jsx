@@ -1,3 +1,5 @@
+"use client";
+
 import Container from "../ui/Container";
 import { BODY, BODY_SM } from "../../styles/type";
 import { SOCIAL_POSTS } from "../../data/social";

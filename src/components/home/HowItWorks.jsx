@@ -1,3 +1,5 @@
+"use client";
+
 import Section from "../ui/Section";
 import MediaTextRow from "../ui/MediaTextRow";
 import StatBand from "../ui/StatBand";

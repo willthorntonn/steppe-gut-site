@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 // The "Our Mission" circle on the Our Story hub. It sits over the top-left of
 // the steppe plate, inset from the left edge and dropped so most of the disc
@@ -48,7 +50,7 @@ export default function MissionBadge({ className = "" }) {
 
   return (
     <Link
-      to="/our-story/mission/"
+      href="/our-story/mission/"
       aria-label="Our Mission"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
