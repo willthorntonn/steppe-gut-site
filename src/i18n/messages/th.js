@@ -491,4 +491,68 @@ export default {
   "social.SOCIAL_PLATFORMS.2.name": "Facebook",
   "social.SOCIAL_PLATFORMS.3.name": "YouTube",
   "social.SOCIAL_PLATFORMS.4.name": "LINE",
+
+  // ---------------------------------------------------------- gutHealth --
+  "gutHealth.GUT_HEALTH_ROWS.0.heading": "สิ่งที่คุณกิน และสิ่งที่หล่อเลี้ยงลำไส้",
+  "gutHealth.GUT_HEALTH_ROWS.0.body":
+    "อาหารที่หลากหลายและอุดมด้วยพืชผัก ให้ลำไส้มีวัตถุดิบหลายหลากไว้ทำงาน Steppe Gut เป็นเพียงอาหารหมักอย่างหนึ่งในหลายอย่าง ไม่ใช่สิ่งทดแทนอาหารส่วนที่เหลือในจาน หน้าเรื่องอาหารบอกว่ามันมีที่ทางอยู่ตรงไหนในวันปกติของการกิน",
+  "gutHealth.GUT_HEALTH_ROWS.0.cta.label": "ลำไส้กับอาหาร",
+  "gutHealth.GUT_HEALTH_ROWS.0.alt": "ภาพมุมสูงของผลไม้สดในชาม",
+
+  "gutHealth.GUT_HEALTH_ROWS.1.heading": "ชุมชนที่คุณพกพาอยู่ในตัว",
+  "gutHealth.GUT_HEALTH_ROWS.1.body":
+    "จุลินทรีย์นับล้านล้านตัวอาศัยอยู่ในลำไส้ของคน และไม่มีใครสองคนที่มีองค์ประกอบเหมือนกันเป๊ะ อาหารหมักเป็นส่วนหนึ่งของภาพนี้มาตั้งแต่มนุษย์เริ่มลงมือทำ เรารวบรวมคำถามที่ถูกถามบ่อยที่สุดเกี่ยวกับการหมักและจุลินทรีย์ในนั้นไว้เป็นรายการที่อัปเดตอยู่เสมอ",
+  "gutHealth.GUT_HEALTH_ROWS.1.cta.label": "คำถามที่พบบ่อย",
+  "gutHealth.GUT_HEALTH_ROWS.1.alt": "ภาพระยะใกล้ของช้อนตักของเหลวสีอ่อนที่กำลังเกิดฟอง",
+
+  "gutHealth.GUT_HEALTH_ROWS.2.heading": "ที่ทางในหนึ่งวัน",
+  "gutHealth.GUT_HEALTH_ROWS.2.body":
+    "ลำไส้มีตารางเวลาคร่าว ๆ ของมันเอง และจะสงบลงเมื่อวันเวลารอบตัวเป็นไปอย่างสม่ำเสมอ มื้ออาหารในเวลาใกล้เคียงกัน การตื่นนอนที่คงที่ ยามเย็นที่คล้ายกับเมื่อวาน หน้าเรื่องกิจวัตรมองว่าการกินอาหารหมักทุกวันมีที่ทางอยู่ตรงไหนในนั้น",
+  "gutHealth.GUT_HEALTH_ROWS.2.cta.label": "ลำไส้กับกิจวัตร",
+  "gutHealth.GUT_HEALTH_ROWS.2.alt": "โต๊ะข้างเตียงที่มีโคมไฟ นาฬิกาเล็ก ๆ และดอกไม้ในโหลแก้ว",
+
+  "gutHealth.GUT_HEALTH_ROWS.3.heading": "ลำไส้กับความรู้สึกของคุณ",
+  "gutHealth.GUT_HEALTH_ROWS.3.body":
+    "ลำไส้กับสมองติดต่อกันอย่างใกล้ชิดผ่านระบบประสาท และต่างฝ่ายต่างรับรู้สภาพของอีกฝ่าย ช่วงที่จิตใจห่อเหี่ยวอาจแสดงออกผ่านการย่อยอาหาร และลำไส้ที่ไม่สงบก็อาจส่งผลต่ออารมณ์ตลอดทั้งวัน หน้าเรื่องอารมณ์พาไปดูว่าความเชื่อมโยงนี้เป็นที่เข้าใจกันแค่ไหน และอะไรที่ยังอยู่ระหว่างการศึกษา",
+  "gutHealth.GUT_HEALTH_ROWS.3.cta.label": "ลำไส้กับอารมณ์",
+  "gutHealth.GUT_HEALTH_ROWS.3.alt": "คนกำลังจิบเครื่องดื่มจากแก้วในครัวอบอุ่นท่ามกลางแสงกลางวันนวลตา",
+
+  "gutHealth.GUT_HEALTH_ROWS.4.heading": "การเคลื่อนไหว ในจังหวะธรรมดา",
+  "gutHealth.GUT_HEALTH_ROWS.4.body":
+    "การเคลื่อนไหวเบา ๆ อย่างสม่ำเสมอเป็นสิ่งเรียบง่ายอย่างหนึ่งที่ช่วยให้การย่อยอาหารเดินหน้าต่อไป การเดินหลังมื้ออาหาร การยืดเส้นในตอนเช้า งานที่ทำให้คุณได้ยืนเดิน หน้าเรื่องการออกกำลังกายตั้งเกณฑ์ไว้ต่ำอย่างตั้งใจ",
+  "gutHealth.GUT_HEALTH_ROWS.4.cta.label": "ลำไส้กับการออกกำลังกาย",
+  "gutHealth.GUT_HEALTH_ROWS.4.alt": "คนกำลังเดินบนเส้นทางเงียบสงบด้วยจังหวะสบาย ๆ",
+
+  "gutHealth.GUT_HEALTH_ROWS.5.heading": "ราคาของคืนที่นอนน้อย",
+  "gutHealth.GUT_HEALTH_ROWS.5.body":
+    "การนอนกับลำไส้เดินตามนาฬิกาที่ทับซ้อนกัน คืนที่นอนน้อยติดต่อกันหลายคืนจึงมักรู้สึกได้ทั้งสองอย่าง การถนอมชั่วโมงการนอนเป็นหนึ่งในไม่กี่นิสัยที่ให้ผลตอบแทนกลับมาทั่วทั้งระบบ หน้าเรื่องการนอนอธิบายว่าทั้งสองสิ่งนี้เดินเวลาไปด้วยกันอย่างไร",
+  "gutHealth.GUT_HEALTH_ROWS.5.cta.label": "ลำไส้กับการนอน",
+  "gutHealth.GUT_HEALTH_ROWS.5.alt": "เตียงที่ยังไม่ได้เก็บข้างหน้าต่างในแสงก่อนรุ่งสาง",
+
+  "gutHealth.GUT_HEALTH_ROWS.6.heading": "พลังของสิ่งที่เล็กจิ๋ว",
+  "gutHealth.GUT_HEALTH_ROWS.6.body":
+    "จุลินทรีย์ตัวเดียวเล็กเกินกว่าจะมองเห็น และในตัวคุณมีพวกมันมากกว่าจำนวนคนบนโลก เมื่อได้รับการดูแล ประชากรกลุ่มนี้ทำงานเงียบ ๆ ไว้มากมาย Steppe Gut เป็นวิธีหนึ่งในการส่งสิ่งที่พวกมันคุ้นเคยอยู่แล้วไปให้",
+  "gutHealth.GUT_HEALTH_ROWS.6.cta.label": "ดูสินค้าทั้งหมด",
+  "gutHealth.GUT_HEALTH_ROWS.6.alt": "หยดน้ำค้างหยดเดียวเกาะอยู่บนใบหญ้า",
+
+  "gutHealth.GUT_HEALTH_WAYS.heading": "วิธีที่ผู้คนรับประทานกัน",
+  "gutHealth.GUT_HEALTH_WAYS.items.0.label": "ตอนเช้า",
+  "gutHealth.GUT_HEALTH_WAYS.items.0.title": "คนลงในน้ำ",
+  "gutHealth.GUT_HEALTH_WAYS.items.0.note": "ก่อนสิ่งอื่นใด",
+  "gutHealth.GUT_HEALTH_WAYS.items.0.alt": "แก้วของเหลวขุ่นวางอยู่บนขอบหน้าต่าง",
+
+  "gutHealth.GUT_HEALTH_WAYS.items.1.label": "พร้อมอาหาร",
+  "gutHealth.GUT_HEALTH_WAYS.items.1.title": "ควบคู่ไปกับมื้ออาหาร",
+  "gutHealth.GUT_HEALTH_WAYS.items.1.note": "ผสมในโยเกิร์ตหรือสมูทตี้",
+  "gutHealth.GUT_HEALTH_WAYS.items.1.alt": "ชามโยเกิร์ตที่มีช้อนวางแช่อยู่",
+
+  "gutHealth.GUT_HEALTH_WAYS.items.2.label": "หลังออกกำลังกาย",
+  "gutHealth.GUT_HEALTH_WAYS.items.2.title": "ในเครื่องดื่มฟื้นกำลัง",
+  "gutHealth.GUT_HEALTH_WAYS.items.2.note": "เมื่อร่างกายเข้าที่แล้ว",
+  "gutHealth.GUT_HEALTH_WAYS.items.2.alt": "ขวดเชคเกอร์และดัมเบลบนม้านั่งในยิม",
+
+  "gutHealth.GUT_HEALTH_WAYS.items.3.label": "ตอนเย็น",
+  "gutHealth.GUT_HEALTH_WAYS.items.3.title": "อุ่น ๆ ก่อนเข้านอน",
+  "gutHealth.GUT_HEALTH_WAYS.items.3.note": "ส่วนหนึ่งของการผ่อนคลายก่อนนอน",
+  "gutHealth.GUT_HEALTH_WAYS.items.3.alt": "แก้วอุ่น ๆ ที่ถูกประคองด้วยสองมือในแสงสลัว",
 };
