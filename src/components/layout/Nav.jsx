@@ -58,6 +58,7 @@ import {
   SocialGlyph,
 } from "../icons/SocialGlyphs";
 import SearchMenu from "./SearchMenu";
+import LanguageSwitcher from "./LanguageSwitcher";
 import EditProfileModal from "../account/EditProfileModal";
 import LogoutConfirmModal from "../account/LogoutConfirmModal";
 import accountAvatar from "../../grey-avatar-icon-user-avatar-photo-icon-social-media-user-icon-vector.jpg";
@@ -747,6 +748,8 @@ export default function Navbar() {
             </span>
           )}
         </Link>
+
+        <LanguageSwitcher iconInk={iconInk} />
 
         <button
           type="button"

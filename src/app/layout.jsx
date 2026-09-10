@@ -23,7 +23,7 @@ export const viewport = {
 
 export default async function RootLayout({ children }) {
   // Resolved once per request by middleware.js from the NEXT_LOCALE cookie,
-  // then Accept-Language, then Vercel's country header.
+  // then Accept-Language, then English.
   const locale = await getLocale();
   const meta = localeMeta(locale);
   const fonts = scriptFonts(meta.script);
@@ -42,9 +42,8 @@ export default async function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@400;600;700&display=swap"
           rel="stylesheet"
         />
-        {/* The script face for languages the brand fonts cannot render. Null
-            for Latin and for CJK, which uses the platform's own fonts rather
-            than a multi-megabyte download. See src/i18n/fonts.js. */}
+        {/* The Thai script face, which the brand fonts cannot render. Null
+            for English. See src/i18n/fonts.js. */}
         {fonts.link && <link href={fonts.link} rel="stylesheet" />}
         <Providers locale={locale} dict={dict}>
           {children}
