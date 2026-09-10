@@ -74,6 +74,11 @@ export const COMPANY = {
   },
   importer: {
     name: "YFamily Co., Ltd.",
+    // Registered name on the Thai company certificate is "Y Family Co., Ltd."
+    // (บริษัท วาย แฟมิลี่ จำกัด); the legal pages use that exact form. Juristic
+    // person registration number, from the same certificate.
+    registeredName: "Y Family Co., Ltd.",
+    regNo: "0105565114721",
     address: [
       "45/1 Silom, 19 Building, 4th Floor, Room 415",
       "Trok Weth, Silom Road, Silom Subdistrict",

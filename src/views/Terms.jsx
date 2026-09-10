@@ -30,11 +30,13 @@
 // Unlike the privacy and cookie references this page carries no "last updated"
 // date, so there is no muted date line under the title.
 //
-// The copy is placeholder - it names the reference's own registered entity,
-// address, company number and info@yakult.co.uk contact, and will be rewritten
-// for Steppe Gut before this page ships. Kept verbatim for now, typos and the
-// reference's own phrasing included, so the layout is reviewed against
-// real-length text.
+// The copy is now Steppe Gut's: the reference's section order and phrasing are
+// kept where they still apply, and the entity, address, company number and
+// contact are the real ones - site operator and brand owner S72 Strategic Co.,
+// Ltd., Thai importer and distributor Y Family Co., Ltd. (registration number
+// 0105565114721). The Yakult-only clauses (the reproduction licence, the Yakult
+// Honsha affiliates wording) are removed rather than rewritten. Still to be
+// reviewed by a Thai-qualified lawyer before launch.
 
 const BODY = {
   fontSize: "clamp(1.25rem, 1.6vw, 1.55rem)",
@@ -131,72 +133,78 @@ export default function Terms() {
             </h1>
 
             <P>
-              Please read these Terms &amp; Conditions carefully before you start to use our website
-              (including accessing or browsing). Use of the Yakult UK Limited website is subject to
-              the following terms and conditions. By using our website, you confirm that you accept
-              these Terms &amp; Conditions and that you agree to comply with them.
+              Please read these terms and conditions carefully before you start to use our website
+              (including accessing or browsing). The Steppe Gut website is operated by S72 Strategic
+              Co., Ltd., and use of it is subject to the following terms and conditions. By using our
+              website, you confirm that you accept these terms and conditions and that you agree to
+              comply with them.
             </P>
 
             <Heading>Ownership of the copyright on this site</Heading>
             <P>
-              Copyright © Yakult UK Limited 2021. All rights reserved. All copyright and other
-              intellectual property rights in all text, images and other materials on this site are
-              owned by Yakult UK Limited (UK and ROI) and its affiliated companies or are included
-              with permission of the relevant owner. References to affiliates or affiliated shall
-              include all members of Yakult Honsha Co., Ltd.
-            </P>
-            <P>
-              You are permitted to browse this site and to reproduce extracts by way of printing,
-              downloading to a hard disk, and by distribution to other people, but in all cases for
-              information purposes only and provided that the above copyright notice appears in all
-              such reproductions. No reproduction of any part of the site may be sold or distributed
-              for commercial gain nor shall it be modified or incorporated in any other publication,
-              whether in hard copy or electronic format, including posting to any other site. No
-              other licence or right is granted.
+              Copyright © S72 Strategic Co., Ltd. 2026. All rights reserved. All copyright and other
+              intellectual property rights in the text, images and other material on this site are
+              owned by S72 Strategic Co., Ltd. or are included with the permission of the relevant
+              owner. You may browse this site and print or download extracts for your own personal,
+              non-commercial use, provided the above copyright notice appears in any copy. No other
+              licence or right is granted.
             </P>
 
             <Heading>Ownership of trademarks on this site</Heading>
             <P>
-              All trademarks displayed on this site are either owned or used under licence by Yakult
-              UK Limited and its affiliates. The unauthorised use of any trademark on this site is
-              strictly prohibited.
+              All trademarks displayed on this site are either owned or used under licence by S72
+              Strategic Co., Ltd. The unauthorised use of any trademark on this site is strictly
+              prohibited.
             </P>
 
             <Heading>Content</Heading>
             <P>
               The information on this site has been included in good faith but is for general
               information purposes only. It should not be relied on for any specific purpose and no
-              representation or warranty is given as regards its accuracy or its completeness. Yakult
-              UK Limited nor any of its affiliates or their officers, employees or agents shall be
+              representation or warranty is given as regards its accuracy or its completeness. Steppe
+              Gut is a dietary supplement and is not intended to diagnose, treat, cure or prevent any
+              disease. It should not be used as a substitute for a varied and balanced diet. It
+              contains milk. Thai FDA registration is in progress; registration details will be
+              published here on completion. Nothing on this website is medical advice, and you should
+              consult a qualified professional about any health concern. To the extent permitted by
+              law, neither S72 Strategic Co., Ltd. nor its officers, employees or agents shall be
               liable for any loss, damage or expense arising out of any access to or use of this site
-              or any site linked to it including, without limitation, any loss of profit, indirect,
-              incidental or consequential loss. Yakult UK Limited (UK and ROI) reserves the right to
-              make any changes and corrections to this site as and when it is considered appropriate
-              and without notice.
+              or any site linked to it, including, without limitation, any loss of profit or any
+              indirect, incidental or consequential loss. S72 Strategic Co., Ltd. reserves the right
+              to make any changes and corrections to this site as and when it is considered
+              appropriate and without notice.
             </P>
 
             <Heading>Links</Heading>
             <P>
-              The site may provide links to other websites, which are not under the control of Yakult
-              UK Limited or its affiliate companies. Yakult UK Limited and/or its affiliate companies
-              shall not be responsible in any way for the content of any external websites or links.
-              Yakult UK Limited provides such links only as a convenience, and the inclusion of any
-              link to any such websites does not imply endorsement by Yakult UK Limited of the
-              content of such sites.
+              The site may provide links to other websites, which are not under the control of S72
+              Strategic Co., Ltd. S72 Strategic Co., Ltd. is not responsible in any way for the
+              content of any external websites or links. Such links are provided only as a
+              convenience, and the inclusion of any link does not imply endorsement by S72 Strategic
+              Co., Ltd. of the content of that site.
             </P>
 
-            <Heading>General Enquiries</Heading>
+            <Heading>Governing law</Heading>
             <P>
-              For all other general enquiries and company information please email{" "}
-              <A href="mailto:info@yakult.co.uk">info@yakult.co.uk</A>
+              These terms and conditions, and any dispute arising out of or in connection with them,
+              are governed by the law of Thailand and subject to the jurisdiction of the Thai courts.
+            </P>
+
+            <Heading>General enquiries</Heading>
+            <P>
+              For general enquiries and company information please email{" "}
+              [contact email to be confirmed]
             </P>
 
             <p style={BODY} className="mt-8 font-sans text-earth/60">
-              Copyright © Yakult UK Limited 2021. All rights reserved.
+              Copyright © S72 Strategic Co., Ltd. 2026. All rights reserved.
             </p>
             <p style={BODY} className="mt-8 font-sans text-earth/60">
-              Registered office for Yakult UK &amp; Ireland: Anteros, Odyssey Business Park, West End
-              Road, Ruislip, HA4 6QQ. Registered in England and Wales no. 3087710
+              The Steppe Gut website is operated by S72 Strategic Co., Ltd. The product is imported
+              and distributed in Thailand by Y Family Co., Ltd., registered in Thailand under
+              juristic person registration number 0105565114721, registered office 45/1 Silom 19
+              Building, 4th Floor, Room 415, Silom Road, Silom Subdistrict, Bang Rak District,
+              Bangkok 10500.
             </p>
           </div>
         </div>
