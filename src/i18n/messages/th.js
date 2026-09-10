@@ -471,4 +471,24 @@ export default {
   "products.SHARED_BADGES.2.label": "มีส่วนผสมของนม",
 
   "products.SHARED_BADGES.3.label": "ไม่เติมน้ำตาล",
+
+  // ------------------------------------------------------------- social --
+  "social.CONTENT_PILLARS.0.title": "ฤดูกาล",
+  "social.CONTENT_PILLARS.0.body":
+    "ฤดูรีดนมม้าอยู่ระหว่างเดือนมิถุนายนถึงตุลาคม สิ่งที่เรามีให้ชมส่วนใหญ่เกิดขึ้นในช่วงห้าเดือนนี้บนทุ่งหญ้า และเป็นส่วนของธุรกิจนี้ที่น่าสนใจอย่างแท้จริงเมื่อได้เห็น",
+  "social.CONTENT_PILLARS.1.title": "วิธีการผลิต",
+  "social.CONTENT_PILLARS.1.body":
+    "การหมัก การอบแห้ง การบรรจุ ขั้นตอนกลางที่ไม่หรูหรา ซึ่งแทบไม่มีใครในหมวดหมู่นี้เปิดเผยให้เห็น",
+  "social.CONTENT_PILLARS.2.title": "คำถามที่เราได้รับ",
+  "social.CONTENT_PILLARS.2.body":
+    "คำถามที่ส่งเข้ามาทางอีเมล ตอบให้ทุกคนเห็น รวมถึงคำถามที่คำตอบคือเรายังไม่ทราบ",
+  "social.CONTENT_PILLARS.3.title": "สิ่งที่เราผิดพลาด",
+  "social.CONTENT_PILLARS.3.body":
+    "เมื่อเราแก้ไขข้อมูลบนเว็บไซต์นี้ (ตัวเลข ข้อความอ้างอิง หรือถ้อยคำ) เราเลือกที่จะบอกให้ทราบ มากกว่าแก้ไขอย่างเงียบๆ",
+
+  "social.SOCIAL_PLATFORMS.0.name": "Instagram",
+  "social.SOCIAL_PLATFORMS.1.name": "TikTok",
+  "social.SOCIAL_PLATFORMS.2.name": "Facebook",
+  "social.SOCIAL_PLATFORMS.3.name": "YouTube",
+  "social.SOCIAL_PLATFORMS.4.name": "LINE",
 };
