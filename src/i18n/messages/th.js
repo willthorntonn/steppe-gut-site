@@ -207,6 +207,98 @@ export default {
     "[ติดต่อเรา](/contact/) พร้อมแจ้งหมายเลขคำสั่งซื้อและรหัสส่วนลด หากคุณเพิ่งสั่งซื้อและคำสั่งซื้อยังไม่ออกจากคลัง เราอาจใช้ส่วนลดให้ได้ สำหรับคำสั่งซื้อครั้งถัดไป กรุณากรอกรหัสส่วนลดที่หน้าชำระเงินก่อนยืนยันการชำระเงิน",
   "faq.FAQ_GROUPS.2.items.1.question": "มีรหัสส่วนลดแต่ลืมใช้ ต้องทำอย่างไร",
 
+  // ------------------------------------------------------- ingredients --
+  "ingredients.INGREDIENT_GLOSSARY.0.name": "ผงนมม้าหมัก",
+  "ingredients.INGREDIENT_GLOSSARY.0.explanation":
+    "นมม้าที่ผ่านการหมักด้วยจุลินทรีย์ของตัวเองประมาณสี่วัน แล้วทำแห้งที่อุณหภูมิต่ำ เป็นส่วนประกอบหลักของสิ่งที่อยู่ในบรรจุภัณฑ์",
+  "ingredients.INGREDIENT_GLOSSARY.1.name": "แลคโตส",
+  "ingredients.INGREDIENT_GLOSSARY.1.explanation":
+    "น้ำตาลตามธรรมชาติในนม การหมักย่อยสลายไปได้มาก ส่วนที่เหลืออยู่จึงถูกระบุไว้ในรายการนี้เพราะยังคงมีอยู่",
+  "ingredients.INGREDIENT_GLOSSARY.2.name": "เวย์โปรตีน",
+  "ingredients.INGREDIENT_GLOSSARY.2.explanation":
+    "หนึ่งในโปรตีนหลักสองกลุ่มในนม ละลายอยู่ในของเหลวแทนที่จะจับตัวเป็นก้อน",
+  "ingredients.INGREDIENT_GLOSSARY.3.name": "เคซีนโปรตีน",
+  "ingredients.INGREDIENT_GLOSSARY.3.explanation":
+    "โปรตีนหลักอีกกลุ่มหนึ่งในนม เป็นสิ่งที่ทำให้นมมีสีขาว",
+  "ingredients.INGREDIENT_GLOSSARY.4.name": "ไขมันนม",
+  "ingredients.INGREDIENT_GLOSSARY.4.explanation":
+    "มีอยู่ตามธรรมชาติ นมม้ามีไขมันต่ำกว่านมวัวมาก",
+  "ingredients.INGREDIENT_GLOSSARY.5.name": "กรดไขมันโอเมกา 3 และโอเมกา 6",
+  "ingredients.INGREDIENT_GLOSSARY.5.explanation":
+    "กรดไขมันที่ร่างกายสร้างเองไม่ได้และต้องได้รับจากอาหาร ทั้งสองชนิดมีอยู่ตามธรรมชาติในนมม้า",
+  "ingredients.INGREDIENT_GLOSSARY.6.name": "วิตามินซี (กรดแอสคอร์บิก)",
+  "ingredients.INGREDIENT_GLOSSARY.6.explanation":
+    "นมม้ามีวิตามินซีสูงผิดปกติสำหรับผลิตภัณฑ์นม วิตามินซีมีส่วนช่วยในการสร้างคอลลาเจนตามปกติและการทำงานตามปกติของระบบภูมิคุ้มกัน",
+  "ingredients.INGREDIENT_GLOSSARY.7.name": "วิตามินเอ (เรตินอล)",
+  "ingredients.INGREDIENT_GLOSSARY.7.explanation":
+    "มีส่วนช่วยในการดูแลผิวหนังตามปกติและการมองเห็นตามปกติ",
+  "ingredients.INGREDIENT_GLOSSARY.8.name": "วิตามินบี 1 บี 2 และบี 12",
+  "ingredients.INGREDIENT_GLOSSARY.8.explanation":
+    "เกี่ยวข้องกับกระบวนการเผาผลาญพลังงานตามปกติ วิตามินบี 12 ยังมีส่วนช่วยในการสร้างเม็ดเลือดแดงตามปกติ",
+  "ingredients.INGREDIENT_GLOSSARY.9.name": "แคลเซียมและฟอสฟอรัส",
+  "ingredients.INGREDIENT_GLOSSARY.9.explanation":
+    "แร่ธาตุหลักสองชนิดในนม ทั้งสองชนิดมีส่วนช่วยในการรักษากระดูกและฟันให้อยู่ในสภาพปกติ",
+  "ingredients.INGREDIENT_GLOSSARY.10.name": "ธาตุเหล็ก",
+  "ingredients.INGREDIENT_GLOSSARY.10.explanation":
+    "มีส่วนช่วยในการลำเลียงออกซิเจนในเลือดตามปกติ",
+  "ingredients.INGREDIENT_GLOSSARY.11.name": "โซเดียม",
+  "ingredients.INGREDIENT_GLOSSARY.11.explanation":
+    "มีอยู่ตามธรรมชาติ ไม่ได้เติมในรูปเกลือ",
+  "ingredients.INGREDIENT_GLOSSARY.12.name": "แลคโตเฟอร์ริน",
+  "ingredients.INGREDIENT_GLOSSARY.12.explanation":
+    "โปรตีนที่จับกับธาตุเหล็กซึ่งพบในนม เป็นหนึ่งในองค์ประกอบที่ทำให้นมม้าได้รับความสนใจด้านงานวิจัย",
+  "ingredients.INGREDIENT_GLOSSARY.13.name": "ไลโซไซม์",
+  "ingredients.INGREDIENT_GLOSSARY.13.explanation":
+    "เอนไซม์ที่พบตามธรรมชาติในนม ออกฤทธิ์ต่อผนังเซลล์แบคทีเรีย นมม้ามีเอนไซม์ชนิดนี้มากกว่านมวัวอย่างเห็นได้ชัด",
+
+  "ingredients.NOT_IN_IT.0.title": "ไม่เติมน้ำตาล",
+  "ingredients.NOT_IN_IT.0.body":
+    "ไม่มีการเติมความหวานใดๆ น้ำตาลที่ระบุไว้คือแลคโตสที่มีอยู่ตามธรรมชาติในนม",
+  "ingredients.NOT_IN_IT.1.title": "ไม่ใช้สารให้ความหวานแทนน้ำตาล",
+  "ingredients.NOT_IN_IT.1.body":
+    "ไม่มีซูคราโลส หญ้าหวาน แอสปาร์แตม หรือน้ำตาลแอลกอฮอล์",
+  "ingredients.NOT_IN_IT.2.title": "ไม่แต่งกลิ่นรส",
+  "ingredients.NOT_IN_IT.2.body":
+    "รสชาติคือรสของนมหมัก เพราะนั่นคือสิ่งที่มันเป็น",
+  "ingredients.NOT_IN_IT.3.title": "ไม่แต่งสี",
+  "ingredients.NOT_IN_IT.3.body": "ไม่มีทั้งสีจากธรรมชาติและสีสังเคราะห์",
+  "ingredients.NOT_IN_IT.4.title": "ไม่ใส่สารกันเสีย",
+  "ingredients.NOT_IN_IT.4.body": "การทำแห้งคือวิธีการถนอมอาหารที่ใช้",
+  "ingredients.NOT_IN_IT.5.title": "ไม่ใช้สารตัวเติมหรือสารเพิ่มปริมาณ",
+  "ingredients.NOT_IN_IT.5.body": "ผงคือเนื้อนมล้วน",
+
+  "ingredients.PRODUCTION_STEPS.0.title": "รีดนม",
+  "ingredients.PRODUCTION_STEPS.0.body":
+    "รีดด้วยมือกลางแจ้ง ในช่วงเดือนที่แม่ม้าให้นม นมจะถูกแช่เย็นและลำเลียงอย่างรวดเร็ว เพราะนมม้าสดเสียได้ภายในไม่กี่ชั่วโมง",
+  "ingredients.PRODUCTION_STEPS.1.title": "หมัก",
+  "ingredients.PRODUCTION_STEPS.1.body":
+    "นมถูกทิ้งไว้กับจุลินทรีย์ของตัวเองประมาณสี่วันและคนเป็นระยะ แลคโตสถูกย่อยสลาย โปรตีนคลายตัวบางส่วน และนมจะมีเนื้อบางลงพร้อมรสเปรี้ยวจางๆ",
+  "ingredients.PRODUCTION_STEPS.2.title": "ทำแห้ง",
+  "ingredients.PRODUCTION_STEPS.2.body":
+    "นมหมักถูกทำแห้งที่อุณหภูมิต่ำจนเป็นผงเนื้อละเอียด ไม่มีการเติมหรือนำสิ่งใดออกในขั้นตอนนี้",
+  "ingredients.PRODUCTION_STEPS.3.title": "บรรจุ",
+  "ingredients.PRODUCTION_STEPS.3.body":
+    "ผงถูกแบ่งบรรจุลงในซอง แคปซูล หรือถุง แล้วปิดผนึก แต่ละชุดบรรจุมาจากการเก็บรวบรวมของฤดูกาลเดียว",
+
+  "ingredients.SUITABILITY.0.title": "มีส่วนผสมของนม",
+  "ingredients.SUITABILITY.0.body":
+    "ใช่ นี่คือผลิตภัณฑ์จากนม ไม่เหมาะสำหรับผู้ที่แพ้นม",
+  "ingredients.SUITABILITY.1.title": "แลคโตส",
+  "ingredients.SUITABILITY.1.body":
+    "การหมักย่อยสลายแลคโตสในนมไปได้เกือบหมด แต่ยังคงมีแลคโตสเหลืออยู่และถูกระบุเป็นส่วนประกอบ หากคุณมีอาการกับโยเกิร์ต คุณอาจมีอาการกับผลิตภัณฑ์นี้ได้เช่นกัน",
+  "ingredients.SUITABILITY.2.title": "กลูเตน",
+  "ingredients.SUITABILITY.2.body":
+    "ไม่มีส่วนประกอบที่มีกลูเตน ขณะนี้เรายังไม่มีการรับรองปลอดกลูเตน จึงไม่ระบุว่าผลิตภัณฑ์นี้ปลอดกลูเตน",
+  "ingredients.SUITABILITY.3.title": "มังสวิรัติและวีแกน",
+  "ingredients.SUITABILITY.3.body":
+    "เหมาะสำหรับผู้ที่รับประทานมังสวิรัติ ไม่เหมาะสำหรับผู้ที่รับประทานวีแกน เนื่องจากเป็นผลิตภัณฑ์จากนม",
+  "ingredients.SUITABILITY.4.title": "ถั่ว",
+  "ingredients.SUITABILITY.4.body":
+    "ไม่มีส่วนประกอบจากถั่ว หากเรื่องนี้สำคัญกับคุณ สอบถามเราเกี่ยวกับสถานที่ผลิตได้ เราจะแจ้งข้อมูลเท่าที่เรามี",
+  "ingredients.SUITABILITY.5.title": "การตั้งครรภ์และให้นมบุตร",
+  "ingredients.SUITABILITY.5.body":
+    "ปรึกษาแพทย์ก่อนรับประทานผลิตภัณฑ์เสริมอาหารใดๆ ระหว่างตั้งครรภ์หรือให้นมบุตร เราไม่สามารถให้คำแนะนำในเรื่องนี้ได้",
+
   // ---------------------------------------------------------- products --
   "products.INGREDIENTS_DECLARATION":
     "ผงนมม้าหมัก แลคโตส เวย์โปรตีน เคซีนโปรตีน ไขมันนม กรดไขมันโอเมกา 3 กรดไขมันโอเมกา 6 วิตามินซี (กรดแอสคอร์บิก) วิตามินเอ (เรตินอล) วิตามินบี 1 (ไทอามีน) วิตามินบี 2 (ไรโบฟลาวิน) วิตามินบี 12 (ไซยาโนโคบาลามิน) แคลเซียม ฟอสฟอรัส โซเดียม ธาตุเหล็ก แลคโตเฟอร์ริน ไลโซไซม์",
