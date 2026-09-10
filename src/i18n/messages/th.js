@@ -610,4 +610,71 @@ export default {
   "gutDiet.GUT_DIET.more.items.2.title": "ลำไส้กับการนอน",
   "gutDiet.GUT_DIET.more.items.2.note":
     "คืนที่นอนน้อยติดต่อกันทำให้ทั้งระบบต้องจ่ายอะไรไปบ้าง",
+
+  // ----------------------------------------------------------- gutMood --
+  "gutMood.GUT_MOOD_FEATURE.heading": "ลำไส้กับสมองติดต่อกันอย่างใกล้ชิด",
+  "gutMood.GUT_MOOD_FEATURE.body":
+    "ทั้งสองส่งสัญญาณถึงกันผ่านระบบประสาททั้งสองทิศทางตลอดวัน จึงเป็นเหตุผลที่ช่วงที่จิตใจห่อเหี่ยวอาจแสดงออกมาที่การย่อยอาหาร และลำไส้ที่ปั่นป่วนก็ระบายสีให้กับความรู้สึกในหนึ่งวันได้ ต่อไปนี้คือชุดนิสัยเรียบง่ายที่ผู้คนใช้ดูแลอีกครึ่งหนึ่งของวงจรนี้",
+  "gutMood.GUT_MOOD_FEATURE.alt":
+    "ภาพระยะใกล้ของช้อนตักของเหลวสีอ่อนที่กำลังเกิดฟอง",
+
+  "gutMood.GUT_MOOD_HABITS_INTRO.heading":
+    "นิสัยบางอย่างที่ผู้คนใช้เพื่อให้รู้สึกดีที่สุด",
+  "gutMood.GUT_MOOD_HABITS_INTRO.body":
+    "ไม่มีสิ่งใดในนี้เป็นการรักษา และไม่มีสิ่งใดเกี่ยวข้องกับ Steppe Gut เหล่านี้คือสิ่งเรียบง่ายที่ทำได้โดยไม่สิ้นเปลือง และแทรกอยู่ในสัปดาห์ธรรมดาได้ เลือกอย่างที่เหมาะกับคุณ และปล่อยที่เหลือไว้",
+
+  "gutMood.GUT_MOOD_HERO.alt":
+    "คนกำลังหัวเราะกลางแจ้งท่ามกลางลูกโป่งสีอ่อนในแสงจ้า",
+
+  "gutMood.GUT_MOOD_INTRO.heading":
+    "ลำไส้กับความรู้สึกของคุณเชื่อมโยงกันมากกว่าที่เห็น",
+  "gutMood.GUT_MOOD_INTRO.body":
+    "ช่วงเวลาที่เครียดเปลี่ยนได้ทั้งส่วนผสมและพฤติกรรมของจุลินทรีย์ในลำไส้ และลำไส้ก็ส่งสัญญาณกลับไปอีกทาง จึงคุ้มค่าที่จะคอยสังเกตสิ่งที่ทำให้คุณตึงเครียด และสิ่งที่ช่วยให้คุณสงบลง",
+
+  "gutMood.GUT_MOOD_READ_MORE.heading": "อ่านต่อ",
+  "gutMood.GUT_MOOD_READ_MORE.items.0.caption": "ลำไส้กับกิจวัตร",
+  "gutMood.GUT_MOOD_READ_MORE.items.0.alt":
+    "ตารางกิจวัตรประจำวันที่เขียนด้วยมือ พร้อมถ้วยวางอยู่บนหน้ากระดาษ",
+  "gutMood.GUT_MOOD_READ_MORE.items.1.caption": "ลำไส้กับการนอน",
+  "gutMood.GUT_MOOD_READ_MORE.items.1.alt":
+    "เตียงที่ยังไม่ได้เก็บข้างหน้าต่างในแสงก่อนรุ่งสาง",
+  "gutMood.GUT_MOOD_READ_MORE.items.2.caption": "ลำไส้กับการออกกำลังกาย",
+  "gutMood.GUT_MOOD_READ_MORE.items.2.alt":
+    "คนกำลังเดินบนเส้นทางเงียบสงบด้วยจังหวะสบาย ๆ",
+
+  "gutMood.GUT_MOOD_SHELVES.0.heading": "เวลากลางแจ้ง",
+  "gutMood.GUT_MOOD_SHELVES.0.items.0.caption": "เดินเล่นในที่ที่มีสีเขียว",
+  "gutMood.GUT_MOOD_SHELVES.0.items.0.alt":
+    "ทะเลสาบในสวนลุมพินี กรุงเทพฯ เรือถีบบนผิวน้ำนิ่งใต้ริมตลิ่งที่เรียงรายด้วยต้นไม้เขียวชอุ่ม โดยมีเส้นขอบฟ้าเมืองที่พร่ามัวอยู่เบื้องหลัง",
+  "gutMood.GUT_MOOD_SHELVES.0.items.1.caption": "แสงเช้าตรู่",
+  "gutMood.GUT_MOOD_SHELVES.0.items.1.alt":
+    "พระอาทิตย์ขึ้นเหนือทะเลที่อ่าวนาง กระบี่ ดวงอาทิตย์อยู่ต่ำเหนือเส้นขอบฟ้าหลังเรือหางยาว โดยมีแสงทอดยาวไปทั่วผิวน้ำ",
+  "gutMood.GUT_MOOD_SHELVES.0.items.2.caption": "ไม่กี่นาทีกลางแดด",
+  "gutMood.GUT_MOOD_SHELVES.0.items.2.alt":
+    "คนกำลังนั่งพักบนขั้นบันไดในแสงแดดอุ่น",
+  "gutMood.GUT_MOOD_SHELVES.0.items.3.caption": "ต้นไม้สักต้นให้ดูแล",
+  "gutMood.GUT_MOOD_SHELVES.0.items.3.alt":
+    "ต้นไม้กระถางเล็ก ๆ บนขอบหน้าต่าง",
+
+  "gutMood.GUT_MOOD_SHELVES.1.heading": "กิจวัตรประจำวันที่ดี",
+  "gutMood.GUT_MOOD_SHELVES.1.items.0.caption": "ตื่นนอนในเวลาใกล้เคียงกัน",
+  "gutMood.GUT_MOOD_SHELVES.1.items.0.alt": "นาฬิกาปลุกบนโต๊ะข้างเตียง",
+  "gutMood.GUT_MOOD_SHELVES.1.items.1.caption": "มื้อเช้าที่ได้นั่งกิน",
+  "gutMood.GUT_MOOD_SHELVES.1.items.1.alt": "ชามโยเกิร์ตและผลไม้บนโต๊ะ",
+  "gutMood.GUT_MOOD_SHELVES.1.items.2.caption": "หยุดพักระหว่างงาน",
+  "gutMood.GUT_MOOD_SHELVES.1.items.2.alt": "คนกำลังยืดเส้นยืดสายที่โต๊ะทำงาน",
+  "gutMood.GUT_MOOD_SHELVES.1.items.3.caption": "ล้างหน้าน้ำเย็นให้ตื่นตัว",
+  "gutMood.GUT_MOOD_SHELVES.1.items.3.alt": "น้ำเย็นไหลผ่านมือที่อ่างล้างหน้า",
+
+  "gutMood.GUT_MOOD_SHELVES.2.heading": "ทำให้จิตใจสงบ",
+  "gutMood.GUT_MOOD_SHELVES.2.items.0.caption": "เอ่ยถึงส่วนดี ๆ ของวัน",
+  "gutMood.GUT_MOOD_SHELVES.2.items.0.alt":
+    "มือกำลังเขียนรายการสั้น ๆ ลงในสมุด",
+  "gutMood.GUT_MOOD_SHELVES.2.items.1.caption": "เพลงที่คุณคุ้นเคยดีอยู่แล้ว",
+  "gutMood.GUT_MOOD_SHELVES.2.items.1.alt": "หูฟังวางอยู่บนปกแผ่นเสียง",
+  "gutMood.GUT_MOOD_SHELVES.2.items.2.caption": "ช่วงเวลาเงียบ ๆ กับสัตว์เลี้ยง",
+  "gutMood.GUT_MOOD_SHELVES.2.items.2.alt": "สุนัขนอนหลับในหย่อมแสงแดด",
+  "gutMood.GUT_MOOD_SHELVES.2.items.3.caption": "หายใจช้า ๆ หนึ่งครั้ง ทำซ้ำ",
+  "gutMood.GUT_MOOD_SHELVES.2.items.3.alt":
+    "คนกำลังนั่งสงบอยู่ข้างหน้าต่างที่เปิดอยู่",
 };
