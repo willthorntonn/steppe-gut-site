@@ -677,4 +677,61 @@ export default {
   "gutMood.GUT_MOOD_SHELVES.2.items.3.caption": "หายใจช้า ๆ หนึ่งครั้ง ทำซ้ำ",
   "gutMood.GUT_MOOD_SHELVES.2.items.3.alt":
     "คนกำลังนั่งสงบอยู่ข้างหน้าต่างที่เปิดอยู่",
+
+  // ---------------------------------------------------------- gutSleep --
+  "gutSleep.GUT_SLEEP_META.title": "ลำไส้กับการนอน · สุขภาพลำไส้ · Steppe Gut",
+  "gutSleep.GUT_SLEEP_META.description":
+    "การนอนและลำไส้เดินตามนาฬิการอบวันเดียวกัน คืนที่นอนน้อยติดต่อกันเรียกร้องอะไรจากระบบย่อยอาหาร และนิสัยเล็ก ๆ ก่อนนอนที่ช่วยให้ทั้งสองเดินไปพร้อมกัน",
+
+  "gutSleep.GUT_SLEEP_INTRO":
+    "การนอนและการย่อยอาหารเดินตามนาฬิการอบวันเดียวกันราวยี่สิบสี่ชั่วโมง และอ่านสัญญาณเดียวกัน แสงยามเช้า จังหวะเวลาของมื้ออาหาร และเวลาเข้านอนที่สม่ำเสมอ เมื่อค่ำคืนเป็นเวลาเดิมอย่างสม่ำเสมอ ลำไส้ก็มีช่วงที่เงียบสงบและคาดเดาได้มากขึ้นไว้ทำงานในยามค่ำคืน อาหารหมักประจำวันเป็นเพียงจุดเล็ก ๆ ที่แน่นอนจุดหนึ่งในวันนั้น ไม่ใช่สิ่งที่คอยยึดจังหวะทั้งหมดไว้",
+
+  "gutSleep.GUT_SLEEP_WHY.heading": "ทำไมการนอนจึงสำคัญต่อลำไส้",
+  "gutSleep.GUT_SLEEP_WHY.alt":
+    "ห้องนอนโทนครีมสว่าง มีแสงกลางวันทอดเฉียงผ่านผนังเหนือเครื่องนอนสีขาว",
+
+  "gutSleep.GUT_SLEEP_LEAD_ROW.heading": "กะกลางคืน",
+  "gutSleep.GUT_SLEEP_LEAD_ROW.alt":
+    "โต๊ะข้างเตียงในแสงสลัว มีแก้วน้ำและแว่นตาที่พับเก็บไว้",
+
+  "gutSleep.GUT_SLEEP_ROWS.0.heading": "คืนที่นอนน้อยเรียกร้องอะไรจากลำไส้",
+  "gutSleep.GUT_SLEEP_ROWS.0.alt":
+    "เตียงที่ยังไม่ได้เก็บข้างหน้าต่างในแสงสีเทาก่อนรุ่งสาง",
+  "gutSleep.GUT_SLEEP_ROWS.1.heading": "การนอนชดเชยไม่เหมือนกัน",
+  "gutSleep.GUT_SLEEP_ROWS.1.alt":
+    "คนกำลังเปิดผ้าม่านบางรับแสงกลางวันสว่างจ้า มองจากด้านหลัง",
+
+  "gutSleep.GUT_SLEEP_HABITS.heading": "นิสัยที่ปูทางให้ค่ำคืน",
+  "gutSleep.GUT_SLEEP_HABITS.items.0.caption": "สัญญาณเข้านอน",
+  "gutSleep.GUT_SLEEP_HABITS.items.0.alt":
+    "โคมไฟหัวเตียงดวงเล็กแสงอุ่นเปิดอยู่ในห้องสลัวก่อนเข้านอน",
+  "gutSleep.GUT_SLEEP_HABITS.items.1.caption": "คืนหนึ่งยาวแค่ไหน",
+  "gutSleep.GUT_SLEEP_HABITS.items.1.alt":
+    "เตียงที่ปูเปิดผ้าห่มไว้ในห้องมืดเงียบสงบ",
+  "gutSleep.GUT_SLEEP_HABITS.items.2.caption": "รับแสงแต่เช้า",
+  "gutSleep.GUT_SLEEP_HABITS.items.2.alt":
+    "คนกำลังยืนที่ประตูที่เปิดอยู่ในแสงเช้าอ่อน ๆ พร้อมถ้วยในมือ",
+  "gutSleep.GUT_SLEEP_HABITS.items.3.caption": "กินมื้อเย็นให้เร็วขึ้น",
+  "gutSleep.GUT_SLEEP_HABITS.items.3.alt":
+    "ครอบครัวกำลังนั่งกินมื้อเย็นด้วยกันแต่หัวค่ำที่โต๊ะไม้",
+  "gutSleep.GUT_SLEEP_HABITS.items.4.caption": "หรี่แสงยามค่ำ",
+  "gutSleep.GUT_SLEEP_HABITS.items.4.alt":
+    "ห้องนั่งเล่นที่มีเพียงโคมไฟดวงเล็กดวงเดียว พร้อมหนังสือคว่ำหน้าวางอยู่บนผ้าห่ม",
+  "gutSleep.GUT_SLEEP_HABITS.items.5.caption": "ห้องที่เย็นและมืด",
+  "gutSleep.GUT_SLEEP_HABITS.items.5.alt":
+    "ห้องนอนที่เป็นระเบียบ ผ้าม่านหนาปิดสนิท และเตียงที่ปูเปิดผ้าห่มไว้",
+  "gutSleep.GUT_SLEEP_HABITS.items.6.caption": "เวลาตื่นที่สม่ำเสมอ",
+  "gutSleep.GUT_SLEEP_HABITS.items.6.alt":
+    "นาฬิกาปลุกแบบสองระฆังและต้นไม้เล็ก ๆ บนโต๊ะข้างเตียง ถัดจากเตียงที่จัดเก็บเรียบร้อย",
+
+  "gutSleep.GUT_SLEEP_MORE.heading": "เพิ่มเติมจากสุขภาพลำไส้",
+  "gutSleep.GUT_SLEEP_MORE.items.0.title": "ลำไส้กับกิจวัตร",
+  "gutSleep.GUT_SLEEP_MORE.items.0.note":
+    "มื้ออาหาร แสง และการนอน มีที่ทางอยู่ตรงไหนในรูปแบบของหนึ่งวัน",
+  "gutSleep.GUT_SLEEP_MORE.items.1.title": "ลำไส้กับอารมณ์",
+  "gutSleep.GUT_SLEEP_MORE.items.1.note":
+    "ลำไส้กับสมองติดต่อกันอย่างไรตลอดทั้งวัน",
+  "gutSleep.GUT_SLEEP_MORE.items.2.title": "ลำไส้กับการออกกำลังกาย",
+  "gutSleep.GUT_SLEEP_MORE.items.2.note":
+    "การเคลื่อนไหวเบา ๆ ในแต่ละวันช่วยการย่อยอาหารอย่างไร",
 };
