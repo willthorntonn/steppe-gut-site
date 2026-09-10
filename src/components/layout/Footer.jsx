@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FOOTER_LINKS } from "../../data/site";
+import * as siteContent from "../../data/site";
+import { useContent } from "../../i18n/I18nProvider";
 import { SOCIAL_PLATFORMS } from "../../data/social";
 
 const TRANSPARENT = ["rgba(0, 0, 0, 0)", "transparent"];
@@ -86,13 +87,6 @@ function socialTarget(label) {
   return platform?.href ?? null;
 }
 
-// Rescoped to the seven live routes. The previous set (Careers, Press,
-// Corporate, FAQs) and the legal row (Terms, Cookies, Privacy, Sitemap)
-// pointed at pages that were deliberately cut from the build - a footer link
-// to a page that does not exist is worse than no link, so they are removed
-// rather than left as `href="#"`. They come back when those pages do.
-const SITE_LINKS = FOOTER_LINKS;
-
 // Bottom-bar legal row. These pages aren't in the build yet; the links are
 // here so the bar matches the reference and resolve once the pages land.
 const LEGAL_LINKS = [
@@ -142,6 +136,15 @@ function LinkList({ items }) {
 // ends on (see usePageEndBackground) - cream on most pages, white on the
 // product pages - instead of showing through to whatever sits underneath.
 export default function Footer() {
+  // Rescoped to the seven live routes. The previous set (Careers, Press,
+  // Corporate, FAQs) and the legal row (Terms, Cookies, Privacy, Sitemap)
+  // pointed at pages that were deliberately cut from the build - a footer link
+  // to a page that does not exist is worse than no link, so they are removed
+  // rather than left as `href="#"`. They come back when those pages do.
+  //
+  // Read through useContent rather than imported directly: the labels are
+  // translated per request, so they cannot be resolved once at module scope.
+  const { FOOTER_LINKS: SITE_LINKS } = useContent("site", siteContent);
   const pageEndBg = usePageEndBackground();
 
   return (

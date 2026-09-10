@@ -47,12 +47,21 @@ module.exports = {
       },
       fontFamily: {
         // usage: font-serif (display), font-sans (body), font-thai
-        serif: [typography.families.serif, 'Georgia', 'serif'],
-        sans:  [typography.families.sans, 'system-ui', 'sans-serif'],
+        //
+        // The var() slot after each brand face is the script font for the
+        // active language, set on <html> by the root layout (see
+        // src/i18n/fonts.js). Font fallback is per glyph, so a Latin
+        // character still renders in EB Garamond or Inter and only the Thai,
+        // Burmese or CJK ones fall through to the script face. That is what
+        // keeps "Steppe Gut" looking like itself inside a Japanese sentence.
+        // The default inside var() matters: an unset custom property would
+        // otherwise make the whole font-family declaration invalid.
+        serif: [typography.families.serif, 'var(--sg-script-serif, Georgia)', 'Georgia', 'serif'],
+        sans:  [typography.families.sans, 'var(--sg-script-sans, system-ui)', 'system-ui', 'sans-serif'],
         thai:  [typography.families.thai, 'sans-serif'],
         // convenience aliases
-        display: [typography.families.serif, 'Georgia', 'serif'],
-        body:    [typography.families.sans, 'system-ui', 'sans-serif'],
+        display: [typography.families.serif, 'var(--sg-script-serif, Georgia)', 'Georgia', 'serif'],
+        body:    [typography.families.sans, 'var(--sg-script-sans, system-ui)', 'system-ui', 'sans-serif'],
       },
       fontWeight: {
         light:    String(typography.weights.light),    // 300 (Thai)

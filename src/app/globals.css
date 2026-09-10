@@ -62,7 +62,10 @@ html {
    otherwise fall back to the browser's system UI font rather than Inter.
    Elements that want the serif set `font-serif` themselves and still win. */
 body {
-  font-family: "Inter", system-ui, sans-serif;
+  /* Matches the `sans` stack in tailwind.config.js, including the script-font
+     slot the root layout sets per language, so untagged text in Thai, Burmese
+     or CJK falls through to a face that can actually render it. */
+  font-family: "Inter", var(--sg-script-sans, system-ui), system-ui, sans-serif;
   /* Cream safety net for the content region. `html` (the canvas) is forest
      green so the bottom overscroll matches the footer; this keeps everything
      between the two ends cream. Body spans the full document height, so the

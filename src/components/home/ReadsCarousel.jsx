@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { READS } from "../../content/home";
+import * as homeContent from "../../content/home";
+import { useContent } from "../../i18n/I18nProvider";
 import { H2_XL } from "../../styles/type";
 import Placeholder from "../ui/Placeholder";
 
@@ -22,6 +23,7 @@ function prefersReducedMotion() {
 }
 
 export default function ReadsCarousel() {
+  const { READS } = useContent("home", homeContent);
   const trackRef = useRef(null);
   const [pages, setPages] = useState(1);
   const [page, setPage] = useState(0);

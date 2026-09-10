@@ -44,7 +44,8 @@ function LogOutBox({ strokeWidth = 1.5, className }) {
     </svg>
   );
 }
-import { NAV_LINKS, PRODUCT_LINKS } from "../../data/site";
+import * as siteContent from "../../data/site";
+import { useContent, useT } from "../../i18n/I18nProvider";
 import { PRODUCT_BY_SLUG } from "../../data/products";
 import { useCart } from "../../cart/CartProvider";
 import { useAuth } from "../../auth/AuthProvider";
@@ -209,6 +210,8 @@ function useUnderlineWidth(sampleRef) {
 }
 
 export default function Navbar() {
+  const { NAV_LINKS, PRODUCT_LINKS } = useContent("site", siteContent);
+  const t = useT();
   const [menuOpen, setMenuOpen] = useState(false);
   // Which section of the mobile drawer is drilled into, by label, or null for
   // the root list. The label rather than the row itself: the rows are rebuilt
@@ -450,14 +453,14 @@ export default function Navbar() {
     ? [
         ...ACCOUNT_LINKS.map(({ label, to }) => ({ label, to })),
         {
-          label: "Edit Profile",
+          label: t("nav.editProfile", "Edit Profile"),
           action: () => {
             setMenuOpen(false);
             setProfileOpen(true);
           },
         },
         {
-          label: "Log out",
+          label: t("nav.logOut", "Log out"),
           tone: "danger",
           action: () => {
             setMenuOpen(false);
@@ -467,7 +470,7 @@ export default function Navbar() {
       ]
     : [
         {
-          label: "Sign in",
+          label: t("nav.signIn", "Sign in"),
           action: () => {
             setMenuOpen(false);
             openAuthModal("signin");
@@ -479,9 +482,13 @@ export default function Navbar() {
     ...NAV_LINKS.map((link) => ({
       label: link.label,
       to: link.to,
-      items: link.label === "Products" ? PRODUCT_LINKS : link.menu,
+      // Matched on the route, not the label: `label` is translated, so
+      // comparing it to the English word "Products" would quietly stop
+      // matching in all seven other languages and leave the mobile drawer's
+      // Products row with no children.
+      items: link.to === "/products/" ? PRODUCT_LINKS : link.menu,
     })),
-    { label: "Settings", items: accountItems },
+    { label: t("nav.settings", "Settings"), items: accountItems },
   ];
 
   const openSectionRow = mobileRows.find((row) => row.label === menuSection);

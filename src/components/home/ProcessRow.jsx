@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { PROCESS } from "../../content/home";
+import * as homeContent from "../../content/home";
+import { useContent } from "../../i18n/I18nProvider";
 import Placeholder from "../ui/Placeholder";
 
 // Three-up media row, matching the reference's video-tile band: a wide frame,
@@ -40,6 +41,7 @@ const BODY_SIZE = {
 // white panel lifts in and grows, the photo frame grows with it, the photo
 // tightens on its own centre, and the CTA pill fades up.
 export default function ProcessRow() {
+  const { PROCESS } = useContent("home", homeContent);
   return (
     <section id={PROCESS.id} data-navtheme="light" className="scroll-mt-28 bg-cream">
       <div className="mx-auto max-w-[2000px] px-5 pb-12 sm:px-8 sm:pb-16 lg:px-10 lg:pb-20 lg:pt-16">

@@ -10,8 +10,28 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-export async function refreshSession(request) {
-  let response = NextResponse.next({ request });
+/**
+ * @param {import("next/server").NextRequest} request
+ * @param {Record<string,string>} [forwardHeaders]
+ *   Extra headers to add to the *request* as it continues into the app, for
+ *   values the middleware worked out and a server component has to read back
+ *   with headers() - the resolved locale, in practice. These cannot be set on
+ *   the response: headers() reads what came in, so a response header is only
+ *   ever visible to the browser, never to the page being rendered.
+ */
+export async function refreshSession(request, forwardHeaders = {}) {
+  // Rebuilt on each call rather than captured once, because the Supabase
+  // client mutates request.cookies before asking for a new response and those
+  // mutations have to survive into the forwarded request.
+  const nextWithHeaders = () => {
+    const headers = new Headers(request.headers);
+    for (const [name, value] of Object.entries(forwardHeaders)) {
+      headers.set(name, value);
+    }
+    return NextResponse.next({ request: { headers } });
+  };
+
+  let response = nextWithHeaders();
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -21,7 +41,7 @@ export async function refreshSession(request) {
         getAll: () => request.cookies.getAll(),
         setAll(list) {
           for (const { name, value } of list) request.cookies.set(name, value);
-          response = NextResponse.next({ request });
+          response = nextWithHeaders();
           for (const { name, value, options } of list) {
             response.cookies.set(name, value, options);
           }

@@ -146,7 +146,7 @@ export function localizeModule(namespace, module, dict) {
  * Does `text` still spell every brand term correctly?
  *
  * Called by scripts/check-i18n.mjs across every dictionary. The brand name is
- * a proper noun and stays in Latin script in all eight languages, including
+ * a proper noun and stays in Latin script in every language, including
  * the ones that would otherwise transliterate it. This is the automated half
  * of that rule; the other half is simply not translating it in the first
  * place.

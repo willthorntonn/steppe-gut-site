@@ -1,7 +1,8 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { ORIGIN } from "../../content/home";
+import * as homeContent from "../../content/home";
+import { useContent } from "../../i18n/I18nProvider";
 import Placeholder from "../ui/Placeholder";
 
 // First content beat after the hero, in the reference's two-column shape:
@@ -9,6 +10,7 @@ import Placeholder from "../ui/Placeholder";
 // the right. It answers "where does this come from" before the page mentions
 // the product at all.
 export default function OriginFeature() {
+  const { ORIGIN } = useContent("home", homeContent);
   return (
     <section id={ORIGIN.id} data-navtheme="light" className="scroll-mt-28 bg-cream">
       <div className="mx-auto max-w-[2000px] px-6 pb-28 pt-7 sm:px-10 sm:pb-36 sm:pt-9 lg:px-14 lg:pb-48 lg:pt-12">
