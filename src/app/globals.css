@@ -20,7 +20,18 @@
 
 html {
   zoom: var(--page-zoom);
-  background-color: #F5F1E9;
+  /* The canvas (this element's background) is what shows in the rubber-band
+     overscroll past either end of the document. The document ends on the
+     forest-green footer, so the canvas is forest green: a scroll past the
+     bottom reveals more green rather than a cream gap. `body` below carries
+     the cream so the content region still reads cream - it spans the full
+     document height, so there is never a seam between the two. A gradient on
+     this element does not work: the browser paints `background-color` across
+     the whole canvas (including the overscroll) and confines the gradient
+     image to a viewport-sized box near the top, so the bottom overscroll
+     always showed the flat base colour. Trade-off: the overscroll above the
+     top of the page is now green too. */
+  background-color: #2F3E2F;
   /* Reserve the vertical scrollbar's track at all times. When a modal locks
      the page (sets `overflow: hidden` on this element - see components/ui/
      Modal.jsx and the mobile menu in Nav.jsx) the scrollbar would otherwise
@@ -52,6 +63,11 @@ html {
    Elements that want the serif set `font-serif` themselves and still win. */
 body {
   font-family: "Inter", system-ui, sans-serif;
+  /* Cream safety net for the content region. `html` (the canvas) is forest
+     green so the bottom overscroll matches the footer; this keeps everything
+     between the two ends cream. Body spans the full document height, so the
+     green/cream boundary always sits exactly at the document's edges. */
+  background-color: #F5F1E9;
 }
 
 /* Our Story and Gut Health carry the site's long-form editorial copy. Turn on
