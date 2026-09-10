@@ -206,4 +206,177 @@ export default {
   "faq.FAQ_GROUPS.2.items.1.answer":
     "[ติดต่อเรา](/contact/) พร้อมแจ้งหมายเลขคำสั่งซื้อและรหัสส่วนลด หากคุณเพิ่งสั่งซื้อและคำสั่งซื้อยังไม่ออกจากคลัง เราอาจใช้ส่วนลดให้ได้ สำหรับคำสั่งซื้อครั้งถัดไป กรุณากรอกรหัสส่วนลดที่หน้าชำระเงินก่อนยืนยันการชำระเงิน",
   "faq.FAQ_GROUPS.2.items.1.question": "มีรหัสส่วนลดแต่ลืมใช้ ต้องทำอย่างไร",
+
+  // ---------------------------------------------------------- products --
+  "products.INGREDIENTS_DECLARATION":
+    "ผงนมม้าหมัก แลคโตส เวย์โปรตีน เคซีนโปรตีน ไขมันนม กรดไขมันโอเมกา 3 กรดไขมันโอเมกา 6 วิตามินซี (กรดแอสคอร์บิก) วิตามินเอ (เรตินอล) วิตามินบี 1 (ไทอามีน) วิตามินบี 2 (ไรโบฟลาวิน) วิตามินบี 12 (ไซยาโนโคบาลามิน) แคลเซียม ฟอสฟอรัส โซเดียม ธาตุเหล็ก แลคโตเฟอร์ริน ไลโซไซม์",
+
+  "products.MARKETING_PRICE_BY_SLUG.pill-bottle.save": "ประหยัด 24%",
+
+  "products.MARKETING_PRICE_BY_SLUG.sachet-bag.save": "ประหยัด 24%",
+
+  "products.MARKETING_PRICE_BY_SLUG.sachet-box.save": "ประหยัด 23%",
+
+  "products.PRODUCTS.0.allergen": "มีส่วนผสมของนม",
+  "products.PRODUCTS.0.alt": "กล่องซอง Steppe Gut บรรจุ 25 ซองสำหรับทุกวัน",
+  "products.PRODUCTS.0.descriptor":
+    "ผงนมม้าหมักบรรจุซองแยก 25 ซอง หนึ่งซองต่อหนึ่งวัน ฉีกซอง ผสมน้ำ แล้วดื่ม",
+  "products.PRODUCTS.0.format": "ซองขนาด 10 กรัม 25 ซอง",
+  "products.PRODUCTS.0.formatLong": "ซองขนาด 10 กรัม 25 ซอง · 25 วัน",
+  "products.PRODUCTS.0.howToTake.0.body":
+    "ฉีกตามรอยบากด้านบน ผงมีเนื้อละเอียดและตกตะกอนเร็ว",
+  "products.PRODUCTS.0.howToTake.0.title": "ฉีกซอง",
+  "products.PRODUCTS.0.howToTake.1.body":
+    "ใช้น้ำเย็นหรืออุณหภูมิห้อง น้ำร้อนไม่เป็นอันตราย แต่ทำให้รสชาติแย่ลง",
+  "products.PRODUCTS.0.howToTake.1.title": "เติมน้ำเย็น 100 มิลลิลิตร",
+  "products.PRODUCTS.0.howToTake.2.body":
+    "ดื่มภายในหนึ่งถึงสองนาที ก่อนที่ผงจะตกตะกอน คนส่วนใหญ่ดื่มก่อนอาหารเช้า แม้ว่าช่วงเวลาของวันจะสำคัญน้อยกว่าการดื่มในเวลาเดิมทุกวัน",
+  "products.PRODUCTS.0.howToTake.2.title": "คนแล้วดื่ม",
+  "products.PRODUCTS.0.name": "Steppe Gut แบบซองในกล่อง",
+  "products.PRODUCTS.0.paragraph":
+    "ผงนมม้าหมักจากมองโกเลียขนาด 10 กรัม จำนวน 25 ซอง รับประทานวันละหนึ่งซอง คนให้เข้ากับน้ำ 100 มิลลิลิตร แบ่งปริมาณมาให้แล้ว จึงไม่ต้องตวงเอง",
+  "products.PRODUCTS.0.railDescriptor":
+    "25 ซองสำหรับทุกวัน ฉีก ผสมน้ำ แล้วดื่ม",
+  "products.PRODUCTS.0.reassurance":
+    "จัดส่งภายใน 2–4 วันทำการทั่วประเทศไทย กล่องที่ยังไม่เปิดส่งคืนได้ภายใน 14 วัน",
+  "products.PRODUCTS.0.servingSize": "10 กรัม",
+
+  "products.PRODUCTS.1.allergen":
+    "มีส่วนผสมของนม เปลือกแคปซูลเป็นสิ่งเดียวที่เพิ่มเข้ามา",
+  "products.PRODUCTS.1.alt": "ขวดแคปซูล Steppe Gut บรรจุ 90 แคปซูล",
+  "products.PRODUCTS.1.descriptor":
+    "ผงนมม้าหมักบรรจุแคปซูล 90 เม็ด ในขวดแก้วสีชา รับประทานวันละ 3 แคปซูล ปริมาณเท่ากับหนึ่งซอง แต่ไม่ต้องรับรส เหมาะกับการเดินทางและความสะดวกในทุกวัน",
+  "products.PRODUCTS.1.format": "90 แคปซูล",
+  "products.PRODUCTS.1.formatLong": "90 แคปซูล · 30 วัน",
+  "products.PRODUCTS.1.howToTake.0.body":
+    "แคปซูล 3 เม็ดให้ผงเท่ากับหนึ่งซองขนาด 10 กรัม",
+  "products.PRODUCTS.1.howToTake.0.title": "รับประทานครั้งละ 3 แคปซูล",
+  "products.PRODUCTS.1.howToTake.1.body":
+    "อุณหภูมิใดก็ได้ ไม่มีอะไรต้องผสมและไม่มีอะไรต้องรอ",
+  "products.PRODUCTS.1.howToTake.1.title": "พร้อมน้ำ",
+  "products.PRODUCTS.1.howToTake.2.body":
+    "ในเวลาเดิมของทุกวัน คนส่วนใหญ่รับประทานก่อนอาหารเช้า แม้ว่าเวลาจะสำคัญน้อยกว่าความสม่ำเสมอ",
+  "products.PRODUCTS.1.howToTake.2.title": "วันละครั้ง",
+  "products.PRODUCTS.1.name": "Steppe Gut แบบแคปซูล",
+  "products.PRODUCTS.1.paragraph":
+    "ผงนมม้าหมักจากมองโกเลียบรรจุแคปซูล 90 เม็ด รับประทานวันละ 3 แคปซูลพร้อมน้ำ แต่ละชุดให้ปริมาณเท่ากับหนึ่งซอง โดยไม่ต้องผสมหรือเตรียมอะไร",
+  "products.PRODUCTS.1.railDescriptor":
+    "90 แคปซูล รับประทานวันละ 3 เม็ด ไม่ต้องรับรส",
+  "products.PRODUCTS.1.reassurance":
+    "จัดส่งภายใน 2–4 วันทำการทั่วประเทศไทย ขวดที่ยังไม่เปิดส่งคืนได้ภายใน 14 วัน",
+  "products.PRODUCTS.1.servingSize": "3 แคปซูล",
+
+  "products.PRODUCTS.2.allergen":
+    "มีส่วนผสมของนม ปิดผนึกทุกครั้งหลังใช้และเก็บให้แห้ง",
+  "products.PRODUCTS.2.alt": "ถุงเติม Steppe Gut ขนาด 250 กรัม",
+  "products.PRODUCTS.2.descriptor":
+    "ผงนมม้าหมักแบบไม่แบ่งซองในถุงขนาด 250 กรัม พร้อมช้อนตวง สำหรับผู้ที่รับประทานเป็นกิจวัตรอยู่แล้วและต้องการบรรจุภัณฑ์น้อยลงกับต้นทุนต่อครั้งที่ถูกลง",
+  "products.PRODUCTS.2.format": "ถุงขนาด 250 กรัม",
+  "products.PRODUCTS.2.formatLong": "ถุงขนาด 250 กรัม · 25 ครั้ง",
+  "products.PRODUCTS.2.howToTake.0.body":
+    "ช้อนที่ให้มาในถุงตวงได้ 10 กรัม เท่ากับหนึ่งซอง",
+  "products.PRODUCTS.2.howToTake.0.title": "หนึ่งช้อนปาด",
+  "products.PRODUCTS.2.howToTake.1.body":
+    "ใช้น้ำเย็นหรืออุณหภูมิห้อง น้ำร้อนไม่เป็นอันตราย แต่ทำให้รสชาติแย่ลง",
+  "products.PRODUCTS.2.howToTake.1.title": "เติมน้ำเย็น 100 มิลลิลิตร",
+  "products.PRODUCTS.2.howToTake.2.body":
+    "จากนั้นปิดผนึกถุงและเก็บให้แห้ง ผงแบบไม่แบ่งซองดูดความชื้นเร็วกว่าซองที่ปิดผนึกไว้",
+  "products.PRODUCTS.2.howToTake.2.title": "คนแล้วดื่ม",
+  "products.PRODUCTS.2.name": "Steppe Gut แบบซองในถุง",
+  "products.PRODUCTS.2.paragraph":
+    "ผงนมม้าหมักจากมองโกเลียแบบไม่แบ่งซอง 250 กรัม พร้อมช้อนตวง หนึ่งช้อนต่อวันเท่ากับ 10 กรัม สูตรเดียวกับแบบซอง โดยใช้บรรจุภัณฑ์ต่อครั้งน้อยลง",
+  "products.PRODUCTS.2.railDescriptor":
+    "ผงแบบไม่แบ่งซอง 250 กรัม พร้อมช้อนตวง บรรจุภัณฑ์น้อยลง คุ้มค่ากว่า",
+  "products.PRODUCTS.2.reassurance":
+    "จัดส่งภายใน 2–4 วันทำการทั่วประเทศไทย ถุงที่ยังไม่เปิดส่งคืนได้ภายใน 14 วัน",
+  "products.PRODUCTS.2.servingSize": "10 กรัม หนึ่งช้อนปาด",
+
+  "products.PRODUCT_BY_SLUG.pill-bottle.allergen":
+    "มีส่วนผสมของนม เปลือกแคปซูลเป็นสิ่งเดียวที่เพิ่มเข้ามา",
+  "products.PRODUCT_BY_SLUG.pill-bottle.alt":
+    "ขวดแคปซูล Steppe Gut บรรจุ 90 แคปซูล",
+  "products.PRODUCT_BY_SLUG.pill-bottle.descriptor":
+    "ผงนมม้าหมักบรรจุแคปซูล 90 เม็ด ในขวดแก้วสีชา รับประทานวันละ 3 แคปซูล ปริมาณเท่ากับหนึ่งซอง แต่ไม่ต้องรับรส เหมาะกับการเดินทางและความสะดวกในทุกวัน",
+  "products.PRODUCT_BY_SLUG.pill-bottle.format": "90 แคปซูล",
+  "products.PRODUCT_BY_SLUG.pill-bottle.formatLong": "90 แคปซูล · 30 วัน",
+  "products.PRODUCT_BY_SLUG.pill-bottle.howToTake.0.body":
+    "แคปซูล 3 เม็ดให้ผงเท่ากับหนึ่งซองขนาด 10 กรัม",
+  "products.PRODUCT_BY_SLUG.pill-bottle.howToTake.0.title":
+    "รับประทานครั้งละ 3 แคปซูล",
+  "products.PRODUCT_BY_SLUG.pill-bottle.howToTake.1.body":
+    "อุณหภูมิใดก็ได้ ไม่มีอะไรต้องผสมและไม่มีอะไรต้องรอ",
+  "products.PRODUCT_BY_SLUG.pill-bottle.howToTake.1.title": "พร้อมน้ำ",
+  "products.PRODUCT_BY_SLUG.pill-bottle.howToTake.2.body":
+    "ในเวลาเดิมของทุกวัน คนส่วนใหญ่รับประทานก่อนอาหารเช้า แม้ว่าเวลาจะสำคัญน้อยกว่าความสม่ำเสมอ",
+  "products.PRODUCT_BY_SLUG.pill-bottle.howToTake.2.title": "วันละครั้ง",
+  "products.PRODUCT_BY_SLUG.pill-bottle.name": "Steppe Gut แบบแคปซูล",
+  "products.PRODUCT_BY_SLUG.pill-bottle.paragraph":
+    "ผงนมม้าหมักจากมองโกเลียบรรจุแคปซูล 90 เม็ด รับประทานวันละ 3 แคปซูลพร้อมน้ำ แต่ละชุดให้ปริมาณเท่ากับหนึ่งซอง โดยไม่ต้องผสมหรือเตรียมอะไร",
+  "products.PRODUCT_BY_SLUG.pill-bottle.railDescriptor":
+    "90 แคปซูล รับประทานวันละ 3 เม็ด ไม่ต้องรับรส",
+  "products.PRODUCT_BY_SLUG.pill-bottle.reassurance":
+    "จัดส่งภายใน 2–4 วันทำการทั่วประเทศไทย ขวดที่ยังไม่เปิดส่งคืนได้ภายใน 14 วัน",
+  "products.PRODUCT_BY_SLUG.pill-bottle.servingSize": "3 แคปซูล",
+
+  "products.PRODUCT_BY_SLUG.sachet-bag.allergen":
+    "มีส่วนผสมของนม ปิดผนึกทุกครั้งหลังใช้และเก็บให้แห้ง",
+  "products.PRODUCT_BY_SLUG.sachet-bag.alt": "ถุงเติม Steppe Gut ขนาด 250 กรัม",
+  "products.PRODUCT_BY_SLUG.sachet-bag.descriptor":
+    "ผงนมม้าหมักแบบไม่แบ่งซองในถุงขนาด 250 กรัม พร้อมช้อนตวง สำหรับผู้ที่รับประทานเป็นกิจวัตรอยู่แล้วและต้องการบรรจุภัณฑ์น้อยลงกับต้นทุนต่อครั้งที่ถูกลง",
+  "products.PRODUCT_BY_SLUG.sachet-bag.format": "ถุงขนาด 250 กรัม",
+  "products.PRODUCT_BY_SLUG.sachet-bag.formatLong":
+    "ถุงขนาด 250 กรัม · 25 ครั้ง",
+  "products.PRODUCT_BY_SLUG.sachet-bag.howToTake.0.body":
+    "ช้อนที่ให้มาในถุงตวงได้ 10 กรัม เท่ากับหนึ่งซอง",
+  "products.PRODUCT_BY_SLUG.sachet-bag.howToTake.0.title": "หนึ่งช้อนปาด",
+  "products.PRODUCT_BY_SLUG.sachet-bag.howToTake.1.body":
+    "ใช้น้ำเย็นหรืออุณหภูมิห้อง น้ำร้อนไม่เป็นอันตราย แต่ทำให้รสชาติแย่ลง",
+  "products.PRODUCT_BY_SLUG.sachet-bag.howToTake.1.title":
+    "เติมน้ำเย็น 100 มิลลิลิตร",
+  "products.PRODUCT_BY_SLUG.sachet-bag.howToTake.2.body":
+    "จากนั้นปิดผนึกถุงและเก็บให้แห้ง ผงแบบไม่แบ่งซองดูดความชื้นเร็วกว่าซองที่ปิดผนึกไว้",
+  "products.PRODUCT_BY_SLUG.sachet-bag.howToTake.2.title": "คนแล้วดื่ม",
+  "products.PRODUCT_BY_SLUG.sachet-bag.name": "Steppe Gut แบบซองในถุง",
+  "products.PRODUCT_BY_SLUG.sachet-bag.paragraph":
+    "ผงนมม้าหมักจากมองโกเลียแบบไม่แบ่งซอง 250 กรัม พร้อมช้อนตวง หนึ่งช้อนต่อวันเท่ากับ 10 กรัม สูตรเดียวกับแบบซอง โดยใช้บรรจุภัณฑ์ต่อครั้งน้อยลง",
+  "products.PRODUCT_BY_SLUG.sachet-bag.railDescriptor":
+    "ผงแบบไม่แบ่งซอง 250 กรัม พร้อมช้อนตวง บรรจุภัณฑ์น้อยลง คุ้มค่ากว่า",
+  "products.PRODUCT_BY_SLUG.sachet-bag.reassurance":
+    "จัดส่งภายใน 2–4 วันทำการทั่วประเทศไทย ถุงที่ยังไม่เปิดส่งคืนได้ภายใน 14 วัน",
+  "products.PRODUCT_BY_SLUG.sachet-bag.servingSize": "10 กรัม หนึ่งช้อนปาด",
+
+  "products.PRODUCT_BY_SLUG.sachet-box.allergen": "มีส่วนผสมของนม",
+  "products.PRODUCT_BY_SLUG.sachet-box.alt":
+    "กล่องซอง Steppe Gut บรรจุ 25 ซองสำหรับทุกวัน",
+  "products.PRODUCT_BY_SLUG.sachet-box.descriptor":
+    "ผงนมม้าหมักบรรจุซองแยก 25 ซอง หนึ่งซองต่อหนึ่งวัน ฉีกซอง ผสมน้ำ แล้วดื่ม",
+  "products.PRODUCT_BY_SLUG.sachet-box.format": "ซองขนาด 10 กรัม 25 ซอง",
+  "products.PRODUCT_BY_SLUG.sachet-box.formatLong":
+    "ซองขนาด 10 กรัม 25 ซอง · 25 วัน",
+  "products.PRODUCT_BY_SLUG.sachet-box.howToTake.0.body":
+    "ฉีกตามรอยบากด้านบน ผงมีเนื้อละเอียดและตกตะกอนเร็ว",
+  "products.PRODUCT_BY_SLUG.sachet-box.howToTake.0.title": "ฉีกซอง",
+  "products.PRODUCT_BY_SLUG.sachet-box.howToTake.1.body":
+    "ใช้น้ำเย็นหรืออุณหภูมิห้อง น้ำร้อนไม่เป็นอันตราย แต่ทำให้รสชาติแย่ลง",
+  "products.PRODUCT_BY_SLUG.sachet-box.howToTake.1.title":
+    "เติมน้ำเย็น 100 มิลลิลิตร",
+  "products.PRODUCT_BY_SLUG.sachet-box.howToTake.2.body":
+    "ดื่มภายในหนึ่งถึงสองนาที ก่อนที่ผงจะตกตะกอน คนส่วนใหญ่ดื่มก่อนอาหารเช้า แม้ว่าช่วงเวลาของวันจะสำคัญน้อยกว่าการดื่มในเวลาเดิมทุกวัน",
+  "products.PRODUCT_BY_SLUG.sachet-box.howToTake.2.title": "คนแล้วดื่ม",
+  "products.PRODUCT_BY_SLUG.sachet-box.name": "Steppe Gut แบบซองในกล่อง",
+  "products.PRODUCT_BY_SLUG.sachet-box.paragraph":
+    "ผงนมม้าหมักจากมองโกเลียขนาด 10 กรัม จำนวน 25 ซอง รับประทานวันละหนึ่งซอง คนให้เข้ากับน้ำ 100 มิลลิลิตร แบ่งปริมาณมาให้แล้ว จึงไม่ต้องตวงเอง",
+  "products.PRODUCT_BY_SLUG.sachet-box.railDescriptor":
+    "25 ซองสำหรับทุกวัน ฉีก ผสมน้ำ แล้วดื่ม",
+  "products.PRODUCT_BY_SLUG.sachet-box.reassurance":
+    "จัดส่งภายใน 2–4 วันทำการทั่วประเทศไทย กล่องที่ยังไม่เปิดส่งคืนได้ภายใน 14 วัน",
+  "products.PRODUCT_BY_SLUG.sachet-box.servingSize": "10 กรัม",
+
+  "products.SHARED_BADGES.0.label": "ผลิตภัณฑ์จากมองโกเลีย",
+
+  "products.SHARED_BADGES.1.label": "หมักตามธรรมชาติ",
+
+  "products.SHARED_BADGES.2.label": "มีส่วนผสมของนม",
+
+  "products.SHARED_BADGES.3.label": "ไม่เติมน้ำตาล",
 };
