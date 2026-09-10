@@ -18,8 +18,9 @@ import { H2_XL } from "../../styles/type";
 //
 // Vertical rhythm runs down -> up -> down -> up: the 2nd and 4th cards are
 // raised out of line on lg (RAISED), the 1st and 3rd sit at the baseline. The
-// offset is decorative and collapses below lg. Every image is a written brief
-// until the photography is shot.
+// offset is decorative and collapses below lg. Each card carries a stock
+// steppe photograph; the written brief still rides along as its fallback and
+// as the spec for the commissioned shot that will replace it.
 const RAISED = "lg:-mt-14";
 
 // On hover a white panel lifts in behind the card and grows 12px outward on
@@ -163,6 +164,8 @@ export default function MissionTimeline({ heading, items }) {
                 <Placeholder
                   ratio="16 / 9"
                   brief={item.brief}
+                  image={item.src}
+                  alt={item.alt}
                   tone="light"
                   className={FRAME}
                   imageClassName={PHOTO}
