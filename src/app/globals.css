@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@config "../../tailwind.config.js";
+@config "../../tailwind.config.cjs";
 
 :root {
   /* The whole site renders one step smaller than it was drawn: what used to

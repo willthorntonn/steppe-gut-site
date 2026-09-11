@@ -6,7 +6,7 @@
  * Adjust the `content` globs to match your project layout.
  */
 
-const { colors, typography, activePalette, logo } = require('./design-tokens');
+const { colors, typography, activePalette, logo } = require('./design-tokens.cjs');
 
 // Sanity guard: fail loudly at build time if design-tokens.js and this file
 // ever disagree about which palette is live, rather than silently drifting.
