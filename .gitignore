@@ -20,3 +20,7 @@ server/data/*.corrupt-*
 # dev server's own copy - see the distDir note in next.config.mjs.
 .next
 .next-dev
+
+# `next dev --experimental-https` self-signed cert and key, generated locally
+# by mkcert - never shared, never committed.
+/certificates

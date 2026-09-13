@@ -13,6 +13,9 @@
 export const DEMO_UNIT_PRICE = 1956;
 export const DEMO_ADDON_PRICE = 498;
 
+/** Stand-in Express Priority Shipping surcharge, shown once delivery is complete. */
+export const DEMO_SHIPPING_EXPRESS = 590;
+
 /** The promotion the checkout applies automatically at two or more units. */
 export const PROMO_MIN_UNITS = 2;
 export const PROMO_RATE = 0.2;

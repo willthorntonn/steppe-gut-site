@@ -49,6 +49,16 @@ export default function CheckoutChrome({ children }) {
 
   // Close the account menu on navigation and on an outside click / Escape,
   // so it never stays pinned open over the payment form.
+  // Holds the root at true 1:1 scale for the life of this route - see the
+  // `html[data-checkout]` rule in globals.css for why (Stripe's card iframe
+  // in Checkout.jsx cannot sit under a `zoom` ancestor). The header below
+  // re-applies the site's 85% shrink to itself, since it no longer gets it
+  // for free from the root.
+  useEffect(() => {
+    document.documentElement.setAttribute("data-checkout", "");
+    return () => document.documentElement.removeAttribute("data-checkout");
+  }, []);
+
   useEffect(() => setAccountOpen(false), [pathname]);
   useEffect(() => setSearchOpen(false), [pathname]);
   useEffect(() => {
@@ -78,7 +88,11 @@ export default function CheckoutChrome({ children }) {
         Skip to main content
       </a>
 
-      <header data-navtheme="light" className="relative z-40 bg-cream">
+      <header
+        data-navtheme="light"
+        className="relative z-40 bg-cream"
+        style={{ zoom: "var(--page-zoom)" }}
+      >
         <div className="flex items-center justify-between gap-2 px-3 py-3 sm:px-4 lg:px-5 lg:py-4">
           <Link
             href="/"

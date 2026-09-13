@@ -117,13 +117,20 @@ export async function POST(request) {
       if (json.length <= META_VALUE_MAX) metadata.ship = json;
     }
 
+    // Card carries Apple Pay / Google Pay / Link automatically once the
+    // domain is verified with Stripe. PromptPay is listed explicitly.
+    // TrueMoney is not a Stripe payment method and is never offered here.
+    // The page mounts one method at a time and Stripe requires the intent's
+    // types to match that Elements instance, so a chosen method narrows it.
+    const offered = ["card", "promptpay"];
+    const chosen = offered.includes(body.paymentMethodType)
+      ? [body.paymentMethodType]
+      : offered;
+
     const params = {
       amount,
       currency: "thb",
-      // Card carries Apple Pay / Google Pay / Link automatically once the
-      // domain is verified with Stripe. PromptPay is listed explicitly.
-      // TrueMoney is not a Stripe payment method and is never offered here.
-      payment_method_types: ["card", "promptpay"],
+      payment_method_types: chosen,
       metadata,
       receipt_email: email,
     };

@@ -56,6 +56,20 @@ html {
   overflow-x: clip;
 }
 
+/* /checkout/: held at true 1:1 scale instead of the site-wide 85% shrink.
+   Stripe's PaymentElement mounts a cross-origin iframe there, and Chromium's
+   click/focus routing into a cross-origin iframe breaks once the iframe sits
+   under a `zoom` ancestor chain - the card fields show a blinking caret but
+   silently drop every keystroke. CheckoutChrome sets this attribute for the
+   life of the route and re-applies the 85% shrink locally, to its own header
+   only, so nothing under <main> - where Checkout.jsx renders the form - ever
+   sits inside a zoomed ancestor. */
+html[data-checkout] {
+  zoom: 1;
+  --vw: 1vw;
+  --vh: 1vh;
+}
+
 /* Body / paragraph copy is set in the sans (Inter); the serif (EB Garamond)
    is display type only — headings, the wordmark, pull quotes. This floor
    catches any text written without an explicit `font-*` utility, which would

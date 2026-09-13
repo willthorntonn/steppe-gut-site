@@ -9,7 +9,8 @@
         "dev"
       ],
       "port": 3000,
-      "autoPort": true
+      "autoPort": true,
+      "url": "https://localhost:3000"
     }
   ]
 }

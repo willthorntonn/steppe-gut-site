@@ -409,20 +409,26 @@ ul.sg-fyb__benefits { display: grid; gap: 12px; font-size: 17px; margin-top: 14p
 
 .sg-fyb__pay { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; justify-content: center; }
 .sg-fyb__pay-badge {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 72px;
   aspect-ratio: 1.6;
+  padding: 6px 8px;
   border-radius: 8px;
   border: 1px solid rgba(28, 28, 28, 0.12);
   overflow: hidden;
   background: #ffffff;
+  box-sizing: border-box;
 }
 .sg-fyb__pay-badge--applepay { border-color: #000000; }
 .sg-fyb__pay-badge img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 /* ---- accordions ------------------------------------------------------ */

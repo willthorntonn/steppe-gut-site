@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BadgePercent, HelpCircle, Tag, Users } from "lucide-react";
 import FloatField from "../components/checkout/brick/FloatField";
 import StripePaymentSection from "../components/checkout/StripePaymentSection";
+import { ApplePayButton, GooglePayButton } from "../components/checkout/brick/marks";
 import Picture from "../components/ui/Picture";
 import { useCart } from "../cart/CartProvider";
 import { useAuth } from "../auth/AuthProvider";
@@ -14,6 +15,7 @@ import { getCountryFields, DEFAULT_COUNTRY_FIELDS } from "../data/countryFields"
 import {
   DEMO_UNIT_PRICE,
   DEMO_ADDON_PRICE,
+  DEMO_SHIPPING_EXPRESS,
   PROMO_MIN_UNITS,
   PROMO_RATE,
   baht,
@@ -89,6 +91,11 @@ const BENEFITS = [
   { icon: BadgePercent, label: "Discounts for Members" },
   { icon: null, label: "30-Day Product Guarantee" },
   { icon: Users, label: "Dedicated Ongoing Support" },
+];
+
+const SHIPPING_METHODS = [
+  { id: "standard", name: "Standard Free Shipping", eta: "3-8 Business Days", price: 0 },
+  { id: "express", name: "Express Priority Shipping", eta: "1-3 Business Days", price: DEMO_SHIPPING_EXPRESS },
 ];
 
 const FOOTER_LINKS = [
@@ -252,9 +259,33 @@ export default function Checkout() {
     (product) => !items.some((item) => item.slug === product.slug)
   );
 
-  const emailValid = EMAIL_RE.test(email.trim());
-
   const [errors, setErrors] = useState({});
+
+  // Shipping method options only appear once delivery is answered - either a
+  // saved address is chosen, or every required typed field has something in
+  // it. Recomputed on every change to the delivery fields rather than only
+  // on blur, so the box appears the moment the last field is filled.
+  const [shippingMethod, setShippingMethod] = useState(SHIPPING_METHODS[0].id);
+  const [deliveryComplete, setDeliveryComplete] = useState(false);
+
+  function checkDeliveryComplete() {
+    if (chosenAddress) {
+      setDeliveryComplete(true);
+      return;
+    }
+    const form = formRef.current;
+    if (!form) return;
+    const data = new FormData(form);
+    const complete = FIELD_ORDER.every((field) =>
+      (data.get(field.name) ?? "").toString().trim()
+    );
+    setDeliveryComplete(complete);
+  }
+
+  useEffect(() => {
+    checkDeliveryComplete();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chosenAddress]);
 
   /** Scrolls to and focuses the named field, then reports its label's red
    * text underneath via the `errors` state already wired into each
@@ -284,27 +315,36 @@ export default function Checkout() {
     [region, postal]
   );
 
-  /** Validates the typed delivery fields, sets the red text under the first
-   * few that are empty, and scrolls/focuses the highest one. Returns true
-   * only when every required field has something in it. A saved address
-   * needs none of this - it was already filled in to save it. */
+  /** Validates the contact email plus, unless a saved address covers it, the
+   * typed delivery fields - sets the red text under the first few that are
+   * empty or invalid, and scrolls/focuses the highest one. Returns true only
+   * when everything required is there. Email is checked regardless of
+   * whether a saved address is chosen; it is not part of that address. */
   function validateDeliveryFields() {
-    if (chosenAddress) {
-      setErrors({});
-      return true;
-    }
     const form = formRef.current;
-    if (!form) return true;
-    const data = new FormData(form);
+    const data = form ? new FormData(form) : null;
     const nextErrors = {};
     let firstInvalid = null;
-    for (const field of FIELD_ORDER) {
-      const value = (data.get(field.name) ?? "").toString().trim();
-      if (!value) {
-        nextErrors[field.name] = field.message;
-        if (!firstInvalid) firstInvalid = field.name;
+
+    const typedEmail = (data?.get("email") ?? email).toString().trim();
+    if (!typedEmail) {
+      nextErrors.email = "Enter your email address";
+      firstInvalid = "email";
+    } else if (!EMAIL_RE.test(typedEmail)) {
+      nextErrors.email = "That does not look like an email address";
+      firstInvalid = "email";
+    }
+
+    if (!chosenAddress && data) {
+      for (const field of FIELD_ORDER) {
+        const value = (data.get(field.name) ?? "").toString().trim();
+        if (!value) {
+          nextErrors[field.name] = field.message;
+          if (!firstInvalid) firstInvalid = field.name;
+        }
       }
     }
+
     setErrors(nextErrors);
     if (firstInvalid) {
       focusField(firstInvalid);
@@ -312,16 +352,6 @@ export default function Checkout() {
     }
     return true;
   }
-
-  // Changes whenever the basket does, so the payment section can keep the
-  // Stripe intent's amount in step.
-  const itemsKey = useMemo(
-    () =>
-      lines
-        .map((line) => `${line.product.slug}:${line.qty}`)
-        .join("|"),
-    [lines]
-  );
 
   /** The typed delivery fields, as an address. Uncontrolled, so read out of
    * the form on demand. */
@@ -363,11 +393,10 @@ export default function Checkout() {
 
   return (
     <>
-      {/* Cancels the site-wide zoom: 0.85 so every px below is a real px. */}
-      <div
-        style={{ zoom: "calc(1 / 0.85)" }}
-        className="font-sans text-forest antialiased"
-      >
+      {/* The root sits at true 1:1 scale for this whole route (see
+          `html[data-checkout]` in globals.css and CheckoutChrome), so every
+          px below is already a real px - no zoom needed here. */}
+      <div className="font-sans text-forest antialiased">
 
         <div className="mx-auto grid max-w-[1334px] grid-cols-1 items-start px-6 py-8 lg:grid-cols-[55fr_45fr] lg:py-[60px]">
           {/* ── LEFT: the form ─────────────────────────────────────────── */}
@@ -395,6 +424,20 @@ export default function Checkout() {
               ))}
             </ul>
 
+            {/* Static for now - the buttons don't do anything yet. */}
+            <div className="mt-8">
+              <p className="text-center text-[15px] text-forest/60">Express checkout</p>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <ApplePayButton />
+                <GooglePayButton />
+              </div>
+              <div className="mt-6 flex items-center gap-4 text-[13px] text-forest/50">
+                <span className="h-px flex-1 bg-forest/15" aria-hidden="true" />
+                OR
+                <span className="h-px flex-1 bg-forest/15" aria-hidden="true" />
+              </div>
+            </div>
+
             <form ref={formRef} noValidate onSubmit={(event) => event.preventDefault()} className="mt-8">
               <div className="flex items-baseline justify-between gap-4">
                 <SectionTitle>Contact</SectionTitle>
@@ -420,7 +463,11 @@ export default function Checkout() {
                   name="email"
                   autoComplete="email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                    setErrors((current) => ({ ...current, email: undefined }));
+                  }}
+                  error={errors.email}
                   suffix={<HelpCircle size={17} strokeWidth={1.5} aria-hidden="true" />}
                 />
                 <CheckBox
@@ -507,7 +554,11 @@ export default function Checkout() {
               {/* Hidden, not disabled, when a saved address is chosen: an
                   empty form under a chosen address is a second answer to a
                   question already answered. */}
-              <div className={`mt-4 space-y-3 ${chosenAddress ? "hidden" : ""}`}>
+              <div
+                className={`mt-4 space-y-3 ${chosenAddress ? "hidden" : ""}`}
+                onChange={checkDeliveryComplete}
+                onBlur={checkDeliveryComplete}
+              >
                 <FloatField
                   label="Country/Region"
                   as="select"
@@ -620,17 +671,48 @@ export default function Checkout() {
               </div>
 
               <SectionTitle className="mt-9">Shipping method</SectionTitle>
-              <p className="mt-3 rounded-[12px] border border-forest/20 bg-[#FFFDF9] px-5 py-6 text-center text-[14px] text-forest/60">
-                Enter your shipping address to view available shipping methods
-              </p>
+              {deliveryComplete ? (
+                <div className="mt-3 space-y-3">
+                  {SHIPPING_METHODS.map((method) => {
+                    const selected = shippingMethod === method.id;
+                    return (
+                      <label
+                        key={method.id}
+                        className={`flex cursor-pointer items-center justify-between gap-4 rounded-[12px] border-2 bg-[#FFFDF9] px-5 py-4 transition-colors duration-200 ${
+                          selected ? "border-forest" : "border-forest/20"
+                        }`}
+                      >
+                        <span className="flex items-center gap-3">
+                          <Radio
+                            name="shippingMethod"
+                            value={method.id}
+                            checked={selected}
+                            onChange={() => setShippingMethod(method.id)}
+                          />
+                          <span className="text-[14px] leading-[1.4]">
+                            <span className="block font-medium">{method.name}</span>
+                            <span className="block text-forest/60">{method.eta}</span>
+                          </span>
+                        </span>
+                        <span className="shrink-0 text-[14px] font-medium">
+                          {method.price === 0 ? "FREE" : baht(method.price)}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="mt-3 rounded-[12px] border border-forest/20 bg-[#FFFDF9] px-5 py-6 text-center text-[14px] text-forest/60">
+                  Enter your shipping address to view available shipping methods
+                </p>
+              )}
 
               {/* ── Payment, on Stripe ─────────────────────────────────── */}
               <StripePaymentSection
                 email={email.trim()}
-                emailValid={emailValid}
                 cartEmpty={lines.length === 0}
+                amount={subtotal}
                 buildDraft={buildDraft}
-                itemsKey={itemsKey}
                 validateDeliveryFields={validateDeliveryFields}
               />
             </form>
