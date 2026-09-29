@@ -25,13 +25,14 @@
 // for every heading below it and for body copy. Gold is the focus ring only.
 //
 // The copy is now Steppe Gut's: the reference's section order and phrasing are
-// kept where they still apply, rewritten to name the real controller (site
-// operator and brand owner S72 Strategic Co., Ltd.), the real Thai importer
-// (Y Family Co., Ltd., registration number 0105565114721), the info@ contact,
-// and Thailand's PDPA in place of the EU GDPR. The Yakult-only processing
-// (profiling, factory-visit bookings, EU Model Clauses, the UK/ROI residents
-// notice) is removed rather than rewritten. This page still requires review by
-// a Thai-qualified lawyer before launch - see website_blueprint/pages/legal.md.
+// kept where they still apply, rewritten to name the real controller - Y
+// Family Co., Ltd. (บริษัท วาย แฟมิลี่ จำกัด), registration number
+// 0105565114721, the site operator, brand owner and Thai importer/distributor
+// - the info@ contact, and Thailand's PDPA in place of the EU GDPR. The
+// Yakult-only processing (profiling, factory-visit bookings, EU Model
+// Clauses, the UK/ROI residents notice) is removed rather than rewritten.
+// This page still requires review by a Thai-qualified lawyer before launch -
+// see website_blueprint/pages/legal.md.
 
 const BODY = {
   fontSize: "clamp(1.25rem, 1.6vw, 1.55rem)",
@@ -132,14 +133,14 @@ export default function Privacy() {
             </p>
 
             <P>
-              S72 Strategic Co., Ltd. is sensitive to privacy issues surrounding use of customer
+              Y Family Co., Ltd. is sensitive to privacy issues surrounding use of customer
               information. Protection of privacy is extremely important to us. The instances in
               which we collect and use information are specifically described in this privacy
               statement, which reflects the principles of Thailand&rsquo;s Personal Data Protection
               Act (PDPA).
             </P>
             <P>
-              This privacy statement describes how your personal data is processed by S72 Strategic
+              This privacy statement describes how your personal data is processed by Y Family
               Co., Ltd. (&ldquo;Steppe Gut&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) in connection
               with the services (&ldquo;Services&rdquo;) we provide to you. These Services include:
             </P>
@@ -164,12 +165,11 @@ export default function Privacy() {
             <Heading>Responsible party</Heading>
             <P>
               The controller of the processing of your personal data (meaning the party that is
-              responsible) is S72 Strategic Co., Ltd., [privacy contact email to be confirmed],
-              [contact phone to be confirmed]. The
-              product is imported and distributed in Thailand by Y Family Co., Ltd. (juristic person
-              registration number 0105565114721), registered office 45/1 Silom 19 Building, 4th
-              Floor, Room 415, Silom Road, Silom Subdistrict, Bang Rak District, Bangkok 10500. S72
-              Strategic Co., Ltd. is your point of contact for privacy and data protection matters.
+              responsible) is Y Family Co., Ltd. (บริษัท วาย แฟมิลี่ จำกัด), juristic person
+              registration number 0105565114721 (Tax ID 0105565114721), registered office 45/1
+              Silom, 19 Building, 4th Floor, Room 415, Trok Weth, Silom Road, Silom Subdistrict,
+              Bang Rak District, Bangkok 10500, info@steppegut.com, +66 97 251 5911. Y Family Co.,
+              Ltd. is your point of contact for privacy and data protection matters.
             </P>
 
             <Heading>Which personal data do we collect from you?</Heading>
@@ -265,10 +265,6 @@ export default function Privacy() {
                 fulfilment and delivery partners, our email provider, our customer support tools and
                 our analytics providers.
               </li>
-              <li>
-                Our importer and distributor in Thailand, Y Family Co., Ltd., where needed for
-                delivery, regulatory or after-sales purposes.
-              </li>
               <li>Public authorities, where we are required to disclose data by law.</li>
             </List>
             <P>
@@ -329,8 +325,7 @@ export default function Privacy() {
               </li>
             </List>
             <P>
-              You can exercise your rights by contacting us via [privacy contact email to be
-              confirmed]. Upon your request, we
+              You can exercise your rights by contacting us via info@steppegut.com. Upon your request, we
               may ask for additional information from you to verify your identity and to handle your
               request efficiently. All identity check documents will thereafter be disposed of
               securely.
@@ -357,13 +352,13 @@ export default function Privacy() {
 
             <Heading>Contact Us</Heading>
             <P>
-              If you have any further questions, please contact us via [privacy contact email to be
-              confirmed]
+              If you have any further questions, please contact us via{" "}
+              <A href="mailto:info@steppegut.com">info@steppegut.com</A>
             </P>
 
             <Heading>Disclaimer</Heading>
             <P>
-              This website is operated by S72 Strategic Co., Ltd. Steppe Gut is a dietary supplement
+              This website is operated by Y Family Co., Ltd. Steppe Gut is a dietary supplement
               and is not intended to diagnose, treat, cure or prevent any disease. It contains milk.
               Thai FDA registration is in progress; registration details will be published here on
               completion. Nothing on this website is medical advice, and you should consult a
@@ -371,7 +366,7 @@ export default function Privacy() {
             </P>
 
             <p style={BODY} className="mt-8 font-sans text-earth/60">
-              Copyright © 2026 S72 Strategic Co., Ltd. All rights reserved.
+              Copyright © 2026 Y Family Co., Ltd. All rights reserved.
             </p>
           </div>
         </div>

@@ -32,11 +32,21 @@
 //
 // The copy is now Steppe Gut's: the reference's section order and phrasing are
 // kept where they still apply, and the entity, address, company number and
-// contact are the real ones - site operator and brand owner S72 Strategic Co.,
-// Ltd., Thai importer and distributor Y Family Co., Ltd. (registration number
-// 0105565114721). The Yakult-only clauses (the reproduction licence, the Yakult
-// Honsha affiliates wording) are removed rather than rewritten. Still to be
-// reviewed by a Thai-qualified lawyer before launch.
+// contact are the real ones - Y Family Co., Ltd. (บริษัท วาย แฟมิลี่ จำกัด) is
+// the site operator, brand owner and Thai importer/distributor, registered in
+// Thailand under juristic person registration number 0105565114721. The
+// Yakult-only clauses (the reproduction licence, the Yakult Honsha affiliates
+// wording) are removed rather than rewritten.
+//
+// "Who we are", "Using this website", "Ordering" and "Our liability" are not
+// in the Yakult reference; they're original clauses drafted to cover the
+// gaps a straight ecommerce Terms page needs (contracting party, site use,
+// order formation, liability) that the reference's content-site template
+// never had to. "Prices and payment", "Delivery" and "Cancellation and
+// returns" are deliberately still missing - those need Will's business
+// decisions (refund window, who pays return shipping, customs/duty
+// liability) rather than boilerplate, so they're not invented here.
+// Still to be reviewed by a Thai-qualified lawyer before launch.
 
 const BODY = {
   fontSize: "clamp(1.25rem, 1.6vw, 1.55rem)",
@@ -134,17 +144,58 @@ export default function Terms() {
 
             <P>
               Please read these terms and conditions carefully before you start to use our website
-              (including accessing or browsing). The Steppe Gut website is operated by S72 Strategic
-              Co., Ltd., and use of it is subject to the following terms and conditions. By using our
+              (including accessing or browsing). The Steppe Gut website is operated by Y Family Co.,
+              Ltd., and use of it is subject to the following terms and conditions. By using our
               website, you confirm that you accept these terms and conditions and that you agree to
               comply with them.
             </P>
 
+            <Heading>Who we are</Heading>
+            <P>
+              Steppe Gut is a trading name of Y Family Co., Ltd. (บริษัท วาย แฟมิลี่ จำกัด), a
+              company registered in Thailand under juristic person registration number
+              0105565114721, with its registered office at 45/1 Silom, 19 Building, 4th Floor,
+              Room 415, Trok Weth, Silom Road, Silom Subdistrict, Bang Rak District, Bangkok
+              10500. References in these terms and conditions to "we", "us" and "our" are to Y
+              Family Co., Ltd. Steppe Gut is manufactured for us by Monsubi Foods LLC in Mongolia,
+              from mare's milk sourced and fermented in Töv Province.
+            </P>
+
+            <Heading>Using this website</Heading>
+            <P>
+              You must be of an age at which you can enter into a legally binding contract in
+              your country of residence to place an order on this website. If you set up an
+              account with us, you are responsible for keeping your password and login details
+              confidential and for all activity that takes place under your account, and you must
+              tell us straight away if you suspect anyone else has access to it. You must not use
+              this website in any way that is unlawful or fraudulent, or intended to harm or
+              exploit any person, and you must not attempt to gain unauthorised access to any part
+              of the website, the server it runs on, or any system or network connected to it. We
+              may suspend, withdraw or restrict the availability of all or part of this website at
+              any time, for example for maintenance, and we do not guarantee that the website, or
+              any content on it, will always be available or uninterrupted.
+            </P>
+
+            <Heading>Ordering</Heading>
+            <P>
+              By placing an order through this website you are making an offer to buy the
+              products in your order, which we are free to accept or decline. Nothing on this
+              website constitutes an offer by us to sell a product. A contract between you and us
+              is only formed once we send you an email confirming that your order has been
+              accepted; an order acknowledgement or receipt is not acceptance. We may decline or
+              cancel an order at any stage, including after acknowledgement, if a product is
+              unavailable, if we identify an error in the price or description of a product, or if
+              we suspect fraud or a breach of these terms and conditions; where we cancel an order
+              after payment has been taken, we will refund you in full. You are responsible for
+              checking that the details of your order, including the delivery address, are
+              correct before you submit it.
+            </P>
+
             <Heading>Ownership of the copyright on this site</Heading>
             <P>
-              Copyright © S72 Strategic Co., Ltd. 2026. All rights reserved. All copyright and other
+              Copyright © Y Family Co., Ltd. 2026. All rights reserved. All copyright and other
               intellectual property rights in the text, images and other material on this site are
-              owned by S72 Strategic Co., Ltd. or are included with the permission of the relevant
+              owned by Y Family Co., Ltd. or are included with the permission of the relevant
               owner. You may browse this site and print or download extracts for your own personal,
               non-commercial use, provided the above copyright notice appears in any copy. No other
               licence or right is granted.
@@ -152,8 +203,8 @@ export default function Terms() {
 
             <Heading>Ownership of trademarks on this site</Heading>
             <P>
-              All trademarks displayed on this site are either owned or used under licence by S72
-              Strategic Co., Ltd. The unauthorised use of any trademark on this site is strictly
+              All trademarks displayed on this site are either owned or used under licence by Y
+              Family Co., Ltd. The unauthorised use of any trademark on this site is strictly
               prohibited.
             </P>
 
@@ -163,25 +214,40 @@ export default function Terms() {
               information purposes only. It should not be relied on for any specific purpose and no
               representation or warranty is given as regards its accuracy or its completeness. Steppe
               Gut is a dietary supplement and is not intended to diagnose, treat, cure or prevent any
-              disease. It should not be used as a substitute for a varied and balanced diet. It
-              contains milk. Thai FDA registration is in progress; registration details will be
-              published here on completion. Nothing on this website is medical advice, and you should
-              consult a qualified professional about any health concern. To the extent permitted by
-              law, neither S72 Strategic Co., Ltd. nor its officers, employees or agents shall be
-              liable for any loss, damage or expense arising out of any access to or use of this site
-              or any site linked to it, including, without limitation, any loss of profit or any
-              indirect, incidental or consequential loss. S72 Strategic Co., Ltd. reserves the right
-              to make any changes and corrections to this site as and when it is considered
+              disease. It should not be used as a substitute for a varied and balanced diet. It is
+              a dairy product made from mare's milk and contains milk; if you have a milk allergy,
+              do not take it, and if you are lactose intolerant you should be aware that
+              fermentation breaks down most, but not all, of the lactose. If you are pregnant or
+              breastfeeding, taking any medication, or under the care of a doctor for a medical
+              condition, speak to your doctor or pharmacist before taking Steppe Gut. Thai FDA
+              registration is in progress; registration details will be published here on
+              completion. Nothing on this website is medical advice, and you should consult a
+              qualified professional about any health concern. Y Family Co., Ltd. reserves the
+              right to make any changes and corrections to this site as and when it is considered
               appropriate and without notice.
             </P>
 
             <Heading>Links</Heading>
             <P>
-              The site may provide links to other websites, which are not under the control of S72
-              Strategic Co., Ltd. S72 Strategic Co., Ltd. is not responsible in any way for the
+              The site may provide links to other websites, which are not under the control of Y
+              Family Co., Ltd. Y Family Co., Ltd. is not responsible in any way for the
               content of any external websites or links. Such links are provided only as a
-              convenience, and the inclusion of any link does not imply endorsement by S72 Strategic
+              convenience, and the inclusion of any link does not imply endorsement by Y Family
               Co., Ltd. of the content of that site.
+            </P>
+
+            <Heading>Our liability</Heading>
+            <P>
+              Nothing in these terms and conditions excludes or limits our liability for death or
+              personal injury caused by our negligence, for fraud or fraudulent
+              misrepresentation, or for any other liability that cannot be excluded or limited
+              under Thai law. Subject to that, to the extent permitted by law, we are not liable
+              to you for any loss of profit, loss of business, or any indirect or consequential
+              loss arising out of or in connection with your use of this website or your order,
+              and our total liability to you for any claim arising out of your order is limited
+              to the price you paid for the relevant product. We will not be liable for any delay
+              or failure to perform our obligations under these terms and conditions where the
+              delay or failure results from an event outside our reasonable control.
             </P>
 
             <Heading>Governing law</Heading>
@@ -193,18 +259,17 @@ export default function Terms() {
             <Heading>General enquiries</Heading>
             <P>
               For general enquiries and company information please email{" "}
-              [contact email to be confirmed]
+              <A href="mailto:info@steppegut.com">info@steppegut.com</A>
             </P>
 
             <p style={BODY} className="mt-8 font-sans text-earth/60">
-              Copyright © S72 Strategic Co., Ltd. 2026. All rights reserved.
+              Copyright © Y Family Co., Ltd. 2026. All rights reserved.
             </p>
             <p style={BODY} className="mt-8 font-sans text-earth/60">
-              The Steppe Gut website is operated by S72 Strategic Co., Ltd. The product is imported
-              and distributed in Thailand by Y Family Co., Ltd., registered in Thailand under
-              juristic person registration number 0105565114721, registered office 45/1 Silom 19
-              Building, 4th Floor, Room 415, Silom Road, Silom Subdistrict, Bang Rak District,
-              Bangkok 10500.
+              The Steppe Gut website is operated by Y Family Co., Ltd. (บริษัท วาย แฟมิลี่ จำกัด),
+              registered in Thailand under juristic person registration number 0105565114721 (Tax ID
+              0105565114721), registered office 45/1 Silom, 19 Building, 4th Floor, Room 415, Trok
+              Weth, Silom Road, Silom Subdistrict, Bang Rak District, Bangkok 10500.
             </p>
           </div>
         </div>

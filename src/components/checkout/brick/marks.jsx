@@ -19,7 +19,7 @@ const BOX = "inline-block shrink-0 rounded-[3px]";
 export function VisaMark() {
   return (
     <svg viewBox="0 0 38 24" className={`${BOX} h-6 w-[38px]`} aria-hidden="true">
-      <rect width="38" height="24" rx="3" fill="#fff" stroke="#E5E5E5" />
+      <rect width="38" height="24" rx="3" fill="#1A1F71" />
       <text
         x="19"
         y="16.5"
@@ -28,7 +28,7 @@ export function VisaMark() {
         fontSize="10"
         fontWeight="700"
         fontStyle="italic"
-        fill="#1A1F71"
+        fill="#fff"
         letterSpacing="0.4"
       >
         VISA
@@ -40,7 +40,7 @@ export function VisaMark() {
 export function MastercardMark() {
   return (
     <svg viewBox="0 0 38 24" className={`${BOX} h-6 w-[38px]`} aria-hidden="true">
-      <rect width="38" height="24" rx="3" fill="#fff" stroke="#E5E5E5" />
+      <rect width="38" height="24" rx="3" fill="#000" />
       <circle cx="15.5" cy="12" r="6.5" fill="#EB001B" />
       <circle cx="22.5" cy="12" r="6.5" fill="#F79E1B" fillOpacity="0.9" />
     </svg>
@@ -74,6 +74,18 @@ export function AmexMark() {
         EX
       </text>
     </svg>
+  );
+}
+
+/** A small "+" beside the card marks, for the other card brands Stripe accepts. */
+export function MoreCardsMark() {
+  return (
+    <span
+      aria-hidden="true"
+      className="shrink-0 font-sans text-[15px] font-semibold leading-none text-forest/60"
+    >
+      +
+    </span>
   );
 }
 

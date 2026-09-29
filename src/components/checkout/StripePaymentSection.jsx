@@ -2,9 +2,15 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  Elements,
+  ExpressCheckoutElement,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import { getStripe } from "../../lib/stripe/browser";
-import { AmexMark, MastercardMark, PromptPayMark, VisaMark } from "./brick/marks";
+import { AmexMark, MastercardMark, MoreCardsMark, PromptPayMark, VisaMark } from "./brick/marks";
 
 // The payment half of the checkout, on Stripe.
 //
@@ -118,12 +124,14 @@ export default function StripePaymentSection({
 
   // Prices the basket and opens a fresh PaymentIntent - called only once,
   // from "Pay now" (for a card, after its fields passed elements.submit()).
-  const syncIntent = useCallback(async () => {
+  // Express Checkout passes "card" explicitly - Apple Pay and Google Pay
+  // settle as card payments, whichever method row is selected below.
+  const syncIntent = useCallback(async (paymentMethodType = method) => {
     const draft = buildDraft();
     const res = await fetch("/api/checkout/intent/", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ ...draft, email, paymentMethodType: method }),
+      body: JSON.stringify({ ...draft, email, paymentMethodType }),
     });
     const payload = await res.json().catch(() => null);
     if (!res.ok) {
@@ -207,6 +215,9 @@ function PayNow({
   // The card fields have painted - its panel only opens once they have.
   const [cardLoaded, setCardLoaded] = useState(false);
   const markCardLoaded = useCallback(() => setCardLoaded(true), []);
+  // Stripe draws Apple Pay / Google Pay only where this browser and device
+  // support them, so the row stays collapsed until it reports at least one.
+  const [expressAvailable, setExpressAvailable] = useState(false);
 
   const { stripe, elements } = handles;
 
@@ -346,6 +357,22 @@ function PayNow({
 
   return (
     <div className="mt-4" ref={containerRef}>
+      {/* Apple Pay / Google Pay, in their own Elements so the wallet buttons
+          never share an instance with the card-only fields below. */}
+      <div className={expressAvailable ? "mb-4" : "h-0 overflow-hidden"}>
+        <Elements stripe={stripePromise} options={cardOptions}>
+          <ExpressCheckout
+            syncIntent={syncIntent}
+            validateDeliveryFields={validateDeliveryFields}
+            email={email}
+            disabled={submitting}
+            onAvailable={setExpressAvailable}
+            onError={setPayError}
+            onPaid={routeToConfirmation}
+          />
+        </Elements>
+      </div>
+
       {/* One connected block, like the saved-address list above - a single
           outline wraps both methods, with a hairline between them. The
           green selected outline sits only on the white title row, inset so
@@ -380,12 +407,13 @@ function PayNow({
                   />
                   <span className="text-[14px] font-medium text-black">{m.label}</span>
                 </span>
-                <span className="flex shrink-0 items-center gap-1.5">
+                <span className="flex shrink-0 items-center gap-1.5 -mr-2">
                   {m.id === "card" ? (
                     <>
                       <VisaMark />
                       <MastercardMark />
                       <AmexMark />
+                      <MoreCardsMark />
                     </>
                   ) : (
                     <PromptPayMark />
@@ -468,6 +496,98 @@ function CardFields({ onHandles, onLoaded }) {
         // also turned off - this box is card-only, so no wallet tab should
         // sit next to "Card".
         wallets: { link: "never", googlePay: "never", applePay: "never" },
+      }}
+    />
+  );
+}
+
+// Apple Pay and Google Pay buttons, on Stripe's Express Checkout Element.
+//
+// Same deferred flow as the card: the wallet sheet opens off the click with
+// the basket total, and only once the shopper authorises it is the real
+// PaymentIntent priced and confirmed. Wallet payments are card payments to
+// Stripe, so the intent is opened as "card" to match this Elements instance.
+function ExpressCheckout({
+  syncIntent,
+  validateDeliveryFields,
+  email,
+  disabled,
+  onAvailable,
+  onError,
+  onPaid,
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+
+  function handleReady({ availablePaymentMethods }) {
+    onAvailable(Boolean(availablePaymentMethods));
+  }
+
+  // The sheet must be resolved within a second of the click, so only the
+  // synchronous contact/delivery check runs here. Left unresolved, it stays
+  // closed while the page scrolls to the empty field.
+  function handleClick(event) {
+    if (disabled) return;
+    onError("");
+    if (validateDeliveryFields && !validateDeliveryFields()) return;
+    event.resolve();
+  }
+
+  async function handleConfirm() {
+    if (!stripe || !elements) return;
+
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      onError(submitError.message ?? "That payment could not be completed, try again");
+      return;
+    }
+
+    let payload;
+    try {
+      payload = await syncIntent("card");
+    } catch (error) {
+      elements.getElement("expressCheckout")?.paymentFailed?.({ reason: "fail" });
+      onError(error.message ?? "Payment could not be set up");
+      return;
+    }
+
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      clientSecret: payload.clientSecret,
+      confirmParams: {
+        return_url: `${window.location.origin}/checkout/confirmation/`,
+        payment_method_data: { billing_details: { email } },
+      },
+      redirect: "if_required",
+    });
+
+    if (error) {
+      onError(error.message ?? "That payment could not be completed, try again");
+      return;
+    }
+    if (paymentIntent) onPaid(paymentIntent);
+  }
+
+  return (
+    <ExpressCheckoutElement
+      onReady={handleReady}
+      onClick={handleClick}
+      onConfirm={handleConfirm}
+      options={{
+        buttonHeight: 48,
+        buttonTheme: { applePay: "black", googlePay: "black" },
+        buttonType: { applePay: "plain", googlePay: "plain" },
+        // Only the two wallets asked for - no Link, PayPal, Klarna or Amazon
+        // Pay buttons alongside them.
+        paymentMethods: {
+          applePay: "auto",
+          googlePay: "auto",
+          link: "never",
+          paypal: "never",
+          amazonPay: "never",
+          klarna: "never",
+        },
+        layout: { maxColumns: 2, maxRows: 1, overflow: "never" },
       }}
     />
   );

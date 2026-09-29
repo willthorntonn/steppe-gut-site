@@ -182,6 +182,12 @@ export default function AuthModal() {
   // Set once a reset link has been sent, so the sign-in tab can say so rather
   // than leaving the visitor wondering whether it went.
   const [resetSent, setResetSent] = useState(false);
+  // "Forgotten your password?" opens its own modal on top of sign-in, rather
+  // than reusing the sign-in form's email field inline.
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotError, setForgotError] = useState("");
+  const [forgotBusy, setForgotBusy] = useState(false);
   const [avatar, setAvatar] = useState(null);
   const [values, setValues] = useState({
     name: "",
@@ -205,6 +211,10 @@ export default function AuthModal() {
     setMode(authModalMode === "signin" ? "signin" : "create");
     setJustRegistered(null);
     setResetSent(false);
+    setForgotOpen(false);
+    setForgotEmail("");
+    setForgotError("");
+    setForgotBusy(false);
     setAvatar(null);
     setValues({ name: "", email: "", password: "", confirm: "" });
     setPromotions(false);
@@ -291,25 +301,40 @@ export default function AuthModal() {
     }
   };
 
-  const handleForgotPassword = async () => {
-    if (!EMAIL_RE.test(values.email.trim())) {
-      setErrors((e) => ({
-        ...e,
-        email: "Enter your email address first, and we'll send a reset link",
-      }));
+  // Opens the forgot-password modal, seeded with whatever email the visitor
+  // had already typed into the sign-in form.
+  const openForgotPassword = () => {
+    setForgotEmail(values.email);
+    setForgotError("");
+    setForgotOpen(true);
+  };
+
+  const closeForgotPassword = () => {
+    setForgotOpen(false);
+  };
+
+  const handleForgotSubmit = async (event) => {
+    event.preventDefault();
+    if (!EMAIL_RE.test(forgotEmail.trim())) {
+      setForgotError("Enter a valid email address");
       return;
     }
-    setBusy(true);
-    setFormError("");
+    setForgotBusy(true);
+    setForgotError("");
     try {
-      await requestPasswordReset(values.email);
+      await requestPasswordReset(forgotEmail);
       // Said the same way whether or not that address has an account, so this
       // cannot be used to find out which addresses do.
       setResetSent(true);
+      setForgotOpen(false);
     } catch (error) {
-      showFailure(error);
+      if (error instanceof ApiError && error.field) {
+        setForgotError(error.message);
+      } else {
+        setForgotError(error.message ?? "Something went wrong, try again");
+      }
     } finally {
-      setBusy(false);
+      setForgotBusy(false);
     }
   };
 
@@ -420,6 +445,7 @@ export default function AuthModal() {
       : "Welcome back. Your orders and saved addresses are where you left them";
 
   return (
+    <>
     <Modal
       open={authModalOpen}
       onClose={closeAuthModal}
@@ -594,7 +620,7 @@ export default function AuthModal() {
               <p className="mt-4 font-sans text-[14px] text-forest/70">
                 <button
                   type="button"
-                  onClick={handleForgotPassword}
+                  onClick={openForgotPassword}
                   disabled={busy}
                   className={LINK_BTN}
                 >
@@ -620,5 +646,48 @@ export default function AuthModal() {
         </>
       )}
     </Modal>
+
+    <Modal
+      open={authModalOpen && forgotOpen}
+      onClose={closeForgotPassword}
+      title="Reset your password"
+      description="Enter your account email and we'll send a link to choose a new password"
+      maxWidth="max-w-[480px]"
+    >
+      <form noValidate onSubmit={handleForgotSubmit} className="space-y-6">
+        <Field
+          label="Email"
+          name="forgot-email"
+          type="email"
+          autoComplete="email"
+          value={forgotEmail}
+          onChange={(event) => {
+            setForgotEmail(event.target.value);
+            setForgotError("");
+          }}
+          required
+          error={forgotError}
+        />
+        <div>
+          <button
+            type="submit"
+            disabled={forgotBusy}
+            className={`${PRIMARY_BTN} disabled:opacity-60`}
+          >
+            {forgotBusy ? "Sending reset link" : "Send reset link"}
+          </button>
+          <p className="mt-4 font-sans text-[14px] text-forest/70">
+            <button
+              type="button"
+              onClick={closeForgotPassword}
+              className={LINK_BTN}
+            >
+              Back to sign in
+            </button>
+          </p>
+        </div>
+      </form>
+    </Modal>
+    </>
   );
 }

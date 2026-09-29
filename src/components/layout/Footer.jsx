@@ -239,7 +239,7 @@ export default function Footer() {
         </ul>
         <div className="flex flex-wrap items-center gap-x-8 gap-y-4 sm:justify-end">
           <p className="shrink-0 font-sans text-xs text-cream/60 lg:text-base">
-            &copy; {new Date().getFullYear()} Copyright S72 Strategic Limited
+            &copy; {new Date().getFullYear()} Copyright Y Family Co., Ltd.
           </p>
         </div>
       </div>

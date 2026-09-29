@@ -445,9 +445,9 @@ export default function CheckoutForm({ canOrder }) {
         Questions before you order? Email{" "}
         <a
           className="underline decoration-gold decoration-2 underline-offset-4"
-          href="mailto:info@s72strategic.com"
+          href="mailto:info@steppegut.com"
         >
-          info@s72strategic.com
+          info@steppegut.com
         </a>
       </p>
     </form>

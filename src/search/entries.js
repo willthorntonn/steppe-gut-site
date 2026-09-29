@@ -158,8 +158,8 @@ const OUR_STORY = [
     hash: "#who-makes-it",
     section: "Who makes it",
     label: "Who makes it",
-    body: `Three companies are involved and all three are named. Manufactured by ${COMPANY.manufacturer.name} in ${COMPANY.manufacturer.country}. Imported and distributed by ${COMPANY.importer.name}, ${COMPANY.importer.address.join(", ")}. Brand owner ${COMPANY.brandOwner.name}, ${COMPANY.brandOwner.email}`,
-    terms: "manufacturer importer brand owner monsubi yfamily s72 strategic bangkok address transparency",
+    body: `Two companies are involved and both are named. Manufactured by ${COMPANY.manufacturer.name} in ${COMPANY.manufacturer.country}. Imported, distributed and owned by ${COMPANY.brandOwner.name}, ${COMPANY.importer.address.join(", ")}, ${COMPANY.brandOwner.email}`,
+    terms: "manufacturer importer brand owner monsubi yfamily bangkok address transparency",
   },
   {
     page: "Our Story",

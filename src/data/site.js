@@ -59,11 +59,13 @@ export const FOOTER_LINKS = [
 
 // From BRAND_GUIDELINES.md §1 and §8. These are the named-entity trust signals
 // listed in 02_brand_guidelines.md §10 - manufacturer, importer and brand
-// owner are all stated, with a real address and a real phone number.
+// owner are all stated, with a real address and a real phone number. Y Family
+// Co., Ltd. is the brand owner, site operator and Thai importer/distributor
+// (S72 is a hired agency for go-to-market and has no legal role on the site).
 export const COMPANY = {
   brandOwner: {
-    name: "S72 Strategic Co., Ltd.",
-    email: "info@s72strategic.com",
+    name: "Y Family Co., Ltd.",
+    email: "info@steppegut.com",
     phone: "+66 97 251 5911",
     // tel: links strip the formatting the visible text keeps.
     phoneHref: "+6697251591",

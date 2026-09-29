@@ -117,8 +117,8 @@ export const MANUFACTURING = {
   makers: {
     heading: "Named, not implied",
     body: [
-      "Manufacturing is by Monsubi Foods LLC, in Mongolia. Import and distribution in Thailand is by YFamily Co., Ltd., in Bang Rak, Bangkok. The brand is owned by S72 Strategic Co., Ltd.",
-      "A supplement whose manufacturer you cannot identify is a supplement worth being cautious about. These are the three companies involved, and there are no others.",
+      "Manufacturing is by Monsubi Foods LLC, in Mongolia. Import, distribution and brand ownership in Thailand is by Y Family Co., Ltd., in Bang Rak, Bangkok.",
+      "A supplement whose manufacturer you cannot identify is a supplement worth being cautious about. These are the two companies involved, and there are no others.",
     ],
     imageBrief:
       "plain editorial photograph of brushed stainless steel low-temperature drying equipment in a clean simple production room, cool daylight, no people, matter-of-fact industrial tone",
