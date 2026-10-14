@@ -72,17 +72,36 @@ Facts and decisions we cannot produce ourselves.
 
 ### Logistics and commercial decisions
 
-- Fulfilment, freight and courier partners used for worldwide shipping
+- ~~Fulfilment, freight and courier partners used for worldwide shipping~~ — EMS and DHL
+  (international), Flash Express and Lalamove (domestic, Thailand). Reflected in
+  `src/views/Terms.jsx` ("Delivery") and `src/data/faq.js`.
 - Payment processor(s) in use
 - Governing law and jurisdiction for the Terms (Thailand, Mongolia, England, or other)
 - Which entity is named as the seller / contracting party
 - Currency prices are shown in, and whether prices include or exclude tax
-- Who pays import duties, customs and taxes on international orders (customer or company)
-- List of countries shipped to, or any excluded countries
-- Returns and refund policy for an opened or sealed consumable: returns accepted or not, who pays
-  return shipping, refund window
+- ~~Who pays import duties, customs and taxes on international orders (customer or company)~~ —
+  customer. Reflected in `src/views/Terms.jsx` and `src/data/faq.js`.
+- ~~List of countries shipped to, or any excluded countries~~ — domestic (Thailand) and
+  international, no exclusions given. Reflected in `src/data/faq.js`. Note: checkout
+  (`src/components/checkout/CheckoutForm.jsx`) is still hard-coded to Thailand-only addresses;
+  opening it up to international orders is a separate build (country selector, address formats,
+  shipping-cost logic), not yet done.
+- ~~Returns and refund policy for an opened or sealed consumable: returns accepted or not, who
+  pays return shipping, refund window~~ — 7-day window; pack must be unopened and sealed, or
+  opened with photo/video evidence of a quality or damage issue; customer pays return shipping.
+  Reflected in `src/views/Terms.jsx` ("Cancellation and returns") and `src/data/faq.js`.
 - Whether subscriptions are sold, and the billing and cancellation terms if so
 - Minimum age to purchase or use the product
+
+Delivery timeframes: domestic 2-5 working days, international 2-4 weeks. Failed/delayed delivery
+policy (trace with courier, then reship or refund if confirmed lost) is a standard policy for this
+product type, not a business decision Will supplied — flagged for his review, now applied.
+
+Pre-dispatch cancellation right: customers can cancel for any reason any time before dispatch,
+full refund — standard practice for this product type, now applied to `src/views/Terms.jsx` and
+`src/data/faq.js`. Thai consumer law gives no further mandatory minimum right (cooling-off or
+otherwise) for this type of product beyond the policy above, so the Terms page states the returns
+policy as the company's own, not a statutory entitlement.
 
 ---
 

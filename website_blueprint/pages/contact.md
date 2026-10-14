@@ -56,7 +56,7 @@ Routes enquiries to the right place. The reference site's contact page uses a st
 
 **Column 1 — Steppe Gut (Thailand)**
 > **Email:** hello@steppegut.com *(placeholder — confirm the real address before publishing)*
-> **Phone:** +66 97 251 5911
+> **Phone:** +66 92-442-4045
 > **Hours:** Monday to Friday, 9:00–17:00 ICT
 >
 > **Distributed by:**
@@ -69,7 +69,7 @@ Routes enquiries to the right place. The reference site's contact page uses a st
 > The company behind the brand.
 >
 > **Email:** info@s72strategic.com
-> **Phone:** +66 97 251 5911
+> **Phone:** +66 92-442-4045
 >
 > **Manufactured by:**
 > Monsubi Foods LLC, Mongolia

@@ -131,7 +131,7 @@ Everything not blocked by that — the declaration, the allergen, the origin, th
 |---|---|
 | Manufactured by | Monsubi Foods LLC, Mongolia |
 | Imported and distributed in Thailand by | YFamily Co., Ltd., 45/1 Silom, 19 Building, 4th Floor, Room 415, Trok Weth, Silom Road, Silom Subdistrict, Bang Rak District, Bangkok 10500 |
-| Brand owner | S72 Strategic Co., Ltd. — info@s72strategic.com, +66 97 251 5911 |
+| Brand owner | S72 Strategic Co., Ltd. — info@s72strategic.com, +66 92-442-4045 |
 
 > **Batch certificates:** send us the batch number printed on your pack and we will email you the certificate of analysis for that batch. *(Confirm this is operationally supported before publishing — it also appears on `/contact/`.)*
 

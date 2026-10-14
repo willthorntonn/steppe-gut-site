@@ -168,7 +168,7 @@ export default function Privacy() {
               responsible) is Y Family Co., Ltd. (บริษัท วาย แฟมิลี่ จำกัด), juristic person
               registration number 0105565114721 (Tax ID 0105565114721), registered office 45/1
               Silom, 19 Building, 4th Floor, Room 415, Trok Weth, Silom Road, Silom Subdistrict,
-              Bang Rak District, Bangkok 10500, info@steppegut.com, +66 97 251 5911. Y Family Co.,
+              Bang Rak District, Bangkok 10500, info@steppegut.com, +66 92-442-4045. Y Family Co.,
               Ltd. is your point of contact for privacy and data protection matters.
             </P>
 

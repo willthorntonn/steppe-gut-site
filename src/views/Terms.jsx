@@ -38,14 +38,14 @@
 // Yakult-only clauses (the reproduction licence, the Yakult Honsha affiliates
 // wording) are removed rather than rewritten.
 //
-// "Who we are", "Using this website", "Ordering" and "Our liability" are not
-// in the Yakult reference; they're original clauses drafted to cover the
-// gaps a straight ecommerce Terms page needs (contracting party, site use,
-// order formation, liability) that the reference's content-site template
-// never had to. "Prices and payment", "Delivery" and "Cancellation and
-// returns" are deliberately still missing - those need Will's business
-// decisions (refund window, who pays return shipping, customs/duty
-// liability) rather than boilerplate, so they're not invented here.
+// "Who we are", "Using this website", "Ordering", "Delivery", "Cancellation
+// and returns" and "Our liability" are not in the Yakult reference; they're
+// original clauses drafted to cover the gaps a straight ecommerce Terms page
+// needs (contracting party, site use, order formation, shipping, returns,
+// liability) that the reference's content-site template never had to.
+// "Prices and payment" is deliberately still missing - that needs Will's
+// business decisions (currency, tax treatment) rather than boilerplate, so
+// it's not invented here.
 // Still to be reviewed by a Thai-qualified lawyer before launch.
 
 const BODY = {
@@ -189,6 +189,41 @@ export default function Terms() {
               after payment has been taken, we will refund you in full. You are responsible for
               checking that the details of your order, including the delivery address, are
               correct before you submit it.
+            </P>
+
+            <Heading>Delivery</Heading>
+            <P>
+              We deliver domestically within Thailand, using Flash Express or Lalamove, and
+              internationally worldwide, using EMS or DHL. Domestic orders typically arrive within
+              2 to 5 working days and international orders within 2 to 4 weeks; these are
+              estimates, not guarantees, and international delivery times depend on destination
+              and customs processing outside our control. For international orders, any import
+              duties, customs fees and local taxes are your responsibility and are not included in
+              the price you pay us; these may be collected by the courier or your local customs
+              authority before or on delivery. Risk in the products passes to you on delivery. If
+              your order does not arrive within a reasonable time beyond the estimate, or is lost
+              or damaged in transit, contact us at{" "}
+              <A href="mailto:info@steppegut.com">info@steppegut.com</A> with your order number
+              and we will trace it with the courier; if it is confirmed lost or undelivered
+              through no fault of yours, we will offer a free reshipment or a full refund.
+            </P>
+
+            <Heading>Cancellation and returns</Heading>
+            <P>
+              You may cancel your order for any reason at any time before it has been dispatched,
+              by contacting us at <A href="mailto:info@steppegut.com">info@steppegut.com</A> with
+              your order number; where payment has already been taken, we will refund you in full.
+              Once your order has been dispatched we cannot stop it, but you may still return it
+              to us within 7 days of delivery. Because Steppe Gut is a consumable food product, we
+              can only accept a return if the pack is unopened and sealed, or, where you are
+              returning it because of a quality or damage issue, if you provide us with photo or
+              video evidence of the issue when you contact us. To start a return, contact us at
+              the email above within 7 days of delivery with your order number; you are
+              responsible for the cost of returning the product to us. Once we receive and verify
+              the return, we will refund the price you paid for the product to your original
+              payment method. This policy is our own and is not a statutory entitlement; Thai law
+              does not require us to offer any further cancellation or return right for this type
+              of product.
             </P>
 
             <Heading>Ownership of the copyright on this site</Heading>

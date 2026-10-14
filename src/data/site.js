@@ -66,9 +66,9 @@ export const COMPANY = {
   brandOwner: {
     name: "Y Family Co., Ltd.",
     email: "info@steppegut.com",
-    phone: "+66 97 251 5911",
+    phone: "+66 92-442-4045",
     // tel: links strip the formatting the visible text keeps.
-    phoneHref: "+6697251591",
+    phoneHref: "+66924424045",
   },
   manufacturer: {
     name: "Monsubi Foods LLC",

@@ -124,7 +124,8 @@ export const FAQ_GROUPS = [
         // SOURCE: faq-hub.md `delivery-time`.
         id: "when-expect-shipment",
         question: "When can I expect my shipment?",
-        answer: "Two to four working days across Thailand",
+        answer:
+          "Domestic orders within Thailand arrive in 2 to 5 working days, carried by Flash Express or Lalamove. International orders arrive in 2 to 4 weeks, carried by EMS or DHL, depending on destination and customs processing",
       },
       {
         id: "tracking-not-working",
@@ -136,19 +137,31 @@ export const FAQ_GROUPS = [
         id: "which-countries",
         question: "Which countries do you ship to?",
         answer:
-          "We currently ship to Thailand only, direct from this site",
+          "We ship domestically within Thailand and internationally worldwide, direct from this site",
       },
       {
         id: "shipping-rates",
         question: "What are your shipping rates?",
         answer:
-          "We deliver to any address in Thailand within 2 to 4 working days. Delivery is a single flat rate nationwide, not worked out by address. It shows as its own line in your cart and at checkout, before you confirm payment",
+          "We deliver to any address in Thailand within 2 to 5 working days via Flash Express or Lalamove, and internationally within 2 to 4 weeks via EMS or DHL. Shipping is a flat rate by destination, not worked out by address. It shows as its own line in your cart and at checkout, before you confirm payment",
+      },
+      {
+        id: "import-duties-customs",
+        question: "Do I have to pay customs or import duties?",
+        answer:
+          "For international orders, any import duties, customs fees and local taxes are the customer's responsibility and are not included in the price you pay us. These are set by your country's customs authority, not by Steppe Gut, and may be collected by the courier before or on delivery",
+      },
+      {
+        id: "delayed-or-failed-delivery",
+        question: "What happens if my delivery is delayed or fails to arrive?",
+        answer:
+          "Our shipping times are estimates, not guarantees, and international parcels can be held up by customs processing beyond our control. If your order hasn't arrived within a reasonable time past the estimate, [contact us](/contact/) with your order number and we will trace it with the courier. If it's confirmed lost or undelivered through no fault of yours, we will offer a free reshipment or a full refund",
       },
       {
         id: "cancellation-policy",
         question: "What's your order cancellation policy?",
         answer:
-          "If you need to cancel, [contact us](/contact/) immediately. If your order has already been dispatched we cannot stop it, but unopened packs can be returned within 14 days for a refund. Opened food products cannot be accepted back for safety reasons",
+          "You can cancel for any reason any time before your order is dispatched, by [contacting us](/contact/) immediately with your order number. Once dispatched, we cannot stop it, but you can return it: unopened packs can be returned within 7 days of delivery for a refund. If a pack arrives with a quality or damage issue, contact us within 7 days with photo or video evidence of the issue and we will accept the return on that basis too. You are responsible for the cost of returning the product to us",
       },
       {
         id: "change-shipping-address",

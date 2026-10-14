@@ -42,7 +42,7 @@ The media hub: press contact, downloadable media pack, company facts, and the re
 ## 2. Press contact
 
 > **Email:** press@steppegut.com
-> **Phone:** +66 97 251 5911
+> **Phone:** +66 92-442-4045
 > **Response:** Same working day for deadline enquiries. Say so in your subject line and we will prioritise it.
 > **Samples:** Available for review. Tell us the format you want and where to send it.
 

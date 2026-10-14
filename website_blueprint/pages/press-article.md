@@ -72,7 +72,7 @@ Individual press releases. A deliberately plain template — a release is a docu
 | Regulatory | Thai FDA registration is in progress and has not been issued. The product is a dietary supplement and no health claims are made for it. |
 | Allergens | Contains milk. |
 
-**Press contact:** press@steppegut.com · +66 97 251 5911
+**Press contact:** press@steppegut.com · +66 92-442-4045
 
 ---
 
