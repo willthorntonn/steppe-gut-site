@@ -95,8 +95,7 @@ export default function ProductCard({ product, className = "" }) {
 
         {pricing && (
           <p className="mt-3 font-sans text-[15px] text-forest">
-            <span className="font-semibold">From {pricing.price}</span>{" "}
-            <span className="text-forest/45 line-through">{pricing.was}</span>
+            <span className="font-semibold">{pricing.price}</span>
           </p>
         )}
 

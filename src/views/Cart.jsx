@@ -10,7 +10,6 @@ import ProductCard from "../components/product/ProductCard";
 import Section from "../components/ui/Section";
 import NewsletterSignup from "../components/marketing/NewsletterSignup";
 import {
-  DEMO_UNIT_PRICE,
   PROMO_MIN_UNITS,
   PROMO_RATE,
   baht,
@@ -90,7 +89,7 @@ export default function Cart() {
     .filter((line) => line.product);
 
   const units = lines.reduce((sum, line) => sum + line.qty, 0);
-  const original = units * DEMO_UNIT_PRICE;
+  const original = lines.reduce((sum, line) => sum + line.product.price * line.qty, 0);
   // Matches the checkout: the launch offer applies itself at two units
   // rather than asking for a code.
   const promoRate = units >= PROMO_MIN_UNITS ? PROMO_RATE : 0;
@@ -178,7 +177,7 @@ export default function Cart() {
                           {line.product.name}
                         </Link>
                         <p className="mt-1.5 font-sans text-[15px] text-forest">
-                          {baht(DEMO_UNIT_PRICE)}
+                          {baht(line.product.price)}
                         </p>
                       </div>
                     </div>
@@ -214,7 +213,7 @@ export default function Cart() {
                     </div>
 
                     <p className="text-right font-sans text-[18px] font-medium text-forest">
-                      {baht(DEMO_UNIT_PRICE * line.qty)}
+                      {baht(line.product.price * line.qty)}
                     </p>
                   </li>
                 ))}

@@ -5,16 +5,12 @@
 // how many, and the service decides what that is worth. A client that asks to
 // pay 1 THB is priced at the same rate as everyone else.
 //
-// The figures come from src/checkout/demoPrices.js so the cart, the checkout
-// summary and the recorded order cannot drift apart. That module is plain
-// JavaScript with no imports, which is why the server can read it directly.
-// When real prices land in src/data/products.js this import is the one line
-// to repoint - see the header comment in demoPrices.js.
-import {
-  DEMO_UNIT_PRICE,
-  PROMO_MIN_UNITS,
-  PROMO_RATE,
-} from "../src/checkout/demoPrices.js";
+// Prices come from src/data/prices.js, the same table the product pages, the
+// cart and the checkout read, so what a customer sees and what an order is
+// charged cannot drift apart. It is plain JavaScript with no imports, which
+// is why the server can read it directly.
+import { PRICE_BY_SLUG } from "../src/data/prices.js";
+import { PROMO_MIN_UNITS, PROMO_RATE } from "../src/checkout/demoPrices.js";
 import { HttpError } from "./lib/http.js";
 
 // Names, not images: src/data/products.js imports its photography, so a
@@ -22,9 +18,9 @@ import { HttpError } from "./lib/http.js";
 // only fields an order line needs, and they are checked against this list so
 // an unknown slug cannot be ordered.
 export const CATALOG = {
-  "sachet-box": { name: "Steppe Gut Sachet Box", unitPrice: DEMO_UNIT_PRICE },
-  "pill-bottle": { name: "Steppe Gut Pill Bottle", unitPrice: DEMO_UNIT_PRICE },
-  "sachet-bag": { name: "Steppe Gut Sachet Bag", unitPrice: DEMO_UNIT_PRICE },
+  "sachet-box": { name: "Steppe Gut Sachet Box", unitPrice: PRICE_BY_SLUG["sachet-box"] },
+  "pill-bottle": { name: "Steppe Gut Pill Bottle", unitPrice: PRICE_BY_SLUG["pill-bottle"] },
+  "sachet-bag": { name: "Steppe Gut Sachet Bag", unitPrice: PRICE_BY_SLUG["sachet-bag"] },
 };
 
 export const CURRENCY = "THB";

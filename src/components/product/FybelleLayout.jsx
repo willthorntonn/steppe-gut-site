@@ -593,8 +593,6 @@ export default function FybelleLayout({ product }) {
 
           <div className="sg-fyb__price">
             <span className="sg-fyb__price-now">{price.price}</span>
-            <span className="sg-fyb__price-was">{price.was}</span>
-            <span className="sg-fyb__save">{price.save}</span>
           </div>
 
           <div className="sg-fyb__urgency">

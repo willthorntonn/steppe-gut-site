@@ -13,8 +13,6 @@ import { PRODUCTS, PRODUCT_BY_SLUG } from "../data/products";
 import { getCountryFields, DEFAULT_COUNTRY_FIELDS } from "../data/countryFields";
 // Stand-in prices and the ฿ formatter, shared with the cart page.
 import {
-  DEMO_UNIT_PRICE,
-  DEMO_ADDON_PRICE,
   DEMO_SHIPPING_EXPRESS,
   PROMO_MIN_UNITS,
   PROMO_RATE,
@@ -248,7 +246,7 @@ export default function Checkout() {
     .filter((line) => line.product);
 
   const units = lines.reduce((sum, line) => sum + line.qty, 0);
-  const original = units * DEMO_UNIT_PRICE;
+  const original = lines.reduce((sum, line) => sum + line.product.price * line.qty, 0);
   // The reference applies its promotion automatically at two units, rather
   // than making you type a code for it.
   const promoRate = units >= PROMO_MIN_UNITS ? PROMO_RATE : 0;
@@ -746,7 +744,10 @@ export default function Checkout() {
             ) : (
               <>
                 <ul className="space-y-4">
-                  {lines.map((line) => (
+                  {lines.map((line) => {
+                    const lineOriginal = line.product.price * line.qty;
+                    const lineSavings = lineOriginal * promoRate;
+                    return (
                     <li key={line.product.slug} className="flex items-start gap-4">
                       <div className="relative h-16 w-16 shrink-0 rounded-[10px] border border-forest/15 bg-[#FFFDF9] p-0.5">
                         <Picture
@@ -773,7 +774,7 @@ export default function Checkout() {
                             />
                             <span>
                               LAUNCH OFFER, 20% OFF 2 OR MORE (-
-                              {baht(savings)})
+                              {baht(lineSavings)})
                             </span>
                           </p>
                         )}
@@ -782,13 +783,16 @@ export default function Checkout() {
                       <div className="shrink-0 text-right">
                         {promoRate > 0 && (
                           <p className="text-[12px] text-forest/60 line-through">
-                            {baht(original)}
+                            {baht(lineOriginal)}
                           </p>
                         )}
-                        <p className="text-[15px] font-medium">{baht(subtotal)}</p>
+                        <p className="text-[15px] font-medium">
+                          {baht(lineOriginal - lineSavings)}
+                        </p>
                       </div>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
 
                 {addon && (
@@ -812,7 +816,7 @@ export default function Checkout() {
                           {addon.name}
                         </p>
                         <p className="mt-0.5 text-[13px] text-forest/60">
-                          THB {DEMO_ADDON_PRICE.toFixed(2)}
+                          THB {addon.price.toFixed(2)}
                         </p>
                       </div>
                       <button

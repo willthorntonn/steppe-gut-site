@@ -10,6 +10,7 @@ import bagAvif from "../assets/products/bag.avif";
 import bagWebp from "../assets/products/bag.webp";
 import bagThumbAvif from "../assets/products/bag-thumb.avif";
 import bagThumbWebp from "../assets/products/bag-thumb.webp";
+import { PRICE_BY_SLUG } from "./prices";
 
 
 // The single source of truth for the three SKUs. The products page, all three
@@ -20,13 +21,8 @@ import bagThumbWebp from "../assets/products/bag-thumb.webp";
 // fixed in 02_brand_guidelines.md §4.3 (Daily Sachets, Capsules, Refill
 // Pouch - never "SKU" or "variant" in user-facing copy).
 //
-// ─────────────────────────────────────────────────────────────────────────
-// PRICE IS DELIBERATELY NULL.
-// Pricing was not locked at build time. products-collection.md §2 is explicit
-// that placeholder prices must not ship, so every price-rendering surface
-// checks for null and omits the element rather than printing "฿-". Setting a
-// real number here is the only change needed to turn prices on sitewide.
-// ─────────────────────────────────────────────────────────────────────────
+// Prices live in ./prices.js, a plain module the server also reads to price an
+// order. Each product's `price` below is looked up from it by slug.
 
 export const CURRENCY = "THB";
 
@@ -44,7 +40,7 @@ export const PRODUCTS = [
     formatLong: "25 × 10 g sachets · 25 days",
     servings: 25,
     servingSize: "10 g",
-    price: null,
+    price: PRICE_BY_SLUG["sachet-box"],
     descriptor:
       "Twenty-five individual sachets of fermented mare's milk powder, one for each day of the month. Tear, mix with water, drink",
     railDescriptor: "25 daily sachets. Tear, mix with water, drink",
@@ -84,7 +80,7 @@ export const PRODUCTS = [
     formatLong: "90 capsules · 30 days",
     servings: 30,
     servingSize: "3 capsules",
-    price: null,
+    price: PRICE_BY_SLUG["pill-bottle"],
     descriptor:
       "Ninety capsules of fermented mare's milk powder in an amber glass bottle. Three capsules once a day, the same dose as the sachet, but without the taste, for travel or everyday convenience",
     railDescriptor: "90 capsules. Take three daily, no taste to manage",
@@ -124,7 +120,7 @@ export const PRODUCTS = [
     formatLong: "250 g pouch · 25 servings",
     servings: 25,
     servingSize: "10 g (one level scoop)",
-    price: null,
+    price: PRICE_BY_SLUG["sachet-bag"],
     descriptor:
       "A 250 g pouch of loose fermented mare's milk powder with a measuring scoop. For people in the daily habit who prefer less packaging and lower cost per serving",
     railDescriptor: "250 g loose powder with scoop. Less packaging, better value",
@@ -163,20 +159,16 @@ export const PRODUCT_BY_SLUG = Object.fromEntries(
   PRODUCTS.map((product) => [product.slug, product])
 );
 
-// ─────────────────────────────────────────────────────────────────────────
-// MARKETING PRICE + REVIEW PLACEHOLDERS.
-// The real `price` field above stays null sitewide (see the note at the top
-// of this file). These are the launch-marketing figures the storefront shows
-// on the products grid and on each product page. They live here, in one
-// table, so the grid card and the detail page can never disagree - the same
-// reason SHARED_BADGES does. Proportioned per format (the three packs hold
-// different amounts of product), not copy-pasted across slugs.
-// ─────────────────────────────────────────────────────────────────────────
-export const MARKETING_PRICE_BY_SLUG = {
-  "sachet-bag": { price: "฿1,890", was: "฿2,490", save: "SAVE 24% OFF", amount: 1890 },
-  "sachet-box": { price: "฿1,990", was: "฿2,590", save: "SAVE 23% OFF", amount: 1990 },
-  "pill-bottle": { price: "฿2,490", was: "฿3,290", save: "SAVE 24% OFF", amount: 2490 },
-};
+// Display strings for the products grid and each product page, derived from
+// the real prices so the grid card and the detail page can never disagree.
+// There is deliberately no struck-through "was" price: the list price is the
+// only price.
+export const MARKETING_PRICE_BY_SLUG = Object.fromEntries(
+  Object.entries(PRICE_BY_SLUG).map(([slug, amount]) => [
+    slug,
+    { price: `฿${amount.toLocaleString("en-US")}`, amount },
+  ])
+);
 
 // Placeholder social proof for the pre-launch build. Kept beside the price
 // table so every surface that shows "★★★★★ (n)" shows the same n.

@@ -347,11 +347,8 @@ export default {
   "products.INGREDIENTS_DECLARATION":
     "ผงนมม้าหมัก แลคโตส เวย์โปรตีน เคซีนโปรตีน ไขมันนม กรดไขมันโอเมกา 3 กรดไขมันโอเมกา 6 วิตามินซี (กรดแอสคอร์บิก) วิตามินเอ (เรตินอล) วิตามินบี 1 (ไทอามีน) วิตามินบี 2 (ไรโบฟลาวิน) วิตามินบี 12 (ไซยาโนโคบาลามิน) แคลเซียม ฟอสฟอรัส โซเดียม ธาตุเหล็ก แลคโตเฟอร์ริน ไลโซไซม์",
 
-  "products.MARKETING_PRICE_BY_SLUG.pill-bottle.save": "ประหยัด 24%",
 
-  "products.MARKETING_PRICE_BY_SLUG.sachet-bag.save": "ประหยัด 24%",
 
-  "products.MARKETING_PRICE_BY_SLUG.sachet-box.save": "ประหยัด 23%",
 
   "products.PRODUCTS.0.allergen": "มีส่วนผสมของนม",
   "products.PRODUCTS.0.alt": "กล่องซอง Steppe Gut บรรจุ 25 ซองสำหรับทุกวัน",

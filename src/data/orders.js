@@ -4,14 +4,10 @@
 // name and image for each row (the same reason the cart only stores
 // `{ slug, qty }`).
 //
-// Not the price, though: products.js ships `price: null` on every SKU, so My
-// Orders values these rows with DEMO_UNIT_PRICE from checkout/demoPrices. See
-// the note on resolveOrder in pages/AccountOrders - an order total ought to
-// be a recorded fact rather than today's list price, and once real prices
-// exist each order here needs the figures it was actually charged.
-//
-// These orders are the first thing to delete once a real order backend
-// exists, exactly as demoPrices.js is for pricing. Nothing else reads them.
+// Not the price, though: an order total ought to be a recorded fact rather
+// than today's list price, so these rows carry no money. Nothing else reads
+// them, and they are the first thing to delete once a real order backend
+// exists.
 //
 // `status` is one of: "delivered" | "shipped" | "processing". The My Orders
 // page maps each to a coloured pill and every order exposes a Reorder action
