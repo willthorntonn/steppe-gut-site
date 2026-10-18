@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import amexLogo from "../../../assets/payment/amex.png";
+import visaLogo from "../../../assets/payment/visa.png";
 import promptpayLogo from "../../../assets/payment/promptpay.png";
 
 // Payment-brand marks for the checkout replica.
@@ -18,22 +20,9 @@ const BOX = "inline-block shrink-0 rounded-[3px]";
 
 export function VisaMark() {
   return (
-    <svg viewBox="0 0 38 24" className={`${BOX} h-6 w-[38px]`} aria-hidden="true">
-      <rect width="38" height="24" rx="3" fill="#1A1F71" />
-      <text
-        x="19"
-        y="16.5"
-        textAnchor="middle"
-        fontFamily="Helvetica, Arial, sans-serif"
-        fontSize="10"
-        fontWeight="700"
-        fontStyle="italic"
-        fill="#fff"
-        letterSpacing="0.4"
-      >
-        VISA
-      </text>
-    </svg>
+    <span className={`${BOX} relative block h-6 w-[38px] overflow-hidden`}>
+      <Image src={visaLogo} alt="" aria-hidden="true" fill className="object-cover" />
+    </span>
   );
 }
 
@@ -49,31 +38,9 @@ export function MastercardMark() {
 
 export function AmexMark() {
   return (
-    <svg viewBox="0 0 38 24" className={`${BOX} h-6 w-[38px]`} aria-hidden="true">
-      <rect width="38" height="24" rx="3" fill="#1F72CD" />
-      <text
-        x="19"
-        y="11"
-        textAnchor="middle"
-        fontFamily="Helvetica, Arial, sans-serif"
-        fontSize="6.5"
-        fontWeight="700"
-        fill="#fff"
-      >
-        AMER
-      </text>
-      <text
-        x="19"
-        y="18"
-        textAnchor="middle"
-        fontFamily="Helvetica, Arial, sans-serif"
-        fontSize="6.5"
-        fontWeight="700"
-        fill="#fff"
-      >
-        EX
-      </text>
-    </svg>
+    <span className={`${BOX} relative block h-6 w-[38px] overflow-hidden`}>
+      <Image src={amexLogo} alt="" aria-hidden="true" fill className="object-cover" />
+    </span>
   );
 }
 

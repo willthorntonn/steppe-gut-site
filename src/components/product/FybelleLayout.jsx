@@ -429,6 +429,20 @@ ul.sg-fyb__benefits { display: grid; gap: 12px; font-size: 17px; margin-top: 14p
   width: auto;
   height: auto;
   object-fit: contain;
+  transform: scale(1.3);
+}
+/* Visa and Mastercard ship with their own brand backgrounds, so the badge
+   takes the same colour and the image fills it edge to edge. */
+.sg-fyb__pay-badge--visa { background: #1434cb; border-color: #1434cb; padding: 0; }
+.sg-fyb__pay-badge--mastercard { background: #000000; border-color: #000000; padding: 0; }
+.sg-fyb__pay-badge--visa img,
+.sg-fyb__pay-badge--mastercard img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  transform: none;
 }
 
 /* ---- accordions ------------------------------------------------------ */
@@ -643,9 +657,7 @@ export default function FybelleLayout({ product }) {
             {PAYMENTS.map((method) => (
               <span
                 key={method.id}
-                className={`sg-fyb__pay-badge${
-                  method.id === "applepay" ? " sg-fyb__pay-badge--applepay" : ""
-                }`}
+                className={`sg-fyb__pay-badge sg-fyb__pay-badge--${method.id}`}
               >
                 <img src={method.src} alt={method.label} loading="lazy" />
               </span>
