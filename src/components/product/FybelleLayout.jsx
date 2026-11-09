@@ -82,8 +82,8 @@ const INGREDIENT_ROW_BY_SLUG = {
   "pill-bottle": "Fermented mare’s milk powder, encapsulated",
 };
 
-// Tuesday 2026-11-10, 09:00 Thailand time (UTC+7) - roughly 80 days out.
-const COUNTDOWN_TARGET = new Date("2026-11-10T09:00:00+07:00").getTime();
+// Wednesday 2026-12-02, 09:00 Thailand time (UTC+7).
+const COUNTDOWN_TARGET = new Date("2026-12-02T09:00:00+07:00").getTime();
 
 function getCountdownParts(now) {
   const diff = Math.max(0, COUNTDOWN_TARGET - now);
