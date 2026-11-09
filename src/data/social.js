@@ -24,14 +24,13 @@ export const SOCIAL_POSTS = [];
  *
  * `href` is null until an account actually exists. A link to a nonexistent
  * account is a broken link - and if somebody registers that handle in the
- * meantime, it becomes a link to a stranger. Both the footer icons and the
- * /social/ page read this, so filling in a URL here turns it on in both
- * places at once.
+ * meantime, it becomes a link to a stranger. The footer, left rail and mobile
+ * menu icons all read this, so filling in a URL here turns it on everywhere.
  */
 export const SOCIAL_PLATFORMS = [
-  { name: "Instagram", href: null },
+  { name: "Instagram", href: "https://www.instagram.com/steppegut/" },
   { name: "TikTok", href: null },
-  { name: "Facebook", href: null },
+  { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61596287014860" },
   { name: "YouTube", href: null },
   { name: "LINE", href: null },
 ];

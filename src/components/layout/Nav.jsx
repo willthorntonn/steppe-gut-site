@@ -1016,7 +1016,16 @@ export default function Navbar() {
                     >
                       <SocialGlyph d={cell.d} className="h-6 w-6" />
                     </a>
-                  ) : null;
+                  ) : (
+                    <span
+                      key={cell.label}
+                      role="img"
+                      aria-label={`${cell.label} (coming soon)`}
+                      className={cls}
+                    >
+                      <SocialGlyph d={cell.d} className="h-6 w-6" />
+                    </span>
+                  );
                 })}
               </div>
             </div>

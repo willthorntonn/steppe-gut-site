@@ -69,8 +69,8 @@ const TIKTOK_PATH =
 // Facebook's right on the top row only - matching the reference exactly
 // rather than an evenly-spaced grid.
 // Accounts are not open yet, so nothing here can point at a real profile.
-// Icons (and the "Follow us" column) only render once SOCIAL_PLATFORMS in
-// data/social.js has a real URL for that platform.
+// Until SOCIAL_PLATFORMS in data/social.js has a real URL for a platform its
+// icon is shown but is not a link.
 const SOCIAL_CELLS = [
   { label: "Facebook", d: FACEBOOK_PATH },
   { label: "TikTok", d: TIKTOK_PATH },
@@ -158,7 +158,6 @@ export default function Footer() {
           intrinsic width; without the cap the enquiry line ran full-width and
           collided with About Us at intermediate desktop sizes. */}
       <div className="mx-auto grid max-w-[2000px] grid-cols-1 gap-12 px-5 pb-16 pt-24 sm:grid-cols-3 sm:gap-8 sm:px-8 lg:flex lg:items-start lg:justify-between lg:gap-12 lg:px-16 lg:pb-28 lg:pt-36 xl:gap-20">
-        {SOCIAL_CELLS.some((cell) => cell && socialTarget(cell.label)) && (
         <div className="lg:shrink-0">
           <h3 className="font-serif text-[26px] font-normal tracking-[-0.03em] text-cream lg:text-[46px]">
             Follow us
@@ -181,7 +180,16 @@ export default function Footer() {
                     >
                       <SocialIcon d={cell.d} />
                     </a>
-                  ) : null;
+                  ) : (
+                    <span
+                      key={cell.label}
+                      role="img"
+                      aria-label={`${cell.label} (coming soon)`}
+                      className={cls}
+                    >
+                      <SocialIcon d={cell.d} />
+                    </span>
+                  );
                 })()
               ) : (
                 <span key={`spacer-${index}`} aria-hidden="true" />
@@ -189,7 +197,6 @@ export default function Footer() {
             )}
           </div>
         </div>
-        )}
 
         <div className="min-w-0 lg:max-w-[42ch] lg:flex-1">
           <h3 className="font-serif text-[26px] font-normal tracking-[-0.03em] text-cream lg:text-[46px]">

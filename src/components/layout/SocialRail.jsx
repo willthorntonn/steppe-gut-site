@@ -35,10 +35,6 @@ function socialTarget(label) {
 // fill reaches it, staying inverted for as long as the pointer (or focus)
 // remains.
 export default function SocialRail() {
-  // No /social/ page any more: with no live account URL there is nothing to
-  // link to, so the rail stays hidden until SOCIAL_PLATFORMS gains one.
-  if (!CELLS.some((cell) => socialTarget(cell.label))) return null;
-
   return (
     <div
       data-social-rail=""
@@ -59,7 +55,19 @@ export default function SocialRail() {
           />
         );
 
-        if (!live) return null;
+        if (!live) {
+          return (
+            <span
+              key={cell.label}
+              role="img"
+              aria-label={`${cell.label} (coming soon)`}
+              className={cls}
+            >
+              {fill}
+              <SocialGlyph d={cell.d} className={glyphCls} />
+            </span>
+          );
+        }
 
         return (
           <a
