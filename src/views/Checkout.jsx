@@ -401,9 +401,9 @@ export default function Checkout() {
           <div className="order-2 pb-20 pt-8 lg:order-1 lg:pr-14 lg:pt-6">
             <p className="rounded-[12px] bg-[#FFFDF9] px-5 py-[15px] text-center text-[15px] font-medium">
               <span aria-hidden="true" className="tracking-[-0.08em]">
-                ★★★★★
+                ☆☆☆☆☆
               </span>{" "}
-              3,000+ 5 Star Reviews
+              0 Reviews
             </p>
 
             <ul className="mt-4 grid grid-cols-3 gap-3">

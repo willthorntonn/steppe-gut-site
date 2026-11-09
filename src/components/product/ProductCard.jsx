@@ -84,7 +84,7 @@ export default function ProductCard({ product, className = "" }) {
         {reviews && (
           <p className="mt-3 flex items-center justify-center gap-1.5 font-sans text-[13px] text-forest/55">
             <span aria-hidden="true" className="tracking-[2px] text-gold">
-              {"★".repeat(reviews.rating)}
+              {"★".repeat(reviews.rating) + "☆".repeat(5 - reviews.rating)}
             </span>
             <span>({reviews.count})</span>
             <span className="sr-only">

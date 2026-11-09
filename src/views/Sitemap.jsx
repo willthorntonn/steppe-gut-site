@@ -60,7 +60,6 @@ const PAGES = [
   { label: "FAQ", to: "/faq/" },
   { label: "Buy Steppe Gut", to: "/buy/" },
   { label: "Contact Us", to: "/contact/" },
-  { label: "Social", to: "/social/" },
   { label: "Cookie Policy", to: "/cookies/" },
 ];
 

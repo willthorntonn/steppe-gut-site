@@ -43,6 +43,8 @@ const nextConfig = {
       // "Our Social Mission" was removed; its content is folded into the Our
       // Story overview and Our Mission.
       { source: "/our-story/social-mission", destination: "/our-story/", permanent: true },
+      // The /social/ page was removed.
+      { source: "/social", destination: "/", permanent: true },
       { source: "/signin", destination: "/sign-in/", permanent: true },
       { source: "/account", destination: "/account/orders/", permanent: true },
     ];

@@ -7,12 +7,11 @@ import {
   PRODUCTION_STEPS,
 } from "../data/ingredients";
 import { PRODUCTS, INGREDIENTS_DECLARATION } from "../data/products";
-import { CONTENT_PILLARS } from "../data/social";
 import { COMPANY } from "../data/site";
 
 // One flat, in-memory index of everything the site actually renders. It is
 // assembled from the same content modules the pages read from (content/home,
-// data/faq, data/ingredients, data/products, data/social) so it cannot drift
+// data/faq, data/ingredients, data/products) so it cannot drift
 // out of step with the copy on the page, plus a handful of hand-written
 // entries for page headers and leads that only live in JSX.
 //
@@ -255,27 +254,6 @@ const BUY = [
   },
 ];
 
-const SOCIAL = [
-  {
-    page: "Social",
-    path: "/social/",
-    hash: "",
-    section: "Social",
-    label: "We have not started posting yet",
-    body: "The accounts are not open. Rather than fill the page with pictures that are not ours and numbers that are not real, here is what we intend to post, and how to find out when it starts",
-    terms: "social instagram tiktok facebook youtube line accounts",
-  },
-  ...CONTENT_PILLARS.map((pillar) => ({
-    page: "Social",
-    path: "/social/",
-    hash: "",
-    section: "What will be on them",
-    label: pillar.title,
-    body: pillar.body,
-    terms: "social content pillars plan season how it is made questions corrections",
-  })),
-];
-
 const CONTACT = [
   {
     page: "Contact",
@@ -295,6 +273,5 @@ export const SEARCH_ENTRIES = [
   ...GUT_HEALTH,
   ...FAQ,
   ...BUY,
-  ...SOCIAL,
   ...CONTACT,
 ].map((entry, index) => ({ id: `sg-search-${index}`, ...entry }));

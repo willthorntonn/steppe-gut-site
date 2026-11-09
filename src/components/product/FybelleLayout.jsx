@@ -584,9 +584,9 @@ export default function FybelleLayout({ product }) {
         <div className="sg-fyb__info">
           <div className="sg-fyb__reviews">
             <span className="sg-fyb__stars" aria-hidden="true">
-              ★★★★★
+              ☆☆☆☆☆
             </span>
-            <span>124 reviews</span>
+            <span>0 reviews</span>
           </div>
 
           <h1 className="sg-fyb__title">{product.name}</h1>

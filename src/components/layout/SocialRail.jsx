@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { SOCIAL_PLATFORMS } from "../../data/social";
 import {
   FACEBOOK_PATH,
@@ -36,6 +35,10 @@ function socialTarget(label) {
 // fill reaches it, staying inverted for as long as the pointer (or focus)
 // remains.
 export default function SocialRail() {
+  // No /social/ page any more: with no live account URL there is nothing to
+  // link to, so the rail stays hidden until SOCIAL_PLATFORMS gains one.
+  if (!CELLS.some((cell) => socialTarget(cell.label))) return null;
+
   return (
     <div
       data-social-rail=""
@@ -56,7 +59,9 @@ export default function SocialRail() {
           />
         );
 
-        return live ? (
+        if (!live) return null;
+
+        return (
           <a
             key={cell.label}
             href={live}
@@ -68,16 +73,6 @@ export default function SocialRail() {
             {fill}
             <SocialGlyph d={cell.d} className={glyphCls} />
           </a>
-        ) : (
-          <Link
-            key={cell.label}
-            href="/social/"
-            aria-label={`${cell.label}, our accounts are not open yet`}
-            className={cls}
-          >
-            {fill}
-            <SocialGlyph d={cell.d} className={glyphCls} />
-          </Link>
         );
       })}
     </div>

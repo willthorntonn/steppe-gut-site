@@ -170,12 +170,12 @@ export const MARKETING_PRICE_BY_SLUG = Object.fromEntries(
   ])
 );
 
-// Placeholder social proof for the pre-launch build. Kept beside the price
-// table so every surface that shows "★★★★★ (n)" shows the same n.
+// Review totals. No reviews exist yet, so every format is 0. Kept beside the
+// price table so every surface that shows stars and a count shows the same n.
 export const REVIEWS_BY_SLUG = {
-  "sachet-bag": { rating: 5, count: 214 },
-  "sachet-box": { rating: 5, count: 319 },
-  "pill-bottle": { rating: 5, count: 176 },
+  "sachet-bag": { rating: 0, count: 0 },
+  "sachet-box": { rating: 0, count: 0 },
+  "pill-bottle": { rating: 0, count: 0 },
 };
 
 /**
